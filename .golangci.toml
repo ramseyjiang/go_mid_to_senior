@@ -1,0 +1,28 @@
+[run]
+skip-dirs = ["vendor"]
+
+[linters]
+enable = ["gocritic", "stylecheck", "gofmt", "gci", "exportloopref"]
+
+[linters-settings.gocritic]
+enabled-tags = [
+    "style",
+    "diagnostic",
+    "performance",
+]
+
+disabled-checks = [
+    "unnamedResult",
+    "paramTypeCombine",
+    "ifElseChain",
+    "unlabelStmt",
+]
+
+[linters-settings.govet]
+check-shadowing = true
+
+[issues]
+[[issues.exclude-rules]]
+path = "test\\.go"
+linters = ["exportloopref"]
+text = 'range scope `tt` in' # for table tests

@@ -1,0 +1,66 @@
+Dependency Injection is one of the most important design principles for keeping software “loose-coupling and easy to maintain”.
+This principle is widely used in all kind of development platforms and there are many excellent tools related to it.
+
+Benefits of Using Wire:
+1. Because wire uses code generation, the resulting container code is obvious and readable.
+2. Easy debug. If any dependency is missing or being unused, an error will be reported during compiling.
+
+If wire is not installed, when you run "wire", it will have error "could not import github.com/google/wire (invalid package name: "")".
+
+So, firstly, please install wire:
+% go get -d github.com/google/wire/cmd/wire
+
+The last and an important one, you should add "// +build wireinject" at the top of wire.go.
+If not, you will see a "redeclared" issue.
+After you add "// +build wireinject", it will generate a line "//go:build wireinject" above on the line "// +build wireinject", if you
+use GoLand.
+
+Some common advantages are:
+1. Other services. Making your code more modular, less duplicate code and more testable.
+
+2. Configuration. Such as a database passwords, API URL endpoints, etc.
+
+3. System or environment state.
+Such as the clock or file system. This comes in extremely important when writing tests that depend on time or random data.
+
+4. Stubs of external APIs.
+So that API requests can be mocked within the system during tests to keep things stable and quick.
+
+There are some kinds of dependency injection, and each one has its own use case.
+For example, Constructor, Property and, Method (or Setter).
+
+The most common kind is the Constructor Injection. It allows you to make your implementation immutable,
+nothing can change the dependencies (if your properties are private). Also, it requires all dependencies to be ready to create something.
+If they aren’t, it usually will generate an error.
+
+// Constructor Injection
+func NewMyInjection(logger MyLogger, repo MyRepository, broker MyMessageBroker) *MyService {
+    return &MyService{
+        logger: logger,
+        broker: broker,
+        repository: repo,
+    }
+}
+
+Property and Method injection are pretty similar, their adoption is a question of a language feature.
+
+These kinds allow you to change dependencies in runtime, so by design, they aren’t immutable.
+But if you need to change the implementation of some dependency, you don’t need to recreate everything. You can just override what you need.
+
+// Method Injection
+type MyService struct {
+    logger      MyLogger
+    broker      MyMessageBroker
+    repository  MyRepository
+}
+
+func(s *MyService) SetLogger(logger MyLogger) {
+    s.logger = logger
+}
+
+Some terminology:
+1. A service is an instance of a class.
+
+2. A container is a collection of services.
+
+3. A singleton is an instance that is initialised once, but can be reused many times.
