@@ -3,125 +3,11 @@ package contextpkg
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"time"
 )
 
-// Incoming requests to a server should create a Context, and outgoing calls to servers should accept a Context.
-// The chain of function calls between them must propagate the Context,
-// optionally replacing it with a derived Context created using WithCancel, WithDeadline, WithTimeout, or WithValue.
-
-/**
-The interface of the Context is defined as:
-type Context interface {
-	Deadline() (deadline time.Time, ok bool)
-	Done() <- chan struct{}
-	Err() error
-	Value(key interface{}) interface{}
-}
-
-Deadline: The first value is the deadline, at which point the Context will automatically trigger the Cancel action.
-The second value is a boolean value, true means the deadline is set, false means the deadline is not set.
-If the deadline is not set, you have to call the cancel function manually to cancel the Context.
-
-Done: return a read-only channel (only after being canceled), type struct{}, when this channel is readable,
-it means the parent context has initiated the cancel request, according to this signal,
-the developer can do some cleanup actions, exit the goroutine
-
-Err: returns the reason why the context was cancelled
-
-Value: returns the value bound to the Context, it is a key-value pair,
-so you need to pass a Key to get the corresponding value, this value is thread-safe.
-*/
-
-// Do not store Contexts inside a struct type; instead, pass a Context explicitly to each function that needs it.
-// The Context should be the first parameter, typically named ctx:
-// func DoSomething(ctx context.Context, arg Arg) error {
-// ... use ctx ...
-// }
-
-/*
-	func Background() Context
-	ctx, cancel:= context.Background()
-
-	Background returns a non-nil, empty Context.
-	It is never canceled, has no values, and has no deadline.
-	It is typically used by the main function, initialization, and tests, and as the top-level Context
-	of the tree structure, the root Context, which cannot be cancelled.
-	It is used to derive other contexts and has an empty context as a return type.
-*/
-
-/*
-	func TODO() Context
-	ctx, cancel := context.TODO()
-
-	TODO returns a non-nil, empty Context. Code should use context.
-	TODO when it's unclear which Context to use or it is not yet available.
-	because the surrounding function has not yet been extended to accept a Context parameter.
-
-	TODO is to never pass nil context , instead, use of TODO is advised .
-	TODO, when you don’t know what Context to use, you can use this.
-*/
-
-// both TODO() and Background() are essentially of type emptyCtx, both are non-cancelable, neither has a set deadline,
-// and neither carries any value for the Context.
-
-/*
-	func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
-
-	A CancelFunc tells an operation to abandon its work.
-	A CancelFunc does not wait for the work to stop.
-	A CancelFunc may be called by multiple goroutines simultaneously.
-	After the first call, subsequent calls to a CancelFunc do nothing.
-
-	When a Context is canceled, all Contexts derived from it are also canceled.
-	The WithCancel, WithDeadline, and WithTimeout functions take a Context (the parent)
-	and return a derived Context (the child) and a CancelFunc.
-	Calling the CancelFunc cancels the child and its children,
-	removes the parent's reference to the child, and stops any associated timers.
-
-	For channel, although channel can also notify many nested goroutines to exit,
-	channel is not thread-safe, while context is thread-safe.
-*/
-
-/**
-func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc)
-func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
-
-WithTimeout and WithDeadline are basically the same in terms of usage and function,
-they both indicate that the context will be automatically canceled after a certain time,
-the only difference can be seen from the definition of the function,
-the second parameter passed to WithDeadline is of type time.Duration type, which is a relative time,
-meaning how long after the timeout is cancelled.
-*/
-
-/*
-	func WithValue(parent Context, key, val interface{}) Context
-	ctx := context.WithValue(context.Background(), key, “test”)
-
-	WithValue returns a copy of parent in which the value associated with key is val.
-	It creates a new context based on a parent context and adds a value to a given key.
-	It allows you to store any type of data inside the context.
-	Metadata is passed in as Key-Value, but note that the Key must be comparable and the Value must be thread-safe.
-*/
-
-//  Note that these methods mean that the context can be inherited once to achieve one more function,
-//	for example, using the WithCancel function to pass in the root context, it creates a child context,
-//	which has an additional function of cancel context, then use this context(context01) as the parent context,
-//	and pass it as the first parameter to the WithDeadline function, the child context(context02) is obtained,
-//	compared to the child context(context01), It has an additional function to cancel the context automatically
-//	after the deadline.
-
-/**
-Context notes:
-
-1. Do not store Contexts in struct types, but pass the Context explicitly to each function that needs it,
-and the Context should be the first argument.
-
-2. Do not pass a nil Context, even if the function allows it, or if you are not sure which Context to use,
-pass context.
-
-3. Do not pass variables that could be passed as function arguments to the Value of the Context.
-*/
+const InternalSeconds = 5
 
 func Trigger() {
 	withCancelUsage()
@@ -137,12 +23,40 @@ func Trigger() {
 	fmt.Println("-------------withDeadlineUsage2  start---------------")
 	withDeadlineUsage2()
 	fmt.Println("-------------withDeadlineUsage2  end-----------------")
+
+	_ = http.ListenAndServe(":8000", http.HandlerFunc(withDoneUsage))
+}
+
+/**
+handlerDone is used time.After() to simulate a function that takes five seconds to process a request.
+
+If the context is cancelled within two seconds, the ctx.Done() channel receives an empty struct.
+The second case will be executed and the function exits.
+
+You can fire up this code on your local.
+Once up, visit localhost:8000 on your browser, then close it within two seconds.
+Observe your terminal and see what happens.
+*/
+func withDoneUsage(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	select {
+	case <-time.After(InternalSeconds * time.Second):
+		_, err := w.Write([]byte("request processed"))
+		if err != nil {
+			return
+		}
+	case <-ctx.Done():
+		fmt.Println("request cancelled")
+		return
+	}
 }
 
 // This example demonstrates the use of a cancelable context to prevent a goroutine leak.
 // By the end of the example function, the goroutine started by gen will return without leaking.
 // WithCancel returns a copy of parent with a new Done channel.
-// The returned context's Done channel is closed when the returned cancel function is called or when the parent context's Done channel is closed, whichever happens first.
+// The returned context's Done channel is closed when the returned cancel function is called or
+// when the parent context's Done channel is closed, whichever happens first.
 
 // context.WithCancel(parent Context) (ctx Context, cancel CancelFunc)
 // ctx, cancel := context.WithCancel(context.Background())
@@ -150,7 +64,7 @@ func Trigger() {
 // This parent context can either be a background context or a context that was passed into the function.
 func withCancelUsage() {
 	// gen generates integers in a separate goroutine and sends them to the returned channel.
-	// The callers of gen need to cancel the context once they are done consuming generated integers not to leak the internal goroutine started by gen.
+	// The callers of gen need to cancel the context once they are done consuming generated integers not to leak the internal goroutine.
 	gen := func(ctx context.Context) <-chan int {
 		dst := make(chan int)
 		n := 1

@@ -2,6 +2,7 @@ package contextpkg
 
 import (
 	"context"
+	"net/http"
 	"testing"
 )
 
@@ -110,6 +111,22 @@ func Test_withValueUsage(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			withValueUsage()
+		})
+	}
+}
+
+func Test_withDoneUsage(t *testing.T) {
+	type args struct {
+		w http.ResponseWriter
+		r *http.Request
+	}
+	var tests []struct {
+		name string
+		args args
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			withDoneUsage(tt.args.w, tt.args.r)
 		})
 	}
 }
