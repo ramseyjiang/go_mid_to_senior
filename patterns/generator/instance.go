@@ -6,16 +6,18 @@ import "fmt"
 // Hence, we can do the generation data concurrently.
 // That way, the program does not have to wait until all data is generated.
 
-// fib returns a written only channel which transports fibonacci numbers
+// fib returns a unidirectional receive-only channel which transports fibonacci numbers
 func fib(len int) <-chan int {
 	// make a buffered channel
 	c := make(chan int, len)
 
-	// run generation concurrently
+	// using anonymous goroutine, run generation concurrently
 	go func() {
 		for i, j := 0, 1; i < len; i, j = i+j, i {
 			c <- i
 		}
+
+		// must close it from the inside of goroutine
 		close(c)
 	}()
 
