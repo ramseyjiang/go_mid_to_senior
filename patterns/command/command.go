@@ -1,4 +1,4 @@
-package main
+package cmd
 
 type device interface {
 	on()
@@ -51,8 +51,8 @@ func (b *button) press() {
 	b.command.execute()
 }
 
-// go run patterns/command/*.go
-func main() {
+// Trigger go run patterns/command/*.go
+func Trigger() {
 	tv := &tv{
 		isOn:   false,
 		volume: 10,
