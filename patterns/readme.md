@@ -24,6 +24,11 @@ Retry Pattern is always used to make gracefully retry.
 The pattern accounts for possible transient faults in a distributed system.
 The Retry pattern, some form of backoff algorithm is implemented that increases the delay between each retry.
 
+Command pattern is all about encapsulation and abstraction. 
+In the case of the remote controller, each button is ideally encapsulated in that each button should be able to work independently of each other.
+In terms of abstraction, this is the whole point that you don’t need to know the details of how exactly any button in the controller. 
+You just want each button to be able to easily perform a task or action without having to think about the details.
+
 TODO:
 1. Make routes which can access faninout.EntryInstance1() and faninout.EntryInstance2 directly.
 2. Make a route which can access factory.Entry() directly.
