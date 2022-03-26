@@ -7,9 +7,9 @@ import (
 func EntryInstance1() {
 	randomNumbers := []int{13, 44, 56, 99, 9, 45, 67, 90, 78, 23}
 	// generate the common channel with inputs
-	inputChan := generatePipeline(randomNumbers)
+	inputChan := generateInputChan(randomNumbers)
 
-	// Fan-out to 2 Go-routine
+	// Fan-out to 2 Goroutine
 	c1 := squareNumber(inputChan)
 	c2 := squareNumber(inputChan)
 
@@ -24,15 +24,15 @@ func EntryInstance1() {
 	fmt.Println("total Sum of Squares: ", sum)
 }
 
-func generatePipeline(numbers []int) <-chan int {
-	out := make(chan int)
+func generateInputChan(numbers []int) <-chan int {
+	inputChan := make(chan int)
 	go func() {
 		for _, n := range numbers {
-			out <- n
+			inputChan <- n
 		}
-		close(out)
+		close(inputChan)
 	}()
-	return out
+	return inputChan
 }
 
 // Each instance of the squareNumber function reads from the same input channel until that channel is closed.
@@ -47,8 +47,8 @@ func squareNumber(in <-chan int) <-chan int {
 	return out
 }
 
-// The fanIn function can read from multiple inputs channels and proceed until all are closed by multiplexing the
-// input channels onto a single channel that’s closed when all the inputs are closed.
+// The fanIn function can read from multiple inputs channels and proceed until all are closed by multiplexing the input channels
+// onto a single channel that’s closed when all the inputs are closed.
 func fanIn(input1, input2 <-chan int) <-chan int {
 	c := make(chan int)
 	go func() {

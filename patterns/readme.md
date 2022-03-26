@@ -13,8 +13,8 @@ Factory pattern is a creational design pattern that provides an interface for cr
 but allows subclasses to alter the type of objects that will be created.
 
 Fan-in Fan-out is a way of Multiplexing and Demultiplexing in golang.
-Fan-in refers to processing multiple input data and combining into a single entity.
-Fan-out is dividing the data into multiple smaller chunks, distributing the work amongst a group of workers to parallelize CPU use and I/O.
+Fan-in is a multiplexing strategy where the inputs of several channels are combined to produce an output channel. 
+Fan-out is demultiplexing strategy where a single channel is split into multiple channels.
 
 Generator Pattern is used to generate a sequence of values which is used to produce some output.
 This pattern is widely used to introduce parallelism into loops.
