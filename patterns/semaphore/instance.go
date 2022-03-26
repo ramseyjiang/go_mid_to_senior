@@ -1,4 +1,4 @@
-package main
+package semaphore
 
 // Task represents task
 type Task struct{}
@@ -8,8 +8,8 @@ func (t *Task) Perform() {}
 
 type token struct{}
 
-// Create and perform tasks using a buffered (asynchronous) semaphore channel for limiting concurrent operations.
-func main() {
+// Trigger Create and perform tasks using a buffered (asynchronous) semaphore channel for limiting concurrent operations.
+func Trigger() {
 	// define task count and generate tasks
 	taskCount := 100
 
