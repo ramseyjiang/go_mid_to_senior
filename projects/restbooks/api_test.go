@@ -42,9 +42,9 @@ func TestCheckHealth(t *testing.T) {
 		assert.Equal(t, "health check passed", string(body))
 	})
 }
-
 func TestGetBooks(t *testing.T) {
-	req, err := http.NewRequest("GET", "/books", nil)
+	reqBody := bytes.NewReader([]byte{})
+	req, err := http.NewRequest("GET", "/books", reqBody)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,7 +67,8 @@ func TestGetBooks(t *testing.T) {
 }
 
 func TestGetBookByID(t *testing.T) {
-	req, err := http.NewRequest("GET", "/book", nil)
+	reqBody := bytes.NewReader([]byte{})
+	req, err := http.NewRequest("GET", "/book", reqBody)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,7 +95,8 @@ func TestGetBookByID(t *testing.T) {
 }
 
 func TestGetBookByIDNotFound(t *testing.T) {
-	req, err := http.NewRequest("GET", "/book", nil)
+	reqBody := bytes.NewReader([]byte{})
+	req, err := http.NewRequest("GET", "/book", reqBody)
 
 	if err != nil {
 		t.Fatal(err)
@@ -169,7 +171,8 @@ func TestEditBook(t *testing.T) {
 	}
 }
 func TestDeleteEntry(t *testing.T) {
-	req, err := http.NewRequest("DELETE", "/book", nil)
+	reqBody := bytes.NewReader([]byte{})
+	req, err := http.NewRequest("DELETE", "/book", reqBody)
 
 	if err != nil {
 		t.Fatal(err)

@@ -120,9 +120,9 @@ func TestThreeElements(t *testing.T) {
 func errorString(list []string, got string, want string) string {
 	// Errorf() works similarly to Error, but it accepts a formatting string just like the fmt.Printf function.
 	// t.Errorf("JoinWithCommas(%#v) = \"%s\", want \"%s\"", list, got, want)
-	return fmt.Sprintf("JoinStr(%#v) = \"%s\", want \"%s\"", list, got, want)
+	return fmt.Sprintf("JoinStr(%#v) = \"%q\", want \"%q\"", list, got, want)
 }
 
 func successString(list []string, got string, want string) string {
-	return fmt.Sprintf("Success, JoinStr(%#v), want \"%s\", got \"%s\", it passed", list, want, got)
+	return fmt.Sprintf("Success, JoinStr(%#v), want \"%q\", got \"%q\", it passed", list, want, got)
 }
