@@ -2,7 +2,6 @@ package trisnake
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -40,7 +39,7 @@ func NewTitleScreen() *Titlescreen {
 		Bg: tl.ColorBlack,
 	})
 
-	logofile, _ := ioutil.ReadFile("util/titlescreen-logo.txt")
+	logofile, _ := os.ReadFile("util/titlescreen-logo.txt")
 	ts.Logo = tl.NewEntityFromCanvas(10, 3, tl.CanvasFromString(string(logofile)))
 
 	ts.GameDifficulty = normal
@@ -185,7 +184,7 @@ func Gameover() {
 	gos.Level = tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorBlack,
 	})
-	logofile, _ := ioutil.ReadFile("util/gameover-logo.txt")
+	logofile, _ := os.ReadFile("util/gameover-logo.txt")
 	gos.Logo = tl.NewEntityFromCanvas(10, 3, tl.CanvasFromString(string(logofile)))
 	gos.Finalstats = []*tl.Text{
 		tl.NewText(10, 13, fmt.Sprintf("Score: %d", gs.Score), tl.ColorWhite, tl.ColorBlack),
