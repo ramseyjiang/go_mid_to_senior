@@ -9,6 +9,8 @@ import (
 	tl "github.com/JoelOtter/termloop"
 )
 
+const chmodType = 0o644
+
 // StartGame will start the game with the tilescreen.
 func StartGame() {
 	sg = tl.NewGame()
@@ -265,7 +267,7 @@ func SaveHighScore(score int, speed float64, difficulty string) {
 	var newRow []byte
 	datetime := time.Now()
 	newRow = []byte("\n|" + datetime.Format("01-02-2006 15:04:05") + "|" + fmt.Sprintf("%d", score) + "|" + fmt.Sprintf("%.0f", speed) + "|" + difficulty + "|  ")
-	f, err := os.OpenFile("HIGHSCORES.md", os.O_APPEND|os.O_WRONLY, 0644)
+	f, err := os.OpenFile("HIGHSCORES.md", os.O_APPEND|os.O_WRONLY, chmodType)
 	if err != nil {
 		log.Fatalf("Error opening file: %s", err)
 	}
