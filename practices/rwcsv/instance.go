@@ -16,7 +16,8 @@ type Employee struct {
 const filePath string = "practices/rwcsv/"
 const fileName string = "records.csv"
 
-func main() {
+// Trigger is the entry, run it in the go_mid_to_senior folder, if in the another folder, the filePath should be update
+func Trigger() {
 	writeCSV()
 	readCSV()
 }
