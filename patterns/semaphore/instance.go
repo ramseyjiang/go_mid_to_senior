@@ -1,4 +1,4 @@
-package main
+package semaphore
 
 import (
 	"fmt"
@@ -38,7 +38,8 @@ func (s *semaphore) Release() {
 // When we call Acquire(), the channel will be filled with an empty struct, this channel will be blocking if it reaches its maximum value.
 // And when we call Release(), we take out the empty struct from the channel,
 // and the channel will be available for the next value and the channel will be unblocking.
-func main() {
+
+func Trigger() {
 	sem := New(testMaxCurrency)             // instantiate a new Semaphore by the size 3, that means maximum concurrent process will be limited to 3
 	doneChan := make(chan bool, minDoneNum) // unbuffered done channel
 
