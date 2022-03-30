@@ -1,4 +1,4 @@
-package main
+package rwcsv
 
 import (
 	"encoding/csv"

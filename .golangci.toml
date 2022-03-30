@@ -2,7 +2,7 @@
 skip-dirs = ["vendor"]
 
 [linters]
-enable = ["gocritic", "stylecheck", "gofmt", "gci", "exportloopref"]
+enable = ["gocritic", "gofmt", "gci", "exportloopref"]
 
 [linters-settings.gocritic]
 enabled-tags = [
