@@ -1,4 +1,4 @@
-package main
+package httpreqtest
 
 import (
 	"fmt"
@@ -94,7 +94,8 @@ func sum(handler AppHandler) func(c *fiber.Ctx) error {
 	}
 }
 
-func main() {
+// Trigger is a Entry func. After changing the pkg name to main, the Trigger also need to change to main().
+func Trigger() {
 	// Create the App
 	app := CreateApp(&AppHandlerStruct{})
 
