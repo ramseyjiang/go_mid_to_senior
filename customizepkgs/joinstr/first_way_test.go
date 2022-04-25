@@ -3,20 +3,20 @@ package joinstr_test
 import (
 	"testing"
 
-	"golang_learn/customizepkgs/joinstr"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/joinstr"
 )
 
 /**
 joinstr % go test -cover
 PASS
 coverage: 100.0% of statements
-ok      golang_learn/customizepkgs/joinstr       0.007s
+ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/joinstr       0.007s
 */
 
 /**
 joinstr % go test
 PASS
-ok      golang_learn/customizepkgs/joinstr       0.006s
+ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/joinstr       0.006s
 */
 
 // If the tests in the same package with codes, please run tests "click run button."

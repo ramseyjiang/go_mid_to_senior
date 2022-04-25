@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"golang_learn/customizepkgs/mockactivity"
-	"golang_learn/customizepkgs/mockactivity/infra"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/mockactivity"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/mockactivity/infra"
 )
 
 func TestApp_Apply(t *testing.T) {

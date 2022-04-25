@@ -7,9 +7,9 @@
 package main
 
 import (
-	"golang_learn/patterns/dependencyinjection/foobarbaz"
-	"golang_learn/patterns/dependencyinjection/greeter"
-	"golang_learn/patterns/dependencyinjection/shapes"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/foobarbaz"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/greeter"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/shapes"
 )
 
 // Injectors from wire.go:

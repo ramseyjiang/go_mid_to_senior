@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	"golang_learn/customizepkgs/greetunarygrpc/greetpb"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/greetunarygrpc/greetpb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

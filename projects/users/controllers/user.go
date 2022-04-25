@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"golang_learn/projects/users/entity"
-	"golang_learn/projects/users/service"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/entity"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/service"
 )
 
 type userControllerInterface interface {

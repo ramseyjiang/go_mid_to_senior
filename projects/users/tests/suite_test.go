@@ -5,9 +5,9 @@ import (
 	"os"
 	"testing"
 
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/config"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/entity"
 	"github.com/stretchr/testify/suite"
-	"golang_learn/projects/users/config"
-	"golang_learn/projects/users/entity"
 	"gorm.io/gorm"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"golang_learn/customizepkgs/joinstr"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/joinstr"
 )
 
 // In comments, it includes three ways to run tests.

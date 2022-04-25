@@ -6,9 +6,9 @@ package main
 import (
 	"github.com/google/wire"
 
-	"golang_learn/patterns/dependencyinjection/foobarbaz"
-	"golang_learn/patterns/dependencyinjection/greeter"
-	"golang_learn/patterns/dependencyinjection/shapes"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/foobarbaz"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/greeter"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/shapes"
 )
 
 // In Wire, initializers are known as "providers," functions which provide a particular type.

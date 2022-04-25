@@ -3,7 +3,7 @@ package practices
 import (
 	"fmt"
 
-	"golang_learn/customizepkgs/greet"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/greet"
 )
 
 func TriggerGreet() {

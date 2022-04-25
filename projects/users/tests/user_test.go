@@ -1,9 +1,9 @@
 package tests
 
 import (
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/entity"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/service"
 	"github.com/stretchr/testify/assert"
-	"golang_learn/projects/users/entity"
-	"golang_learn/projects/users/service"
 )
 
 func (t *SuiteTest) TestCreateUser() {

@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"golang_learn/customizepkgs/goerr"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/goerr"
 )
 
 func TestResourceNotFound(t *testing.T) {

@@ -1,6 +1,6 @@
 package infra
 
-import "golang_learn/customizepkgs/mockactivity"
+import "github.com/ramseyjiang/go_mid_to_senior/customizepkgs/mockactivity"
 
 type EmailSenderMock struct {
 	SendFunc func(application mockactivity.Application) error

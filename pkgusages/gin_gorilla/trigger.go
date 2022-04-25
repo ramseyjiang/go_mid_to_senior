@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
-	"golang_learn/pkgusages/gin_gorilla/ws"
+	"github.com/ramseyjiang/go_mid_to_senior/pkgusages/gin_gorilla/ws"
 )
 
 func Trigger() {

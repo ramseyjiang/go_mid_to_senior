@@ -1,14 +1,16 @@
 package main
 
 import (
+	"database/sql"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"golang_learn/projects/users/config"
-	"golang_learn/projects/users/controllers"
-	"golang_learn/projects/users/migrations"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/config"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/controllers"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/migrations"
 )
 
 var (
@@ -26,14 +28,14 @@ func init() {
 	In users folder, run.
 
 	% go test ./tests
-	ok      golang_learn/projects/users/tests  0.122s
+	ok      github.com/ramseyjiang/go_mid_to_senior/projects/users/tests  0.122s
 
 	% go test -v ./tests
 	...
 	--- PASS: TestSuite (0.11s)
     --- PASS: TestSuite/TestCreateUser (0.01s)
 	PASS
-	ok      golang_learn/projects/users/tests  0.131s
+	ok      github.com/ramseyjiang/go_mid_to_senior/projects/users/tests  0.131s
 
 	% go run server.go
 	...
@@ -42,8 +44,8 @@ func init() {
 	 - using code:  gin.SetMode(gin.ReleaseMode)
 
 	[GIN-debug] GET    /                         --> main.main.func1 (2 handlers)
-	[GIN-debug] GET    /users                    --> golang_learn/projects/users/controllers.userControllerInterface.GetAll-fm (2 handlers)
-	[GIN-debug] POST   /users                    --> golang_learn/projects/users/controllers.userControllerInterface.Create-fm (2 handlers)
+	[GIN-debug] GET    /users                    --> github.com/ramseyjiang/go_mid_to_senior/projects/users/controllers.userControllerInterface.GetAll-fm (2 handlers)
+	[GIN-debug] POST   /users                    --> github.com/ramseyjiang/go_mid_to_senior/projects/users/controllers.userControllerInterface.Create-fm (2 handlers)
 	[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 	Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 	[GIN-debug] Listening and serving HTTP on :8080
@@ -52,7 +54,12 @@ func main() {
 	config.ConnectGorm()
 	db := config.GetDB()
 	sqlDB, _ := db.DB()
-	defer sqlDB.Close()
+	defer func(sqlDB *sql.DB) {
+		err := sqlDB.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(sqlDB)
 
 	migrations.MigrateTable()
 

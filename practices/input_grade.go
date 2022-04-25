@@ -5,7 +5,7 @@ import (
 	"log"
 	"reflect"
 
-	"golang_learn/customizepkgs/keyboard"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/keyboard"
 )
 
 func TriggerKeyboardInput() {

@@ -3,7 +3,7 @@ package practices
 import (
 	"fmt"
 
-	"golang_learn/customizepkgs/goerr"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/goerr"
 )
 
 func TriggerErrorPkg() {
