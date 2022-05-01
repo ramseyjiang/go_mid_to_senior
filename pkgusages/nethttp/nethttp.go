@@ -47,7 +47,7 @@ func handler(writer http.ResponseWriter, request *http.Request) {
 	m, _ := fmt.Fprintf(writer, "Hello, your route is: %s\n", request.URL.Path[1:]) // it will output "test"
 	q, _ := fmt.Fprint(writer, "Welcome to my website")
 	fmt.Println(n, m, q)
-	// http.FileServer and point it to a url path. For the file server to work properly it needs to know, where to serve files from, using http.FileServer to serve static assets like JavaScript, CSS and images
+	// http.FileServer and point it to an url path. For the file server to work properly it needs to know, where to serve files from, using http.FileServer to serve static assets like JavaScript, CSS and images
 	// fs := http.FileServer(http.Dir("static/"))
 	// http.Handle("/static/", http.StripPrefix("/static/", fs))
 }
