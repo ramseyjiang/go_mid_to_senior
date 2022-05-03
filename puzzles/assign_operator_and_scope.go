@@ -6,19 +6,18 @@ import (
 )
 
 func TriggerScope() {
-	example()
-	solution()
+	Example()
+	Solution()
 }
 
-/** Expected outputs.
-there
-are
-no
-strings
-on
-me
-*/
-func example() {
+// Example outputs
+// there
+// are
+// no
+// strings
+// on
+// me
+func Example() {
 	var data []string
 	var err error
 
@@ -43,7 +42,7 @@ func getData() ([]string, error) {
 	return []string{"there", "are", "no", "strings", "on", "me"}, nil
 }
 
-func solution() {
+func Solution() {
 	var data []string
 	var err error // Declaring err to make sure we can use = instead of :=
 

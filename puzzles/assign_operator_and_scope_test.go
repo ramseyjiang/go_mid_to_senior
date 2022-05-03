@@ -22,7 +22,7 @@ func Test_example(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			example()
+			Example()
 		})
 	}
 }
@@ -53,7 +53,7 @@ func Test_solution(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			solution()
+			Solution()
 		})
 	}
 }
