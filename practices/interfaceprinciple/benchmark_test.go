@@ -12,7 +12,7 @@ Benchmark_EfaceKnowType/eface-to-type-10         	1000000000	         0.4796 ns/
 Benchmark_EfaceKnowType/int-to-int
 Benchmark_EfaceKnowType/int-to-int-10            	1000000000	         0.3163 ns/op
 */
-// Above is used to test know types result.
+// The result above is used to test know types result.
 func Benchmark_EfaceKnowType(b *testing.B) {
 	b.Run("eface-to-type", func(b *testing.B) {
 		var ebread interface{} = 666
@@ -36,7 +36,7 @@ Benchmark_EfaceUnknownType/switch-small-10         	756420516	         1.587 ns/
 Benchmark_EfaceUnknownType/switch-big
 Benchmark_EfaceUnknownType/switch-big-10           	545435434	         2.197 ns/op
 */
-// Above is used to test eface unknown types result.
+// The result above is used to test iface unknown types result.
 func Benchmark_EfaceUnknownType(b *testing.B) {
 	var ebread interface{} = uint32(42)
 
