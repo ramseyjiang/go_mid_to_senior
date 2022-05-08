@@ -16,7 +16,7 @@ func TestTrigger(t *testing.T) {
 	}
 }
 
-func Test_baseUsage(t *testing.T) {
+func TestBaseUsage(t *testing.T) {
 	var tests []struct {
 		name string
 	}
@@ -27,7 +27,7 @@ func Test_baseUsage(t *testing.T) {
 	}
 }
 
-func Test_handler(t *testing.T) {
+func TestHandler(t *testing.T) {
 	type args struct {
 		writer  http.ResponseWriter
 		request *http.Request
