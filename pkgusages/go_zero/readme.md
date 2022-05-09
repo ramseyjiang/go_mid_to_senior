@@ -16,3 +16,23 @@ builtin middlewares also can be integrated into your frameworks
 simple API syntax, one command to generate a couple of different languages
 auto validate the request parameters from clients
 plenty of builtin microservice management and concurrent toolkits
+
+
+Using "brew install cloc" to install the cloc tool.
+cloc is used to count the blank lines, comment lines, actual code lines written in many programming languages.
+Github: https://github.com/AlDanial/cloc/
+
+% pwd
+/Users/daweijiang/go/pkg/mod/github.com/zeromicro/go-zero@v1.3.3
+
+daweijiang@DAWEIs-MBP go-zero@v1.3.3 % cloc core/service/servicegroup.go
+1 text file.
+1 unique file.                              
+0 files ignored.
+
+github.com/AlDanial/cloc v 1.92  T=0.01 s (195.3 files/s, 23042.4 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Go                               1             22             14             82
+-------------------------------------------------------------------------------
