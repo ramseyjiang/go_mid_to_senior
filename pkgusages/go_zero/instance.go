@@ -52,9 +52,9 @@ func (e Evening) Stop() {
 	fmt.Println("Stop evening service...")
 }
 
-// In trigger, wayOne, wayTwo and wayThree, only one can be executed in each run time.
+// Trigger is used to run wayOne, wayTwo and wayThree, only one can be executed in each run time.
 // If you want to run it, please replace trigger to main.
-func trigger() {
+func Trigger() {
 	wayOne()
 	wayTwo()
 	wayThree()
