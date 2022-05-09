@@ -2,6 +2,7 @@ go-zero is a web and rpc framework with lots of builtin engineering practices.
 
 In this simple sample, it manages multiple services in a process.
 
+**Using "curl -i http://localhost:8080/morning" and "curl -i http://localhost:8080/evening" in command to test outputs.**
 
 It’s born to ensure the stability of the busy services with resilience design and has been serving sites with tens of millions of users for years.
 
