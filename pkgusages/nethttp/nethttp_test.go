@@ -1,4 +1,4 @@
-package nethttppkg
+package nethttp
 
 import (
 	"net/http"

@@ -1,7 +1,8 @@
-package nethttppkg
+package nethttp
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -20,7 +21,7 @@ func baseUsage() {
 
 	// After defining our server, we finally "listen and serve" on port 9000
 	// The second argument is the handler, which we will come to later on, but for now it is left as nil,
-	err := http.ListenAndServe(":9000", nil) // Listen for browser requests, and respond to them.
+	err := http.ListenAndServe(":9010", nil) // Listen for browser requests, and respond to them.
 	log.Fatal(err)
 }
 
@@ -33,9 +34,17 @@ func baseUsage() {
 
 	Second, Registering a request handler to the default HTTP Server is as simple as this: "http.HandleFunc"
 */
-// http://localhost:9000/test
+// http://localhost:9010/test
+// % curl -v -d "test curl" http://localhost:9010
+// In the server, it will output following.
+// % go run nethttp.go
+// 2022/05/21 22:42:35 hello
+// 2022/05/21 22:42:35 Data test curl
 func handler(writer http.ResponseWriter, request *http.Request) {
 	message := []byte("Hello world\n")
+	requestBody, _ := ioutil.ReadAll(request.Body)
+	log.Println("hello")
+	log.Printf("Data %s\n", requestBody)
 	_, err := writer.Write(message)
 	if err != nil {
 		log.Fatal(err)
