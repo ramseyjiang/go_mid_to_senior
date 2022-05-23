@@ -5,4 +5,4 @@ Interface unknown types are always doing convert during invoke time, not doing c
 Doing convert during compile time is faster than doing convert doing invoke time.
 
 #反汇编
-go tool compile -S xxx.go >> xxx.S 
+go tool compile -S xxx.go >> xxx.C 

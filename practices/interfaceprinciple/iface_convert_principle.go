@@ -4,10 +4,10 @@ import "fmt"
 
 var EBread interface{}
 var a int
-var EVALUE = 666
+var EValue = 666
 
 func main() {
-	EBread = EVALUE
+	EBread = EValue
 	a = EBread.(int)
 	fmt.Print(a)
 }

@@ -13,7 +13,7 @@
 	0x001c 00028 (iface_convert_principle.go:9)	FUNCDATA	$1, gclocals·568470801006e5c0dc3947ea998fe279(SB)
 	0x001c 00028 (iface_convert_principle.go:9)	FUNCDATA	$2, "".main.stkobj(SB)
 	0x001c 00028 (iface_convert_principle.go:9)	PCDATA	$0, $-3
-	0x001c 00028 (iface_convert_principle.go:10)	MOVD	"".EVALUE(SB), R0
+	0x001c 00028 (iface_convert_principle.go:10)	MOVD	"".EValue(SB), R0
 	0x0028 00040 (iface_convert_principle.go:10)	PCDATA	$0, $-1
 	0x0028 00040 (iface_convert_principle.go:10)	PCDATA	$1, ZR
 	0x0028 00040 (iface_convert_principle.go:10)	CALL	runtime.convT64(SB)
@@ -93,7 +93,7 @@
 	rel 0+0 t=23 type.int+0
 	rel 0+0 t=23 type.int+0
 	rel 0+0 t=23 type.*os.File+0
-	rel 28+8 t=3 "".EVALUE+0
+	rel 28+8 t=3 "".EValue+0
 	rel 40+4 t=9 runtime.convT64+0
 	rel 44+8 t=3 type.int+0
 	rel 52+8 t=3 "".EBread+0
@@ -143,7 +143,7 @@ go.itab.*os.File,io.Writer SRODATA dupok size=32
 	rel 24+8 t=-32767 os.(*File).Write+0
 "".EBread SBSS size=16
 "".a SNOPTRBSS size=8
-"".EVALUE SNOPTRDATA size=8
+"".EValue SNOPTRDATA size=8
 	0x0000 9a 02 00 00 00 00 00 00                          ........
 runtime.nilinterequal·f SRODATA dupok size=8
 	0x0000 00 00 00 00 00 00 00 00                          ........
