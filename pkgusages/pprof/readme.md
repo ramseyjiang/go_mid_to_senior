@@ -85,6 +85,13 @@ Stack traces with corresponding sampled allocations information is available at 
 
 Once the stack traces got ready, those will be converted to pprof-supported stack frames.
 
+If you’re concerned with the amount of memory being used, you probably want the inuse metrics, but if you’re worried about time spent in garbage collection, look at allocations!
+
+-inuse_space      Display in-use memory size
+-inuse_objects    Display in-use object counts
+-alloc_space      Display allocated memory size
+-alloc_objects    Display allocated object counts
+
 
 **How to use hey?**
 
