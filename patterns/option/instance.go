@@ -1,4 +1,4 @@
-package main
+package option
 
 import (
 	"log"
@@ -38,7 +38,7 @@ func WithMaxConn(maxConn int64) Option {
 	}
 }
 
-func main() {
+func Trigger() {
 	server1 := NewServer("4000")
 	log.Println(server1)
 
