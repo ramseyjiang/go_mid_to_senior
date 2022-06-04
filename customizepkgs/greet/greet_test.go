@@ -1,18 +1,20 @@
 package greet
 
-import "testing"
+import (
+	"testing"
+)
 
 /**
-greet % go test -cover
+unarygrpc % go test -cover
 PASS
 coverage: 100.0% of statements
-ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/greet 0.009s
+ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/unarygrpc 0.009s
 */
 
 /**
-greet % go test
+unarygrpc % go test
 PASS
-ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/greet 0.006s
+ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/unarygrpc 0.006s
 
 */
 

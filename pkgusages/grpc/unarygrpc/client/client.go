@@ -7,7 +7,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/greetunarygrpc/greetpb"
+	greetpb2 "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unarygrpc/greetpb"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -24,34 +25,34 @@ func main() {
 		}
 	}(cc)
 
-	c := greetpb.NewGreetServiceClient(cc)
+	c := greetpb2.NewGreetServiceClient(cc)
 
 	doUnary(c)
 	doServerStreaming(c)
 	doClientStreaming(c)
 }
 
-func doClientStreaming(c greetpb.GreetServiceClient) {
+func doClientStreaming(c greetpb2.GreetServiceClient) {
 	fmt.Println("Starting to do a Client Streaming RPC...")
 
-	requests := []*greetpb.LongGreetingRequest{
+	requests := []*greetpb2.LongGreetingRequest{
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &greetpb2.Greeting{
 				FirstName: "Ramsey",
 			},
 		},
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &greetpb2.Greeting{
 				FirstName: "Mamba",
 			},
 		},
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &greetpb2.Greeting{
 				FirstName: "Mamba",
 			},
 		},
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &greetpb2.Greeting{
 				FirstName: "Mamba",
 			},
 		},
@@ -79,11 +80,11 @@ func doClientStreaming(c greetpb.GreetServiceClient) {
 	fmt.Printf("LongGreet Response: %v\n", res)
 }
 
-func doServerStreaming(c greetpb.GreetServiceClient) {
+func doServerStreaming(c greetpb2.GreetServiceClient) {
 	fmt.Println("Starting to do a Server Streaming RPC...")
 
-	req := &greetpb.GreetManyTimesRequest{
-		Greeting: &greetpb.Greeting{
+	req := &greetpb2.GreetManyTimesRequest{
+		Greeting: &greetpb2.Greeting{
 			FirstName: "Ramsey",
 			LastName:  "Jiang",
 		},
@@ -109,10 +110,10 @@ func doServerStreaming(c greetpb.GreetServiceClient) {
 	}
 }
 
-func doUnary(c greetpb.GreetServiceClient) {
+func doUnary(c greetpb2.GreetServiceClient) {
 	fmt.Println("Starting to do a Unary RPC...")
-	req := &greetpb.GreetRequest{
-		Greeting: &greetpb.Greeting{
+	req := &greetpb2.GreetRequest{
+		Greeting: &greetpb2.Greeting{
 			FirstName: "Ramsey",
 			LastName:  "Jiang",
 		},
