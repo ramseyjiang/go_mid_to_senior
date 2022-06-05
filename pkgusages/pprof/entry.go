@@ -39,7 +39,8 @@ func handleRequests() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", GetHomePage)
 	router.HandleFunc("/status", GetStatus)
-	// router.PathPrefix("/debug/pprof/").Handler(http.DefaultServeMux)
+	// ".Handler(http.DefaultServeMux)" means the default route of pprof
+	router.PathPrefix("/debug/pprof/").Handler(http.DefaultServeMux)
 
 	// register router manually
 	router.HandleFunc("/debug/pprof/", pprof.Index)
@@ -81,7 +82,7 @@ func handleRequests() {
 
 func populateArray() {
 	for i := 0; i < ITEMS; i++ {
-		testArray[i] = Test{description: "Test " + string(i)}
+		testArray[i] = Test{"Test " + string(rune(i))}
 	}
 }
 
