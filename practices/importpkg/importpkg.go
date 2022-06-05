@@ -1,13 +1,20 @@
-package main
+package importpkg
 
 import (
 	"log"
 
 	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/goerr"
+	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/greet"
 )
 
-func main() {
+func TriggerImportPkg() {
 	log.Println(ResourceNotFound("1234", "message", "User", nil).Error())
+	Greet()
+}
+
+func Greet() {
+	log.Println(greet.Morning)
+	log.Println(greet.SayHi())
 }
 
 // ResourceNotFound error abstraction
