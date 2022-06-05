@@ -109,7 +109,7 @@ func sortMaps() {
 	}
 
 	sort.Strings(keys)
-	// log.Println("Sorting by Length:", keys) // Here will be output keys only.
+	log.Println("Sorting by Length:", keys) // Here will be output keys only.
 	for _, key := range keys {
 		log.Printf("%s %d\n", key, items[key])
 	}
