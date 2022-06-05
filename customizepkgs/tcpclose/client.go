@@ -1,18 +1,18 @@
-package main
+package tcpclose
 
 import (
 	"log"
 	"net"
 )
 
-func main() {
+func TriggerClient() {
 	// Open a TCP Session, use the net.Dial() method to open a TCP connection to the same localhost:9090 address our TCP server is listening on.
 	c, err := net.Dial("tcp", "localhost:9090")
 	if err != nil {
 		log.Fatalf("Unable to open TCP Connection: %s", err)
 	}
 	defer func(c net.Conn) {
-		err := c.Close()
+		err = c.Close()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -32,7 +32,7 @@ func main() {
 		d := make([]byte, 120)
 		_, err := c.Read(d)
 		if err != nil {
-			log.Fatalf("Error from TCP Session: %s", err)
+			log.Printf("Error from TCP Session: %s", err)
 		}
 	}
 }

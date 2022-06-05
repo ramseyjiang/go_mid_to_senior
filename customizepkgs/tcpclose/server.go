@@ -1,4 +1,4 @@
-package main
+package tcpclose
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func main() {
+func TriggerServer() {
 	// Create a listener, Go is telling the system kernel to bind port 9000 on all of available interfaces.
 	l, err := net.Listen("tcp", ":9090")
 	if err != nil {

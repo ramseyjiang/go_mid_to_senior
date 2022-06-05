@@ -1,4 +1,4 @@
-package main
+package keyboardinput
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/keyboard"
 )
 
-func main() {
+func TriggerInputGrade() {
 	log.Print("Enter a grade: ")
 
 	grade, err := keyboard.GetFloat()

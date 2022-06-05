@@ -1,4 +1,4 @@
-package main
+package tcpclose
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func main() {
+func TriggerServerLinger() {
 	// Create a listener
 	l, err := net.Listen("tcp", ":9090")
 	if err != nil {
