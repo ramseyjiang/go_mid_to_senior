@@ -4,17 +4,11 @@ import (
 	"bufio"
 	"log"
 	"os"
-	"reflect"
 	"strconv"
 	"strings"
 )
 
-/*
-	GetFloat is used to get inputs from the keyboard.
-	Receive the input from command line and convert it to float.
-	Return float64 and error.
-*/
-func GetFloat() (number float64, err error) {
+func getInputFromCmd() (str string) {
 	/*
 		read (receive and store) input from the program’s standard input, which all keyboard input goes to
 		NewReader will return a new bufio.Reader
@@ -30,13 +24,20 @@ func GetFloat() (number float64, err error) {
 		It should not be named error, because it is the go keyword. That's why named err.
 	*/
 	input, _ := reader.ReadString('\n')
-	log.Println(reflect.TypeOf(input), input)
+	// log.Println(reflect.TypeOf(input), input)	// all inputs from cmd are all string
 
 	// TrimSpace is used to remove all whitespace characters (newlines, tabs, and regular spaces) from the start and end of a string. from the input string
-	input = strings.TrimSpace(input)
+	return strings.TrimSpace(input)
+}
 
+/*
+	GetFloat is used to get inputs from the keyboard.
+	Receive the input from command line and convert it to float.
+	Return float64 and error.
+*/
+func GetFloat() (number float64, err error) {
 	// ParseFloat is used to convert the string to a number, and returns it as a float64 value.
-	number, err = strconv.ParseFloat(input, 64)
+	number, err = strconv.ParseFloat(getInputFromCmd(), 64)
 	if err != nil {
 		log.Fatal(err)
 		return 0, err
