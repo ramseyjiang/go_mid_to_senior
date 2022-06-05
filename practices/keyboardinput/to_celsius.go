@@ -1,14 +1,13 @@
-package practices
+package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/ramseyjiang/go_mid_to_senior/customizepkgs/keyboard"
 )
 
-func TriggerCelsiusConvert() {
-	fmt.Println("Enter a temperature in Fahrenheit:")
+func main() {
+	log.Println("Enter a temperature in Fahrenheit:")
 
 	// Call greeting() to get a temperature.
 	fahrenheit, err := keyboard.GetFloat()
@@ -18,5 +17,5 @@ func TriggerCelsiusConvert() {
 	}
 
 	celsius := (fahrenheit - 32) * 5 / 9
-	fmt.Printf("%0.2f degrees Celsius\n", celsius)
+	log.Printf("%0.2f degrees Celsius\n", celsius)
 }
