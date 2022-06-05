@@ -2,7 +2,7 @@ package nethttp
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 )
@@ -42,7 +42,7 @@ func baseUsage() {
 // 2022/05/21 22:42:35 Data test curl
 func handler(writer http.ResponseWriter, request *http.Request) {
 	message := []byte("Hello world\n")
-	requestBody, _ := ioutil.ReadAll(request.Body)
+	requestBody, _ := io.ReadAll(request.Body)
 	log.Println("hello")
 	log.Printf("Data %s\n", requestBody)
 	_, err := writer.Write(message)
