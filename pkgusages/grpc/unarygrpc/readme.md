@@ -9,12 +9,12 @@ g. For each RPC call, we have to define a Request message and a Response message
 
 
 First Part:
-0. Create a grpc folder, such as "greetUnaryGrpc".
+0. Create a grpc folder, such as "unarygrpc".
 1. create a grpcName which suffix with pb, such as "greetpb";
 2. After that, create a file grpcName.proto, such as "greet.proto", which is in the greetpb folder.
-3. Copy all code from greet.proto. Then, "cd ..", go back to greetUnaryGrpc folder.
+3. Copy all code from greet.proto. Then, "cd ..", go back to unarygrpc folder.
 4. run command following:
-   % protoc --go_out=. --go-grpc_opt=require_unimplemented_servers=false  --go_opt=paths=source_relative \
+   % protoc --go_out=. --go-grpc_opt=require_unimplemented_servers=false --go_opt=paths=source_relative \
    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
    greetpb/greet.proto
 

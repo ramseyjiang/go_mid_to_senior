@@ -2,38 +2,38 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"io"
 	"log"
 	"net"
 	"strconv"
 	"time"
 
-	greetpb2 "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unarygrpc/greetpb"
-
+	pb "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unarygrpc/greetpb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type server struct{}
 
-func (*server) Greet(ctx context.Context, req *greetpb2.GreetRequest) (*greetpb2.GreetResponse, error) {
-	fmt.Printf("Greet function was invoked with %v %v,\n", req, ctx)
+func (*server) Greet(ctx context.Context, req *pb.GreetRequest) (*pb.GreetResponse, error) {
+	log.Printf("Greet function was invoked with %v %v,\n", req, ctx)
 	firstName := req.GetGreeting().GetFirstName()
 	result := "Hello " + firstName
 
-	res := &greetpb2.GreetResponse{
+	res := &pb.GreetResponse{
 		Result: result,
 	}
 
 	return res, nil
 }
 
-func (*server) GreetManyTimes(req *greetpb2.GreetManyTimesRequest, stream greetpb2.GreetService_GreetManyTimesServer) error {
-	fmt.Printf("GreetManyTimes function was invoked with %v\n", req)
+func (*server) GreetManyTimes(req *pb.GreetManyTimesRequest, stream pb.GreetService_GreetManyTimesServer) error {
+	log.Printf("GreetManyTimes function was invoked with %v\n", req)
 	firstName := req.GetGreeting().GetFirstName()
 	for i := 0; i < 3; i++ {
 		result := "Hello " + firstName + " number " + strconv.Itoa(i)
-		res := &greetpb2.GreetManyTimesResponse{
+		res := &pb.GreetManyTimesResponse{
 			Result: result,
 		}
 		err1 := stream.Send(res)
@@ -48,14 +48,14 @@ func (*server) GreetManyTimes(req *greetpb2.GreetManyTimesRequest, stream greetp
 	return nil
 }
 
-func (*server) LongGreeting(stream greetpb2.GreetService_LongGreetingServer) error {
-	fmt.Printf("LongGreeting function was invoked with a streaming request\n")
+func (*server) LongGreeting(stream pb.GreetService_LongGreetingServer) error {
+	log.Printf("LongGreeting function was invoked with a streaming request\n")
 
 	result := ""
 	for {
 		req, err := stream.Recv()
 		if err == io.EOF {
-			return stream.SendAndClose(&greetpb2.LongGreetingResponse{
+			return stream.SendAndClose(&pb.LongGreetingResponse{
 				Result: result,
 			})
 		}
@@ -71,13 +71,16 @@ func (*server) LongGreeting(stream greetpb2.GreetService_LongGreetingServer) err
 func main() {
 	listener, err := net.Listen("tcp", "0.0.0.0:50051")
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		_ = errors.New("failed to listen: the port")
 	}
-	fmt.Print("Server started")
+	log.Print("Server started")
 	s := grpc.NewServer()
-	greetpb2.RegisterGreetServiceServer(s, &server{})
+	pb.RegisterGreetServiceServer(s, &server{})
 
-	if err1 := s.Serve(listener); err1 != nil {
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+
+	if err = s.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }

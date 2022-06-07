@@ -2,16 +2,15 @@
 // versions:
 // 	protoc-gen-go v1.28.0
 // 	protoc        v3.19.4
-// source: greetpb/unarygrpc.proto
+// source: greetpb/greet.proto
 
 package greetpb
 
 import (
-	reflect "reflect"
-	sync "sync"
-
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	reflect "reflect"
+	sync "sync"
 )
 
 const (
@@ -424,24 +423,24 @@ func file_greetpb_greet_proto_rawDescGZIP() []byte {
 
 var file_greetpb_greet_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_greetpb_greet_proto_goTypes = []interface{}{
-	(*Greeting)(nil),               // 0: unarygrpc.Greeting
-	(*GreetRequest)(nil),           // 1: unarygrpc.GreetRequest
-	(*GreetManyTimesRequest)(nil),  // 2: unarygrpc.GreetManyTimesRequest
-	(*LongGreetingRequest)(nil),    // 3: unarygrpc.LongGreetingRequest
-	(*GreetResponse)(nil),          // 4: unarygrpc.GreetResponse
-	(*GreetManyTimesResponse)(nil), // 5: unarygrpc.GreetManyTimesResponse
-	(*LongGreetingResponse)(nil),   // 6: unarygrpc.LongGreetingResponse
+	(*Greeting)(nil),               // 0: greet.Greeting
+	(*GreetRequest)(nil),           // 1: greet.GreetRequest
+	(*GreetManyTimesRequest)(nil),  // 2: greet.GreetManyTimesRequest
+	(*LongGreetingRequest)(nil),    // 3: greet.LongGreetingRequest
+	(*GreetResponse)(nil),          // 4: greet.GreetResponse
+	(*GreetManyTimesResponse)(nil), // 5: greet.GreetManyTimesResponse
+	(*LongGreetingResponse)(nil),   // 6: greet.LongGreetingResponse
 }
 var file_greetpb_greet_proto_depIdxs = []int32{
-	0, // 0: unarygrpc.GreetRequest.greeting:type_name -> unarygrpc.Greeting
-	0, // 1: unarygrpc.GreetManyTimesRequest.greeting:type_name -> unarygrpc.Greeting
-	0, // 2: unarygrpc.LongGreetingRequest.greeting:type_name -> unarygrpc.Greeting
-	1, // 3: unarygrpc.GreetService.Greet:input_type -> unarygrpc.GreetRequest
-	2, // 4: unarygrpc.GreetService.GreetManyTimes:input_type -> unarygrpc.GreetManyTimesRequest
-	3, // 5: unarygrpc.GreetService.LongGreeting:input_type -> unarygrpc.LongGreetingRequest
-	4, // 6: unarygrpc.GreetService.Greet:output_type -> unarygrpc.GreetResponse
-	5, // 7: unarygrpc.GreetService.GreetManyTimes:output_type -> unarygrpc.GreetManyTimesResponse
-	6, // 8: unarygrpc.GreetService.LongGreeting:output_type -> unarygrpc.LongGreetingResponse
+	0, // 0: greet.GreetRequest.greeting:type_name -> greet.Greeting
+	0, // 1: greet.GreetManyTimesRequest.greeting:type_name -> greet.Greeting
+	0, // 2: greet.LongGreetingRequest.greeting:type_name -> greet.Greeting
+	1, // 3: greet.GreetService.Greet:input_type -> greet.GreetRequest
+	2, // 4: greet.GreetService.GreetManyTimes:input_type -> greet.GreetManyTimesRequest
+	3, // 5: greet.GreetService.LongGreeting:input_type -> greet.LongGreetingRequest
+	4, // 6: greet.GreetService.Greet:output_type -> greet.GreetResponse
+	5, // 7: greet.GreetService.GreetManyTimes:output_type -> greet.GreetManyTimesResponse
+	6, // 8: greet.GreetService.LongGreeting:output_type -> greet.LongGreetingResponse
 	6, // [6:9] is the sub-list for method output_type
 	3, // [3:6] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
