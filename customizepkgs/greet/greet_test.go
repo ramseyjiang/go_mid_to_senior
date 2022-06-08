@@ -5,16 +5,16 @@ import (
 )
 
 /**
-unarygrpc % go test -cover
+greet % go test -cover
 PASS
 coverage: 100.0% of statements
-ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/unarygrpc 0.009s
+ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/greet 0.009s
 */
 
 /**
-unarygrpc % go test
+greet % go test
 PASS
-ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/unarygrpc 0.006s
+ok      github.com/ramseyjiang/go_mid_to_senior/customizepkgs/greet 0.006s
 
 */
 

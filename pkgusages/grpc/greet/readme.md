@@ -9,10 +9,10 @@ g. For each RPC call, we have to define a Request message and a Response message
 
 
 First Part:
-0. Create a grpc folder, such as "unarygrpc".
+0. Create a grpc folder, such as "greet".
 1. create a grpcName which suffix with pb, such as "greetpb";
 2. After that, create a file grpcName.proto, such as "greet.proto", which is in the greetpb folder.
-3. Copy all code from greet.proto. Then, "cd ..", go back to unarygrpc folder.
+3. Copy all code from greet.proto. Then, "cd ..", go back to greet folder.
 4. run command following:
    % protoc --go_out=. --go-grpc_opt=require_unimplemented_servers=false --go_opt=paths=source_relative \
    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
@@ -30,8 +30,23 @@ Second Part:
 2. Create a folder name greet_client, and create a file named "client.go" in it;
 3. Copy all client.go code in my github, you also can change some code if you understand how grpc works.
 
-Third Part:
-1. Make server run.
-   In a terminal window, and in the greetUnaryGrpc folder, "% go run greet_server/server.go "
-2. Make client run.
-   In a terminal window, and in the greetUnaryGrpc folder, "% go run greet_client/client.go"
+Third Part:(grpcui)
+1. go get google.golang.org/grpc/reflection
+
+2. import it in the server.go
+
+3. Add below code in the main func. Please check 80-81 rows in the server.go
+// Register reflection service on gRPC server.
+reflection.Register(s)
+
+4. Make server run, in greet folder
+% go run server/server.go
+
+5. After the above 3 steps, please run the following: (50051 is a portNumber.)
+% grpcui -plaintext 0.0.0.0:50051
+After that, you will show a grpcui webpage open automatically.
+
+7. Make client run, in greet folder
+% go run client/client.go
+
+After all these above, you will see results in your terminal and in your grpcui webpage.

@@ -9,31 +9,31 @@ import (
 	"strconv"
 	"time"
 
-	pb "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unarygrpc/greetpb"
+	"github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/greet/greetpb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
 type server struct{}
 
-func (*server) Greet(ctx context.Context, req *pb.GreetRequest) (*pb.GreetResponse, error) {
+func (*server) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb.GreetResponse, error) {
 	log.Printf("Greet function was invoked with %v %v,\n", req, ctx)
 	firstName := req.GetGreeting().GetFirstName()
 	result := "Hello " + firstName
 
-	res := &pb.GreetResponse{
+	res := &greetpb.GreetResponse{
 		Result: result,
 	}
 
 	return res, nil
 }
 
-func (*server) GreetManyTimes(req *pb.GreetManyTimesRequest, stream pb.GreetService_GreetManyTimesServer) error {
+func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greetpb.GreetService_GreetManyTimesServer) error {
 	log.Printf("GreetManyTimes function was invoked with %v\n", req)
 	firstName := req.GetGreeting().GetFirstName()
 	for i := 0; i < 3; i++ {
 		result := "Hello " + firstName + " number " + strconv.Itoa(i)
-		res := &pb.GreetManyTimesResponse{
+		res := &greetpb.GreetManyTimesResponse{
 			Result: result,
 		}
 		err1 := stream.Send(res)
@@ -48,14 +48,14 @@ func (*server) GreetManyTimes(req *pb.GreetManyTimesRequest, stream pb.GreetServ
 	return nil
 }
 
-func (*server) LongGreeting(stream pb.GreetService_LongGreetingServer) error {
+func (*server) LongGreeting(stream greetpb.GreetService_LongGreetingServer) error {
 	log.Printf("LongGreeting function was invoked with a streaming request\n")
 
 	result := ""
 	for {
 		req, err := stream.Recv()
 		if err == io.EOF {
-			return stream.SendAndClose(&pb.LongGreetingResponse{
+			return stream.SendAndClose(&greetpb.LongGreetingResponse{
 				Result: result,
 			})
 		}
@@ -75,7 +75,7 @@ func main() {
 	}
 	log.Print("Server started")
 	s := grpc.NewServer()
-	pb.RegisterGreetServiceServer(s, &server{})
+	greetpb.RegisterGreetServiceServer(s, &server{})
 
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
