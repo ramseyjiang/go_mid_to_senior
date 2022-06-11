@@ -28,69 +28,40 @@ func main() {
 	doUnary(c)
 	doServerStreaming(c)
 	doClientStreaming(c)
+	doBidirectionalStreaming(c)
 }
 
-func doClientStreaming(c greetpb.GreetServiceClient) {
-	log.Println("Starting to do a Client Streaming RPC...")
-
-	requests := []*greetpb.LongGreetingRequest{
-		{
-			Greeting: &greetpb.Greeting{
-				FirstName: "Ramsey",
-			},
-		},
-		{
-			Greeting: &greetpb.Greeting{
-				FirstName: "Mamba",
-			},
-		},
-		{
-			Greeting: &greetpb.Greeting{
-				FirstName: "Mamba",
-			},
-		},
-		{
-			Greeting: &greetpb.Greeting{
-				FirstName: "Mamba",
-			},
-		},
-	}
-
-	stream, err := c.LongGreeting(context.Background())
-	if err != nil {
-		log.Fatalf("error while calling LongGreet: %v", err)
-	}
-
-	for _, req := range requests {
-		log.Printf("Sending req: %v\n", req)
-		err = stream.Send(req)
-		if err != nil {
-			return
-		}
-		time.Sleep(1000 * time.Millisecond)
-	}
-
-	res, err := stream.CloseAndRecv()
-	if err != nil {
-		log.Fatalf("error while receiving response from LongGreet: %v", err)
-	}
-
-	log.Printf("LongGreet Response: %v\n", res)
-}
-
-func doServerStreaming(c greetpb.GreetServiceClient) {
-	log.Println("Starting to do a Server Streaming RPC...")
-
-	req := &greetpb.GreetManyTimesRequest{
+func doUnary(c greetpb.GreetServiceClient) {
+	log.Println("Starting to do a Unary RPC...")
+	req := &greetpb.GreetUnaryRequest{
 		Greeting: &greetpb.Greeting{
 			FirstName: "Ramsey",
 			LastName:  "Jiang",
 		},
 	}
 
-	resStream, err := c.GreetManyTimes(context.Background(), req)
+	res, err := c.GreetUnary(context.Background(), req)
 	if err != nil {
-		log.Fatalf("error while calling GreetManyTimes RPC: %v", err)
+		log.Fatalf("error while calling Greet RPC: %v", err)
+	}
+
+	log.Println("Response from GreetUnary: ", res.Result)
+}
+
+func doServerStreaming(c greetpb.GreetServiceClient) {
+	log.Println("")
+	log.Println("Starting to do a Server Streaming RPC...")
+
+	req := &greetpb.GreetServerStreamingRequest{
+		Greeting: &greetpb.Greeting{
+			FirstName: "Ramsey",
+			LastName:  "Jiang",
+		},
+	}
+
+	resStream, err := c.GreetServerStreaming(context.Background(), req)
+	if err != nil {
+		log.Fatalf("error while calling doServerStreaming RPC: %v", err)
 	}
 
 	for {
@@ -104,23 +75,94 @@ func doServerStreaming(c greetpb.GreetServiceClient) {
 			log.Fatalf("error while reading stream: %v", err)
 		}
 
-		log.Printf("Response from GreetManyTimes: %v\n", msg.GetResult())
+		log.Println("Response from GreetServerStreaming: ", msg.GetResult())
 	}
 }
 
-func doUnary(c greetpb.GreetServiceClient) {
-	log.Println("Starting to do a Unary RPC...")
-	req := &greetpb.GreetRequest{
-		Greeting: &greetpb.Greeting{
-			FirstName: "Ramsey",
-			LastName:  "Jiang",
+func doClientStreaming(c greetpb.GreetServiceClient) {
+	log.Println("")
+	log.Println("Starting to do a Client Streaming RPC...")
+
+	requests := []*greetpb.GreetClientStreamingRequest{
+		{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Ramsey",
+			},
+		},
+		{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Mamba",
+			},
+		},
+		{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Curry",
+			},
 		},
 	}
 
-	res, err := c.Greet(context.Background(), req)
+	stream, err := c.GreetClientStreaming(context.Background())
 	if err != nil {
-		log.Fatalf("error while calling Greet RPC: %v", err)
+		log.Fatalf("error while calling GreetClientStreaming: %v", err)
 	}
 
-	log.Printf("Response from Greet: %v", res.Result)
+	for _, req := range requests {
+		log.Printf("Sending req: %v\n", req)
+		err = stream.Send(req)
+		if err != nil {
+			return
+		}
+		time.Sleep(1000 * time.Millisecond)
+	}
+
+	res, err := stream.CloseAndRecv()
+	if err != nil {
+		log.Fatalf("error while receiving response from GreetClientStreaming: %v", err)
+	}
+
+	log.Println("GreetClientStreaming Response: ", res)
+}
+
+func doBidirectionalStreaming(c greetpb.GreetServiceClient) {
+	log.Println("")
+	log.Println("Starting to do a Bidirectional Streaming RPC...")
+
+	requests := []*greetpb.GreetBidirectionalStreamingRequest{
+		{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Ramsey",
+			},
+		},
+		{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Mamba",
+			},
+		},
+		{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Curry",
+			},
+		},
+	}
+
+	stream, err := c.GreetBidirectionalStreaming(context.Background())
+	if err != nil {
+		log.Fatalf("error while calling GreetBidirectionalStreaming: %v", err)
+	}
+
+	for _, req := range requests {
+		log.Printf("Sending req: %v\n", req)
+		err = stream.Send(req)
+		if err != nil {
+			return
+		}
+		time.Sleep(1000 * time.Millisecond)
+
+		res, err := stream.Recv()
+		if err != nil {
+			log.Fatalf("error while receiving response from GreetBidirectionalStreaming: %v", err)
+		}
+
+		log.Println("GreetBidirectionalStreaming Response: ", res)
+	}
 }

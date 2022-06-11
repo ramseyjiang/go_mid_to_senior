@@ -21,3 +21,13 @@ Its format is "rpc LotsOfRequests(stream HelloRequest) returns (HelloResponse)".
 4. Bi-directional streaming: A Bidirectional streaming where both sides send a sequence of messages using a read-write stream.
 The two streams operate independently, so clients and servers can read and write in whatever order they like.
 Its format is "rpc BidiHello(stream HelloRequest) returns (stream HelloResponse)".
+
+
+What’s a Unary API?
+a. Unary RPC calls are the basic Request / Response that everyone is familiar with
+b. The client will send a message to the server and will receive one response from the server
+c. Unary RPC calls will be the most common for your APIs.
+d. Unary calls are very well suited when your data is small
+e. Start with Unary when writing APIs and use streaming API if performance is an issue
+f. In gRPC Unary Calls are defined using Protocol Buffers
+g. For each RPC call, we have to define a Request message and a Response message

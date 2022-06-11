@@ -16,29 +16,30 @@ import (
 
 type server struct{}
 
-func (*server) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb.GreetResponse, error) {
-	log.Printf("Greet function was invoked with %v %v,\n", req, ctx)
+func (*server) GreetUnary(ctx context.Context, req *greetpb.GreetUnaryRequest) (*greetpb.GreetUnaryResponse, error) {
+	log.Printf("GreetUnary server was invoked with %v,\n", req)
 	firstName := req.GetGreeting().GetFirstName()
 	result := "Hello " + firstName
 
-	res := &greetpb.GreetResponse{
+	res := &greetpb.GreetUnaryResponse{
 		Result: result,
 	}
 
 	return res, nil
 }
 
-func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greetpb.GreetService_GreetManyTimesServer) error {
-	log.Printf("GreetManyTimes function was invoked with %v\n", req)
+func (*server) GreetServerStreaming(req *greetpb.GreetServerStreamingRequest, stream greetpb.GreetService_GreetServerStreamingServer) error {
+	log.Println("")
+	log.Printf("GreetServerStreaming server was invoked with %v\n", req)
 	firstName := req.GetGreeting().GetFirstName()
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 2; i++ {
 		result := "Hello " + firstName + " number " + strconv.Itoa(i)
-		res := &greetpb.GreetManyTimesResponse{
+		res := &greetpb.GreetServerStreamingResponse{
 			Result: result,
 		}
-		err1 := stream.Send(res)
-		if err1 != nil {
-			return err1
+		err := stream.Send(res)
+		if err != nil {
+			return err
 		}
 		log.Printf("Sent: %v", res)
 
@@ -48,14 +49,19 @@ func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greetpb
 	return nil
 }
 
-func (*server) LongGreeting(stream greetpb.GreetService_LongGreetingServer) error {
-	log.Printf("LongGreeting function was invoked with a streaming request\n")
+func (*server) GreetClientStreaming(stream greetpb.GreetService_GreetClientStreamingServer) error {
+	log.Println("")
+	log.Printf("GreetClientStreaming server was invoked with a streaming request\n")
 
 	result := ""
 	for {
 		req, err := stream.Recv()
+
+		// receiving the stream message in the infinite loop and priting to the terminal
+		// once err equals io.EOF (end of the stream) we send the single response message
+		// and close the stream then break the loop.
 		if err == io.EOF {
-			return stream.SendAndClose(&greetpb.LongGreetingResponse{
+			return stream.SendAndClose(&greetpb.GreetClientStreamingResponse{
 				Result: result,
 			})
 		}
@@ -64,8 +70,49 @@ func (*server) LongGreeting(stream greetpb.GreetService_LongGreetingServer) erro
 		}
 
 		firstName := req.GetGreeting().GetFirstName()
-		result += "Hello " + firstName + "! "
+		result = "Hello " + firstName + "! "
+		log.Println(result)
 	}
+	return nil
+}
+
+func (*server) GreetBidirectionalStreaming(stream greetpb.GreetService_GreetBidirectionalStreamingServer) error {
+	log.Println("")
+	log.Printf("GreetBidirectionalStreaming server was invoked with a streaming request\n")
+
+	for {
+		// Recv() — to receive the client stream messages
+		req, err := stream.Recv()
+
+		// io.EOF is used to check the end of the stream.
+		// Checking for the client stream message in the infinite loop and sending the response messages,
+		// once the client ends the stream then we break the loop.
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			// Because it is an infinite loop, after the last req received,
+			// it will print an error info "Error in stream Recv:  rpc error: code = Canceled desc = context canceled".
+			// But after the new request comes, it can keep working.
+			log.Println("Error in stream Recv: ", err)
+			break
+		}
+
+		log.Println("Request - ", req)
+		result := "Hello " + req.GetGreeting().GetFirstName()
+		res := &greetpb.GreetBidirectionalStreamingResponse{
+			Result: result,
+		}
+
+		// Send() — to send the stream messages
+		err = stream.Send(res)
+		if err != nil {
+			log.Fatalf("Error in stream close: %v", err)
+		}
+	}
+
+	return nil
 }
 
 func main() {
