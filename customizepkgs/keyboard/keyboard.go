@@ -23,8 +23,8 @@ func getInputFromCmd() (str string) {
 		'\n' means everything up until the newline rune will be read.
 		It should not be named error, because it is the go keyword. That's why named err.
 	*/
+	// all inputs from cmd are all string
 	input, _ := reader.ReadString('\n')
-	// log.Println(reflect.TypeOf(input), input)	// all inputs from cmd are all string
 
 	// TrimSpace is used to remove all whitespace characters (newlines, tabs, and regular spaces) from the start and end of a string. from the input string
 	return strings.TrimSpace(input)
