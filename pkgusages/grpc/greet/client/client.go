@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/greet/greetpb"
+	"github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/greet/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -23,7 +23,7 @@ func main() {
 		}
 	}(cc)
 
-	c := greetpb.NewGreetServiceClient(cc)
+	c := proto.NewGreetServiceClient(cc)
 
 	doUnary(c)
 	doServerStreaming(c)
@@ -31,10 +31,10 @@ func main() {
 	doBidirectionalStreaming(c)
 }
 
-func doUnary(c greetpb.GreetServiceClient) {
+func doUnary(c proto.GreetServiceClient) {
 	log.Println("Starting to do a Unary RPC...")
-	req := &greetpb.GreetUnaryRequest{
-		Greeting: &greetpb.Greeting{
+	req := &proto.GreetUnaryRequest{
+		Greeting: &proto.Greeting{
 			FirstName: "Ramsey",
 			LastName:  "Jiang",
 		},
@@ -48,12 +48,12 @@ func doUnary(c greetpb.GreetServiceClient) {
 	log.Println("Response from GreetUnary: ", res.Result)
 }
 
-func doServerStreaming(c greetpb.GreetServiceClient) {
+func doServerStreaming(c proto.GreetServiceClient) {
 	log.Println("")
 	log.Println("Starting to do a Server Streaming RPC...")
 
-	req := &greetpb.GreetServerStreamingRequest{
-		Greeting: &greetpb.Greeting{
+	req := &proto.GreetServerStreamingRequest{
+		Greeting: &proto.Greeting{
 			FirstName: "Ramsey",
 			LastName:  "Jiang",
 		},
@@ -79,23 +79,23 @@ func doServerStreaming(c greetpb.GreetServiceClient) {
 	}
 }
 
-func doClientStreaming(c greetpb.GreetServiceClient) {
+func doClientStreaming(c proto.GreetServiceClient) {
 	log.Println("")
 	log.Println("Starting to do a Client Streaming RPC...")
 
-	requests := []*greetpb.GreetClientStreamingRequest{
+	requests := []*proto.GreetClientStreamingRequest{
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &proto.Greeting{
 				FirstName: "Ramsey",
 			},
 		},
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &proto.Greeting{
 				FirstName: "Mamba",
 			},
 		},
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &proto.Greeting{
 				FirstName: "Curry",
 			},
 		},
@@ -123,23 +123,23 @@ func doClientStreaming(c greetpb.GreetServiceClient) {
 	log.Println("GreetClientStreaming Response: ", res)
 }
 
-func doBidirectionalStreaming(c greetpb.GreetServiceClient) {
+func doBidirectionalStreaming(c proto.GreetServiceClient) {
 	log.Println("")
 	log.Println("Starting to do a Bidirectional Streaming RPC...")
 
-	requests := []*greetpb.GreetBidirectionalStreamingRequest{
+	requests := []*proto.GreetBidirectionalStreamingRequest{
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &proto.Greeting{
 				FirstName: "Ramsey",
 			},
 		},
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &proto.Greeting{
 				FirstName: "Mamba",
 			},
 		},
 		{
-			Greeting: &greetpb.Greeting{
+			Greeting: &proto.Greeting{
 				FirstName: "Curry",
 			},
 		},

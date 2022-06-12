@@ -1,12 +1,12 @@
 First Part:
 0. Create a grpc folder, such as "greet".
-1. create a grpcName which suffix with pb, such as "greetpb";
-2. After that, create a file grpcName.proto, such as "greet.proto", which is in the greetpb folder.
+1. create a grpcName which suffix with pb, such as "proto";
+2. After that, create a file grpcName.proto, such as "greet.proto", which is in the proto folder.
 3. Copy all code from greet.proto. Then, "cd ..", go back to greet folder.
 4. run command following:
    % protoc --go_out=. --go-grpc_opt=require_unimplemented_servers=false --go_opt=paths=source_relative \
    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
-   greetpb/greet.proto
+   proto/greet.proto
 
 5. After you did 4, it will generate greet.pb.go file and greet_grpc.pb.go file automatically. These two files should not
    be edited manually. They only can be edit when you use the command in step 4.

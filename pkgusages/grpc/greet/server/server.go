@@ -9,32 +9,32 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/greet/greetpb"
+	"github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/greet/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
 type server struct{}
 
-func (*server) GreetUnary(ctx context.Context, req *greetpb.GreetUnaryRequest) (*greetpb.GreetUnaryResponse, error) {
+func (*server) GreetUnary(ctx context.Context, req *proto.GreetUnaryRequest) (*proto.GreetUnaryResponse, error) {
 	log.Printf("GreetUnary server was invoked with %v,\n", req)
 	firstName := req.GetGreeting().GetFirstName()
 	result := "Hello " + firstName
 
-	res := &greetpb.GreetUnaryResponse{
+	res := &proto.GreetUnaryResponse{
 		Result: result,
 	}
 
 	return res, nil
 }
 
-func (*server) GreetServerStreaming(req *greetpb.GreetServerStreamingRequest, stream greetpb.GreetService_GreetServerStreamingServer) error {
+func (*server) GreetServerStreaming(req *proto.GreetServerStreamingRequest, stream proto.GreetService_GreetServerStreamingServer) error {
 	log.Println("")
 	log.Printf("GreetServerStreaming server was invoked with %v\n", req)
 	firstName := req.GetGreeting().GetFirstName()
 	for i := 0; i < 2; i++ {
 		result := "Hello " + firstName + " number " + strconv.Itoa(i)
-		res := &greetpb.GreetServerStreamingResponse{
+		res := &proto.GreetServerStreamingResponse{
 			Result: result,
 		}
 		err := stream.Send(res)
@@ -49,7 +49,7 @@ func (*server) GreetServerStreaming(req *greetpb.GreetServerStreamingRequest, st
 	return nil
 }
 
-func (*server) GreetClientStreaming(stream greetpb.GreetService_GreetClientStreamingServer) error {
+func (*server) GreetClientStreaming(stream proto.GreetService_GreetClientStreamingServer) error {
 	log.Println("")
 	log.Printf("GreetClientStreaming server was invoked with a streaming request\n")
 
@@ -61,7 +61,7 @@ func (*server) GreetClientStreaming(stream greetpb.GreetService_GreetClientStrea
 		// once err equals io.EOF (end of the stream) we send the single response message
 		// and close the stream then break the loop.
 		if err == io.EOF {
-			return stream.SendAndClose(&greetpb.GreetClientStreamingResponse{
+			return stream.SendAndClose(&proto.GreetClientStreamingResponse{
 				Result: result,
 			})
 		}
@@ -76,7 +76,7 @@ func (*server) GreetClientStreaming(stream greetpb.GreetService_GreetClientStrea
 	return nil
 }
 
-func (*server) GreetBidirectionalStreaming(stream greetpb.GreetService_GreetBidirectionalStreamingServer) error {
+func (*server) GreetBidirectionalStreaming(stream proto.GreetService_GreetBidirectionalStreamingServer) error {
 	log.Println("")
 	log.Printf("GreetBidirectionalStreaming server was invoked with a streaming request\n")
 
@@ -101,7 +101,7 @@ func (*server) GreetBidirectionalStreaming(stream greetpb.GreetService_GreetBidi
 
 		log.Println("Request - ", req)
 		result := "Hello " + req.GetGreeting().GetFirstName()
-		res := &greetpb.GreetBidirectionalStreamingResponse{
+		res := &proto.GreetBidirectionalStreamingResponse{
 			Result: result,
 		}
 
@@ -122,7 +122,7 @@ func main() {
 	}
 	log.Print("Server started")
 	s := grpc.NewServer()
-	greetpb.RegisterGreetServiceServer(s, &server{})
+	proto.RegisterGreetServiceServer(s, &server{})
 
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
