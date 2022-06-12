@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/calculation/proto"
+	"github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unarycal/proto"
 	"google.golang.org/grpc"
 )
 
