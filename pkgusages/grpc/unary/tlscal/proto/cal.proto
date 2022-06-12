@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package tlsproto;
-option go_package = "tlscal/proto";
+option go_package = "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unary/tlscal/tlsproto";
 
 message Request {
   int64 a = 1;

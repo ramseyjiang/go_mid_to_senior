@@ -4,7 +4,7 @@
 // - protoc             v3.19.4
 // source: proto/cal.proto
 
-package proto
+package tlsproto
 
 import (
 	context "context"
