@@ -4,7 +4,7 @@
 // - protoc             v3.19.4
 // source: proto/cal.proto
 
-package tlsproto
+package tlscal
 
 import (
 	context "context"
@@ -37,7 +37,7 @@ func NewCalculateServiceClient(cc grpc.ClientConnInterface) CalculateServiceClie
 
 func (c *calculateServiceClient) Add(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/tlsproto.CalculateService/Add", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/tlscal.CalculateService/Add", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (c *calculateServiceClient) Add(ctx context.Context, in *Request, opts ...g
 
 func (c *calculateServiceClient) Sub(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/tlsproto.CalculateService/Sub", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/tlscal.CalculateService/Sub", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (c *calculateServiceClient) Sub(ctx context.Context, in *Request, opts ...g
 
 func (c *calculateServiceClient) Mul(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/tlsproto.CalculateService/Mul", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/tlscal.CalculateService/Mul", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func _CalculateService_Add_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/tlsproto.CalculateService/Add",
+		FullMethod: "/tlscal.CalculateService/Add",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CalculateServiceServer).Add(ctx, req.(*Request))
@@ -124,7 +124,7 @@ func _CalculateService_Sub_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/tlsproto.CalculateService/Sub",
+		FullMethod: "/tlscal.CalculateService/Sub",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CalculateServiceServer).Sub(ctx, req.(*Request))
@@ -142,7 +142,7 @@ func _CalculateService_Mul_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/tlsproto.CalculateService/Mul",
+		FullMethod: "/tlscal.CalculateService/Mul",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CalculateServiceServer).Mul(ctx, req.(*Request))
@@ -154,7 +154,7 @@ func _CalculateService_Mul_Handler(srv interface{}, ctx context.Context, dec fun
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CalculateService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "tlsproto.CalculateService",
+	ServiceName: "tlscal.CalculateService",
 	HandlerType: (*CalculateServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
