@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package proto;
-option go_package = "cal/proto";
+option go_package = "calwithgateway/proto";
 
 message Request {
   int64 a = 1;
