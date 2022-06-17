@@ -1,9 +1,24 @@
 # github.com/JoelOtter/termloop v0.0.0-20210806173944-5f7c38744afb
 ## explicit
 github.com/JoelOtter/termloop
+# github.com/PuerkitoBio/goquery v1.8.0
+## explicit; go 1.13
+github.com/PuerkitoBio/goquery
 # github.com/andybalholm/brotli v1.0.4
 ## explicit; go 1.12
 github.com/andybalholm/brotli
+# github.com/andybalholm/cascadia v1.3.1
+## explicit; go 1.16
+github.com/andybalholm/cascadia
+# github.com/antchfx/htmlquery v1.2.5
+## explicit; go 1.14
+github.com/antchfx/htmlquery
+# github.com/antchfx/xmlquery v1.3.11
+## explicit; go 1.14
+github.com/antchfx/xmlquery
+# github.com/antchfx/xpath v1.2.1
+## explicit; go 1.14
+github.com/antchfx/xpath
 # github.com/asmcos/requests v0.0.0-20210319030608-c839e8ae4946
 ## explicit; go 1.13
 github.com/asmcos/requests
@@ -74,6 +89,21 @@ github.com/go-resty/resty/v2
 # github.com/go-sql-driver/mysql v1.6.0
 ## explicit; go 1.10
 github.com/go-sql-driver/mysql
+# github.com/gobwas/glob v0.2.3
+## explicit
+github.com/gobwas/glob
+github.com/gobwas/glob/compiler
+github.com/gobwas/glob/match
+github.com/gobwas/glob/syntax
+github.com/gobwas/glob/syntax/ast
+github.com/gobwas/glob/syntax/lexer
+github.com/gobwas/glob/util/runes
+github.com/gobwas/glob/util/strings
+# github.com/gocolly/colly v1.2.0
+## explicit
+github.com/gocolly/colly
+github.com/gocolly/colly/debug
+github.com/gocolly/colly/storage
 # github.com/gofiber/fiber/v2 v2.32.0
 ## explicit; go 1.16
 github.com/gofiber/fiber/v2
@@ -86,6 +116,9 @@ github.com/gofiber/fiber/v2/internal/msgp
 github.com/gofiber/fiber/v2/internal/schema
 github.com/gofiber/fiber/v2/internal/uuid
 github.com/gofiber/fiber/v2/utils
+# github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
+## explicit
+github.com/golang/groupcache/lru
 # github.com/golang/protobuf v1.5.2
 ## explicit; go 1.9
 github.com/golang/protobuf/jsonpb
@@ -129,6 +162,8 @@ github.com/hashicorp/hcl/json/token
 ## explicit; go 1.7
 github.com/jarcoal/httpmock
 github.com/jarcoal/httpmock/internal
+# github.com/jawher/mow.cli v1.2.0
+## explicit; go 1.13
 # github.com/jinzhu/inflection v1.0.0
 ## explicit
 github.com/jinzhu/inflection
@@ -145,6 +180,9 @@ github.com/joho/godotenv
 # github.com/json-iterator/go v1.1.12
 ## explicit; go 1.12
 github.com/json-iterator/go
+# github.com/kennygrant/sanitize v1.2.4
+## explicit
+github.com/kennygrant/sanitize
 # github.com/klauspost/compress v1.15.0
 ## explicit; go 1.15
 github.com/klauspost/compress/flate
@@ -218,6 +256,9 @@ github.com/prometheus/procfs/internal/util
 # github.com/rivo/uniseg v0.2.0
 ## explicit; go 1.12
 github.com/rivo/uniseg
+# github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca
+## explicit
+github.com/saintfish/chardet
 # github.com/spaolacci/murmur3 v1.1.0
 ## explicit
 github.com/spaolacci/murmur3
@@ -253,6 +294,9 @@ github.com/stretchr/testify/suite
 # github.com/subosito/gotenv v1.2.0
 ## explicit
 github.com/subosito/gotenv
+# github.com/temoto/robotstxt v1.1.2
+## explicit; go 1.11
+github.com/temoto/robotstxt
 # github.com/tristangoossens/snake-go v0.0.0-20200815121646-d2a2cfaf6353
 ## explicit
 github.com/tristangoossens/snake-go/game
@@ -338,6 +382,10 @@ go.uber.org/automaxprocs/maxprocs
 golang.org/x/crypto/sha3
 # golang.org/x/net v0.0.0-20220607020251-c690dde0001d
 ## explicit; go 1.17
+golang.org/x/net/context
+golang.org/x/net/html
+golang.org/x/net/html/atom
+golang.org/x/net/html/charset
 golang.org/x/net/http/httpguts
 golang.org/x/net/http2
 golang.org/x/net/http2/hpack
@@ -354,14 +402,35 @@ golang.org/x/sys/windows
 golang.org/x/sys/windows/registry
 # golang.org/x/text v0.3.7
 ## explicit; go 1.17
+golang.org/x/text/encoding
+golang.org/x/text/encoding/charmap
+golang.org/x/text/encoding/htmlindex
+golang.org/x/text/encoding/internal
+golang.org/x/text/encoding/internal/identifier
+golang.org/x/text/encoding/japanese
+golang.org/x/text/encoding/korean
+golang.org/x/text/encoding/simplifiedchinese
+golang.org/x/text/encoding/traditionalchinese
+golang.org/x/text/encoding/unicode
 golang.org/x/text/internal/language
 golang.org/x/text/internal/language/compact
 golang.org/x/text/internal/tag
+golang.org/x/text/internal/utf8internal
 golang.org/x/text/language
+golang.org/x/text/runes
 golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
+# google.golang.org/appengine v1.6.7
+## explicit; go 1.11
+google.golang.org/appengine/internal
+google.golang.org/appengine/internal/base
+google.golang.org/appengine/internal/datastore
+google.golang.org/appengine/internal/log
+google.golang.org/appengine/internal/remote_api
+google.golang.org/appengine/internal/urlfetch
+google.golang.org/appengine/urlfetch
 # google.golang.org/genproto v0.0.0-20220608133413-ed9918b62aac
 ## explicit; go 1.15
 google.golang.org/genproto/googleapis/rpc/status
