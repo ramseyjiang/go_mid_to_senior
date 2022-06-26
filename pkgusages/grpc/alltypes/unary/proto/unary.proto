@@ -1,0 +1,37 @@
+syntax = "proto3";
+option go_package = "alltypes/unary/proto";
+
+package pb;
+
+// model
+message Contacts {
+  string firstname = 1;
+  string lastname = 2;
+  uint64 number = 3;
+}
+
+// unary services
+service Phone {
+  // unary RPC
+  rpc GetContactName(GetContactNameRequest) returns (GetContactNameResponse) {}
+  rpc GetContactNum(GetContactNumRequest) returns (GetContactNumResponse) {}
+}
+
+message GetContactNameRequest {
+  string number = 1;
+}
+
+message GetContactNameResponse {
+  string firstname = 1;
+  string lastname = 2;
+}
+
+message GetContactNumRequest {
+  string firstname = 1;
+  string lastname = 2;
+}
+
+message GetContactNumResponse {
+  uint64 num = 1;
+  string result = 2;
+}
