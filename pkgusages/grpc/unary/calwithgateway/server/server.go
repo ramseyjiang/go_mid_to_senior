@@ -5,7 +5,6 @@ import (
 	"net"
 
 	proto2 "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unary/calwithgateway/proto"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

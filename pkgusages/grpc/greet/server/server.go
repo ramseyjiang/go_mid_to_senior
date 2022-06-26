@@ -73,7 +73,6 @@ func (*server) GreetClientStreaming(stream proto.GreetService_GreetClientStreami
 		result = "Hello " + firstName + "! "
 		log.Println(result)
 	}
-	return nil
 }
 
 func (*server) GreetBidirectionalStreaming(stream proto.GreetService_GreetBidirectionalStreamingServer) error {

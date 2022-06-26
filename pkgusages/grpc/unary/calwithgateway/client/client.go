@@ -6,9 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	proto2 "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unary/calwithgateway/proto"
-
 	"github.com/gin-gonic/gin"
+	proto2 "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unary/calwithgateway/proto"
 	"google.golang.org/grpc"
 )
 

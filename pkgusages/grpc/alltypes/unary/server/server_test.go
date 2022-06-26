@@ -6,11 +6,10 @@ import (
 	"log"
 	"testing"
 
+	unary "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/unary/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
-
-	unary "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/unary/proto"
 )
 
 func server(ctx context.Context) (client unary.PhoneClient, closer func()) {

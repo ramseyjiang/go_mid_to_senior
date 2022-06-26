@@ -5,8 +5,8 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"time"
 
 	cal "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unary/tlscal/proto"
@@ -44,7 +44,7 @@ func main() {
 
 func loadTLSCredentials() (credentials.TransportCredentials, error) {
 	// read ca's cert
-	pemCA, err := ioutil.ReadFile("cert/ca-cert.pem")
+	pemCA, err := os.ReadFile("cert/ca-cert.pem")
 	if err != nil {
 		return nil, err
 	}

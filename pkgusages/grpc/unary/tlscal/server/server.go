@@ -5,14 +5,13 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net"
-
-	"google.golang.org/grpc/credentials"
+	"os"
 
 	cal "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/unary/tlscal/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 type TlsCalService struct {
@@ -69,7 +68,7 @@ func main() {
 
 func loadTLSCredentials() (credentials.TransportCredentials, error) {
 	// read ca's cert, verify to client's certificate
-	pemCA, err := ioutil.ReadFile("cert/ca-cert.pem")
+	pemCA, err := os.ReadFile("cert/ca-cert.pem")
 	if err != nil {
 		return nil, err
 	}

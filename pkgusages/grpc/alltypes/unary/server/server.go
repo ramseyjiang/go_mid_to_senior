@@ -7,10 +7,9 @@ import (
 	"net"
 	"strconv"
 
+	unary "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/unary/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-
-	unary "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/unary/proto"
 )
 
 type phoneServer struct {
