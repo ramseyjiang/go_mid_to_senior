@@ -1,0 +1,18 @@
+syntax = "proto3";
+option go_package = "alltypes/serverstream/proto";
+
+package pb;
+
+// server stream services
+service Phone {
+  // server stream RPC
+  rpc ListContacts(ListContactsRequest) returns (stream ListContactsResponse) {}
+}
+
+message ListContactsRequest {}
+
+message ListContactsResponse {
+  string firstname = 1;
+  string lastname = 2;
+  uint64 number = 3;
+}
