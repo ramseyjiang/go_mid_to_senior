@@ -75,9 +75,18 @@ func (p *phoneServer) GetContactNum(ctx context.Context, req *unary.GetContactNu
 	return resp, errors.New("no contact found")
 }
 
+func (p *phoneServer) ListContacts(context.Context, *unary.ListContactsRequest) (resp *unary.ListContactsResponse, err error) {
+	contacts := p.loadContacts()
+
+	return &unary.ListContactsResponse{
+		Contacts: contacts,
+		Sum:      int32(len(contacts)),
+	}, nil
+}
+
 // loadContacts can be defined by yourself or read from database.
-func (p *phoneServer) loadContacts() (contacts map[int]unary.Contacts) {
-	contacts = map[int]unary.Contacts{
+func (p *phoneServer) loadContacts() (contacts []*unary.Contacts) {
+	contacts = []*unary.Contacts{
 		0: {
 			Firstname: "Stephen",
 			Lastname:  "Curry",

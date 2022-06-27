@@ -28,6 +28,7 @@ func main() {
 
 	GetServerContactName(client)
 	GetServerContactNum(client)
+	ListContacts(client)
 }
 
 func GetServerContactName(client unary.PhoneClient) {
@@ -55,4 +56,13 @@ func GetServerContactNum(client unary.PhoneClient) {
 	}
 
 	log.Println("Response from GetContactNum: ", strconv.FormatUint(res.Num, 10)+" "+res.Result)
+}
+
+func ListContacts(client unary.PhoneClient) {
+	res, err := client.ListContacts(context.Background(), &unary.ListContactsRequest{})
+	if err != nil {
+		log.Fatalf("error while calling Unary Phone RPC: %v", err)
+	}
+	log.Println("Response from ListContacts: sum is ", res.Sum)
+	log.Println("contacts list is ", res.Contacts)
 }

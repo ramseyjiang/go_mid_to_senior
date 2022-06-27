@@ -15,6 +15,7 @@ service Phone {
   // unary RPC
   rpc GetContactName(GetContactNameRequest) returns (GetContactNameResponse) {}
   rpc GetContactNum(GetContactNumRequest) returns (GetContactNumResponse) {}
+  rpc ListContacts(ListContactsRequest) returns (ListContactsResponse) {}
 }
 
 message GetContactNameRequest {
@@ -34,4 +35,11 @@ message GetContactNumRequest {
 message GetContactNumResponse {
   uint64 num = 1;
   string result = 2;
+}
+
+message ListContactsRequest {}
+
+message ListContactsResponse {
+  int32 sum = 1;
+  repeated Contacts contacts = 2;
 }

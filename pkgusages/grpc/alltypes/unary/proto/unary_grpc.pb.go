@@ -25,6 +25,7 @@ type PhoneClient interface {
 	// unary RPC
 	GetContactName(ctx context.Context, in *GetContactNameRequest, opts ...grpc.CallOption) (*GetContactNameResponse, error)
 	GetContactNum(ctx context.Context, in *GetContactNumRequest, opts ...grpc.CallOption) (*GetContactNumResponse, error)
+	ListContacts(ctx context.Context, in *ListContactsRequest, opts ...grpc.CallOption) (*ListContactsResponse, error)
 }
 
 type phoneClient struct {
@@ -53,6 +54,15 @@ func (c *phoneClient) GetContactNum(ctx context.Context, in *GetContactNumReques
 	return out, nil
 }
 
+func (c *phoneClient) ListContacts(ctx context.Context, in *ListContactsRequest, opts ...grpc.CallOption) (*ListContactsResponse, error) {
+	out := new(ListContactsResponse)
+	err := c.cc.Invoke(ctx, "/pb.Phone/ListContacts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PhoneServer is the server API for Phone service.
 // All implementations should embed UnimplementedPhoneServer
 // for forward compatibility
@@ -60,6 +70,7 @@ type PhoneServer interface {
 	// unary RPC
 	GetContactName(context.Context, *GetContactNameRequest) (*GetContactNameResponse, error)
 	GetContactNum(context.Context, *GetContactNumRequest) (*GetContactNumResponse, error)
+	ListContacts(context.Context, *ListContactsRequest) (*ListContactsResponse, error)
 }
 
 // UnimplementedPhoneServer should be embedded to have forward compatible implementations.
@@ -71,6 +82,9 @@ func (UnimplementedPhoneServer) GetContactName(context.Context, *GetContactNameR
 }
 func (UnimplementedPhoneServer) GetContactNum(context.Context, *GetContactNumRequest) (*GetContactNumResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContactNum not implemented")
+}
+func (UnimplementedPhoneServer) ListContacts(context.Context, *ListContactsRequest) (*ListContactsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListContacts not implemented")
 }
 
 // UnsafePhoneServer may be embedded to opt out of forward compatibility for this service.
@@ -120,6 +134,24 @@ func _Phone_GetContactNum_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Phone_ListContacts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListContactsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PhoneServer).ListContacts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Phone/ListContacts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PhoneServer).ListContacts(ctx, req.(*ListContactsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Phone_ServiceDesc is the grpc.ServiceDesc for Phone service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var Phone_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetContactNum",
 			Handler:    _Phone_GetContactNum_Handler,
+		},
+		{
+			MethodName: "ListContacts",
+			Handler:    _Phone_ListContacts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
