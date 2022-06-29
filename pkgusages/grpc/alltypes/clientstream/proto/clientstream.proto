@@ -1,0 +1,19 @@
+syntax = "proto3";
+option go_package = "alltypes/clientstream/proto";
+
+package pb;
+
+// client stream services
+service Phone {
+  // client stream RPC
+  rpc RecordCallHistory(stream RecordCallHistoryRequest) returns (RecordCallHistoryResponse) {}
+}
+
+message RecordCallHistoryRequest{
+  string number = 1;
+}
+
+message RecordCallHistoryResponse {
+  int32 callCount = 1;
+  int32 durationCall = 2;
+}

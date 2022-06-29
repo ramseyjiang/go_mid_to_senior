@@ -47,6 +47,8 @@ func server(ctx context.Context) (client ss.PhoneClient, closer func()) {
 	return client, closer
 }
 
+// use slice and for loop to simulate server-side streaming.
+// In the for loop, it will get replies using out.Recv() function and store them at outs slice.
 func TestPhoneServerListContacts(t *testing.T) {
 	ctx := context.Background()
 
