@@ -1,0 +1,20 @@
+syntax = "proto3";
+option go_package = "alltypes/bidirectstream/proto";
+
+package pb;
+
+// Bidirectional stream service
+service Phone {
+  // Bidirectional streaming RPC
+  rpc SendMessage(stream SendMessageRequest) returns (stream SendMessageResponse) {}
+}
+
+// bytes is a type, it can be changed to any golang types.
+message SendMessageRequest{
+  bytes msg = 1;
+}
+
+// bytes is a type, it can be changed to any golang types.
+message SendMessageResponse {
+  bytes msg = 1;
+}
