@@ -18,7 +18,6 @@ type phoneServer struct {
 
 func (p *phoneServer) RecordCallHistory(stream cs.Phone_RecordCallHistoryServer) (err error) {
 	var callCount int32
-
 	start := time.Now()
 
 	for {

@@ -53,7 +53,7 @@ func ClientStreamRecordCallHistory(client cs.PhoneClient) {
 		if err != nil {
 			return
 		}
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(5 * time.Second)
 	}
 
 	res, err := respStream.CloseAndRecv()
