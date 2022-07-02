@@ -56,16 +56,16 @@ func TestPhoneServerSendMessage(t *testing.T) {
 	defer closer()
 
 	type expectation struct {
-		out []*bds.SendMessageResponse
+		out []*bds.SendMsgBytesResponse
 		err error
 	}
 
 	tests := map[string]struct {
-		in       []*bds.SendMessageRequest
+		in       []*bds.SendMsgBytesRequest
 		expected expectation
 	}{
 		"Must_Success": {
-			in: []*bds.SendMessageRequest{
+			in: []*bds.SendMsgBytesRequest{
 				{
 					Msg: []byte("Hi!"),
 				},
@@ -80,7 +80,7 @@ func TestPhoneServerSendMessage(t *testing.T) {
 				},
 			},
 			expected: expectation{
-				out: []*bds.SendMessageResponse{
+				out: []*bds.SendMsgBytesResponse{
 					{
 						Msg: []byte("Hello!"),
 					},
@@ -98,7 +98,7 @@ func TestPhoneServerSendMessage(t *testing.T) {
 
 	for scenario, tt := range tests {
 		t.Run(scenario, func(t *testing.T) {
-			outClient, err := client.SendMessage(ctx)
+			outClient, err := client.SendMsgBytes(ctx)
 
 			for _, v := range tt.in {
 				if err := outClient.Send(v); err != nil {
@@ -110,7 +110,7 @@ func TestPhoneServerSendMessage(t *testing.T) {
 				t.Errorf("Err -> %q", err)
 			}
 
-			var outs []*bds.SendMessageResponse
+			var outs []*bds.SendMsgBytesResponse
 			for {
 				o, err := outClient.Recv()
 				if errors.Is(err, io.EOF) {
