@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"time"
 
 	bds "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/bidirectstream/proto"
 	"google.golang.org/grpc"
@@ -34,6 +35,7 @@ func main() {
 }
 
 func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err error) {
+	log.Println("Server SendMsgBytes started")
 	for {
 		req, err := stream.Recv()
 		if err != nil {
@@ -63,7 +65,7 @@ func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err err
 					})
 				case "How are you?":
 					_ = stream.Send(&bds.SendMsgBytesResponse{
-						Msg: []byte("Fine, you?"),
+						Msg: []byte("Good, good, how are you?"),
 					})
 				case "See you later":
 					_ = stream.Send(&bds.SendMsgBytesResponse{
@@ -77,5 +79,51 @@ func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err err
 			}
 			p.calls = p.calls[:0]
 		}
+	}
+}
+
+func (p *phoneServer) SendMsgStr(stream bds.Phone_SendMsgStrServer) (err error) {
+	log.Println("Server SendMsgStr started")
+	for {
+		req, err := stream.Recv()
+		if err != nil {
+			// io.EOF is used to check the end of the stream.
+			// Checking for the client stream message in the infinite loop and sending the response messages,
+			// once the client ends the stream then we break the loop.
+			if errors.Is(err, io.EOF) {
+				return nil
+			}
+			return err
+		}
+
+		p.calls = append(p.calls, req.Msg)
+		log.Println("record calls received number is ", len(p.calls))
+
+		for _, m := range p.calls {
+			time.Sleep(time.Second)
+			switch m {
+			case "end":
+				_ = stream.Send(&bds.SendMsgStrResponse{
+					Msg: "Have a good one!",
+				})
+			case "Hi!":
+				_ = stream.Send(&bds.SendMsgStrResponse{
+					Msg: "Hello!",
+				})
+			case "How are you?":
+				_ = stream.Send(&bds.SendMsgStrResponse{
+					Msg: "Good, good, how are you?",
+				})
+			case "See you later":
+				_ = stream.Send(&bds.SendMsgStrResponse{
+					Msg: "See you!",
+				})
+			default:
+				_ = stream.Send(&bds.SendMsgStrResponse{
+					Msg: "Sorry, I don't understand :/",
+				})
+			}
+		}
+		p.calls = p.calls[:0]
 	}
 }

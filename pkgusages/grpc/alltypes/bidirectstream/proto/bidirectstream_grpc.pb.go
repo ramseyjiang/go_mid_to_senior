@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type PhoneClient interface {
 	// Bidirectional streaming RPC
 	SendMsgBytes(ctx context.Context, opts ...grpc.CallOption) (Phone_SendMsgBytesClient, error)
+	SendMsgStr(ctx context.Context, opts ...grpc.CallOption) (Phone_SendMsgStrClient, error)
 }
 
 type phoneClient struct {
@@ -65,12 +66,44 @@ func (x *phoneSendMsgBytesClient) Recv() (*SendMsgBytesResponse, error) {
 	return m, nil
 }
 
+func (c *phoneClient) SendMsgStr(ctx context.Context, opts ...grpc.CallOption) (Phone_SendMsgStrClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Phone_ServiceDesc.Streams[1], "/pb.Phone/SendMsgStr", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &phoneSendMsgStrClient{stream}
+	return x, nil
+}
+
+type Phone_SendMsgStrClient interface {
+	Send(*SendMsgStrRequest) error
+	Recv() (*SendMsgStrResponse, error)
+	grpc.ClientStream
+}
+
+type phoneSendMsgStrClient struct {
+	grpc.ClientStream
+}
+
+func (x *phoneSendMsgStrClient) Send(m *SendMsgStrRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *phoneSendMsgStrClient) Recv() (*SendMsgStrResponse, error) {
+	m := new(SendMsgStrResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // PhoneServer is the server API for Phone service.
 // All implementations should embed UnimplementedPhoneServer
 // for forward compatibility
 type PhoneServer interface {
 	// Bidirectional streaming RPC
 	SendMsgBytes(Phone_SendMsgBytesServer) error
+	SendMsgStr(Phone_SendMsgStrServer) error
 }
 
 // UnimplementedPhoneServer should be embedded to have forward compatible implementations.
@@ -79,6 +112,9 @@ type UnimplementedPhoneServer struct {
 
 func (UnimplementedPhoneServer) SendMsgBytes(Phone_SendMsgBytesServer) error {
 	return status.Errorf(codes.Unimplemented, "method SendMsgBytes not implemented")
+}
+func (UnimplementedPhoneServer) SendMsgStr(Phone_SendMsgStrServer) error {
+	return status.Errorf(codes.Unimplemented, "method SendMsgStr not implemented")
 }
 
 // UnsafePhoneServer may be embedded to opt out of forward compatibility for this service.
@@ -118,6 +154,32 @@ func (x *phoneSendMsgBytesServer) Recv() (*SendMsgBytesRequest, error) {
 	return m, nil
 }
 
+func _Phone_SendMsgStr_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(PhoneServer).SendMsgStr(&phoneSendMsgStrServer{stream})
+}
+
+type Phone_SendMsgStrServer interface {
+	Send(*SendMsgStrResponse) error
+	Recv() (*SendMsgStrRequest, error)
+	grpc.ServerStream
+}
+
+type phoneSendMsgStrServer struct {
+	grpc.ServerStream
+}
+
+func (x *phoneSendMsgStrServer) Send(m *SendMsgStrResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *phoneSendMsgStrServer) Recv() (*SendMsgStrRequest, error) {
+	m := new(SendMsgStrRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // Phone_ServiceDesc is the grpc.ServiceDesc for Phone service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -129,6 +191,12 @@ var Phone_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "SendMsgBytes",
 			Handler:       _Phone_SendMsgBytes_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "SendMsgStr",
+			Handler:       _Phone_SendMsgStr_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

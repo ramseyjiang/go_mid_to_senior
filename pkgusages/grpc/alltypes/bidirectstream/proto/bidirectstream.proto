@@ -7,6 +7,7 @@ package pb;
 service Phone {
   // Bidirectional streaming RPC
   rpc SendMsgBytes(stream SendMsgBytesRequest) returns (stream SendMsgBytesResponse) {}
+  rpc SendMsgStr(stream SendMsgStrRequest) returns (stream SendMsgStrResponse) {}
 }
 
 message SendMsgBytesRequest{
@@ -15,4 +16,12 @@ message SendMsgBytesRequest{
 
 message SendMsgBytesResponse {
   bytes msg = 1;
+}
+
+message SendMsgStrRequest{
+  string msg = 1;
+}
+
+message SendMsgStrResponse {
+  string msg = 1;
 }
