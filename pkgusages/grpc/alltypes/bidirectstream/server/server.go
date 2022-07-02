@@ -16,10 +16,30 @@ type phoneServer struct {
 	calls []string
 }
 
+func main() {
+	listener, err := net.Listen("tcp", "0.0.0.0:50058")
+	if err != nil {
+		_ = errors.New("failed to listen: the port")
+	}
+	log.Print("Server started")
+	s := grpc.NewServer()
+	bds.RegisterPhoneServer(s, &phoneServer{})
+
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+
+	if err = s.Serve(listener); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+}
+
 func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err error) {
 	for {
 		req, err := stream.Recv()
 		if err != nil {
+			// io.EOF is used to check the end of the stream.
+			// Checking for the client stream message in the infinite loop and sending the response messages,
+			// once the client ends the stream then we break the loop.
 			if errors.Is(err, io.EOF) {
 				return nil
 			}
@@ -27,11 +47,16 @@ func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err err
 		}
 
 		p.calls = append(p.calls, string(req.Msg))
-		if p.calls[len(p.calls)-1] == "." {
+		log.Println("record calls received number is ", len(p.calls))
+
+		if p.calls[len(p.calls)-1] == "end" {
 			for _, m := range p.calls {
 				// time.Sleep(time.Second)
 				switch m {
-				case ".":
+				case "end":
+					_ = stream.Send(&bds.SendMsgBytesResponse{
+						Msg: []byte("Have a good one!"),
+					})
 				case "Hi!":
 					_ = stream.Send(&bds.SendMsgBytesResponse{
 						Msg: []byte("Hello!"),
@@ -52,22 +77,5 @@ func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err err
 			}
 			p.calls = p.calls[:0]
 		}
-	}
-}
-
-func main() {
-	listener, err := net.Listen("tcp", "0.0.0.0:50058")
-	if err != nil {
-		_ = errors.New("failed to listen: the port")
-	}
-	log.Print("Server started")
-	s := grpc.NewServer()
-	bds.RegisterPhoneServer(s, &phoneServer{})
-
-	// Register reflection service on gRPC server.
-	reflection.Register(s)
-
-	if err = s.Serve(listener); err != nil {
-		log.Fatalf("failed to serve: %v", err)
 	}
 }

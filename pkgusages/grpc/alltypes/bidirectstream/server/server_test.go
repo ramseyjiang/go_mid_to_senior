@@ -76,7 +76,7 @@ func TestPhoneServerSendMessage(t *testing.T) {
 					Msg: []byte("Thank you!"),
 				},
 				{
-					Msg: []byte("."),
+					Msg: []byte("end"),
 				},
 			},
 			expected: expectation{

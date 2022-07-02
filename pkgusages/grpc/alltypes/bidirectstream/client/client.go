@@ -40,10 +40,13 @@ func BidirectionalStreamSendMsg(client bds.PhoneClient) {
 			Msg: []byte("How are you?"),
 		},
 		{
+			Msg: []byte("end"),
+		},
+		{
 			Msg: []byte("Thank you!"),
 		},
 		{
-			Msg: []byte("."),
+			Msg: []byte("end"),
 		},
 	}
 
