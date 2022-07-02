@@ -68,16 +68,13 @@ func BidirectionalStreamSendMsg(client bds.PhoneClient) {
 
 	var responses []*bds.SendMessageResponse
 	for {
-		o, err := respStream.Recv()
+		resp, err := respStream.Recv()
 		if errors.Is(err, io.EOF) {
 			break
 		}
-		responses = append(responses, o)
+		responses = append(responses, resp)
+		time.Sleep(1 * time.Second)
+		log.Println("SendMessageResponse:", resp)
 	}
-
 	log.Println("All SendMessageResponse", responses)
-	for key, val := range responses {
-		log.Println("SendMessageResponse: key is", key)
-		log.Println("SendMessageResponse: val is", val)
-	}
 }
