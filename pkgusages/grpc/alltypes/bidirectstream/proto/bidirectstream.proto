@@ -6,15 +6,13 @@ package pb;
 // Bidirectional stream service
 service Phone {
   // Bidirectional streaming RPC
-  rpc SendMessage(stream SendMessageRequest) returns (stream SendMessageResponse) {}
+  rpc SendMsgBytes(stream SendMsgBytesRequest) returns (stream SendMsgBytesResponse) {}
 }
 
-// bytes is a type, it can be changed to any golang types.
-message SendMessageRequest{
+message SendMsgBytesRequest{
   bytes msg = 1;
 }
 
-// bytes is a type, it can be changed to any golang types.
-message SendMessageResponse {
+message SendMsgBytesResponse {
   bytes msg = 1;
 }

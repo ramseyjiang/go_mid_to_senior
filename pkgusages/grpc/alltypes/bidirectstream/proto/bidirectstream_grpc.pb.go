@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PhoneClient interface {
 	// Bidirectional streaming RPC
-	SendMessage(ctx context.Context, opts ...grpc.CallOption) (Phone_SendMessageClient, error)
+	SendMsgBytes(ctx context.Context, opts ...grpc.CallOption) (Phone_SendMsgBytesClient, error)
 }
 
 type phoneClient struct {
@@ -34,31 +34,31 @@ func NewPhoneClient(cc grpc.ClientConnInterface) PhoneClient {
 	return &phoneClient{cc}
 }
 
-func (c *phoneClient) SendMessage(ctx context.Context, opts ...grpc.CallOption) (Phone_SendMessageClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Phone_ServiceDesc.Streams[0], "/pb.Phone/SendMessage", opts...)
+func (c *phoneClient) SendMsgBytes(ctx context.Context, opts ...grpc.CallOption) (Phone_SendMsgBytesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Phone_ServiceDesc.Streams[0], "/pb.Phone/SendMsgBytes", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &phoneSendMessageClient{stream}
+	x := &phoneSendMsgBytesClient{stream}
 	return x, nil
 }
 
-type Phone_SendMessageClient interface {
-	Send(*SendMessageRequest) error
-	Recv() (*SendMessageResponse, error)
+type Phone_SendMsgBytesClient interface {
+	Send(*SendMsgBytesRequest) error
+	Recv() (*SendMsgBytesResponse, error)
 	grpc.ClientStream
 }
 
-type phoneSendMessageClient struct {
+type phoneSendMsgBytesClient struct {
 	grpc.ClientStream
 }
 
-func (x *phoneSendMessageClient) Send(m *SendMessageRequest) error {
+func (x *phoneSendMsgBytesClient) Send(m *SendMsgBytesRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *phoneSendMessageClient) Recv() (*SendMessageResponse, error) {
-	m := new(SendMessageResponse)
+func (x *phoneSendMsgBytesClient) Recv() (*SendMsgBytesResponse, error) {
+	m := new(SendMsgBytesResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -70,15 +70,15 @@ func (x *phoneSendMessageClient) Recv() (*SendMessageResponse, error) {
 // for forward compatibility
 type PhoneServer interface {
 	// Bidirectional streaming RPC
-	SendMessage(Phone_SendMessageServer) error
+	SendMsgBytes(Phone_SendMsgBytesServer) error
 }
 
 // UnimplementedPhoneServer should be embedded to have forward compatible implementations.
 type UnimplementedPhoneServer struct {
 }
 
-func (UnimplementedPhoneServer) SendMessage(Phone_SendMessageServer) error {
-	return status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
+func (UnimplementedPhoneServer) SendMsgBytes(Phone_SendMsgBytesServer) error {
+	return status.Errorf(codes.Unimplemented, "method SendMsgBytes not implemented")
 }
 
 // UnsafePhoneServer may be embedded to opt out of forward compatibility for this service.
@@ -92,26 +92,26 @@ func RegisterPhoneServer(s grpc.ServiceRegistrar, srv PhoneServer) {
 	s.RegisterService(&Phone_ServiceDesc, srv)
 }
 
-func _Phone_SendMessage_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(PhoneServer).SendMessage(&phoneSendMessageServer{stream})
+func _Phone_SendMsgBytes_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(PhoneServer).SendMsgBytes(&phoneSendMsgBytesServer{stream})
 }
 
-type Phone_SendMessageServer interface {
-	Send(*SendMessageResponse) error
-	Recv() (*SendMessageRequest, error)
+type Phone_SendMsgBytesServer interface {
+	Send(*SendMsgBytesResponse) error
+	Recv() (*SendMsgBytesRequest, error)
 	grpc.ServerStream
 }
 
-type phoneSendMessageServer struct {
+type phoneSendMsgBytesServer struct {
 	grpc.ServerStream
 }
 
-func (x *phoneSendMessageServer) Send(m *SendMessageResponse) error {
+func (x *phoneSendMsgBytesServer) Send(m *SendMsgBytesResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *phoneSendMessageServer) Recv() (*SendMessageRequest, error) {
-	m := new(SendMessageRequest)
+func (x *phoneSendMsgBytesServer) Recv() (*SendMsgBytesRequest, error) {
+	m := new(SendMsgBytesRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -127,8 +127,8 @@ var Phone_ServiceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "SendMessage",
-			Handler:       _Phone_SendMessage_Handler,
+			StreamName:    "SendMsgBytes",
+			Handler:       _Phone_SendMsgBytes_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

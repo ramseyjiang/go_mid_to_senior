@@ -32,7 +32,7 @@ func main() {
 }
 
 func BidirectionalStreamSendMsg(client bds.PhoneClient) {
-	requests := []*bds.SendMessageRequest{
+	requests := []*bds.SendMsgBytesRequest{
 		{
 			Msg: []byte("Hi!"),
 		},
@@ -47,7 +47,7 @@ func BidirectionalStreamSendMsg(client bds.PhoneClient) {
 		},
 	}
 
-	respStream, err := client.SendMessage(context.Background())
+	respStream, err := client.SendMsgBytes(context.Background())
 	if err != nil {
 		log.Fatalf("error while calling Bidirectional Streaming: %v", err)
 	}
@@ -66,7 +66,7 @@ func BidirectionalStreamSendMsg(client bds.PhoneClient) {
 		log.Fatalf("error while receiving response from Bidirectional Streaming: %v", err)
 	}
 
-	var responses []*bds.SendMessageResponse
+	var responses []*bds.SendMsgBytesResponse
 	for {
 		resp, err := respStream.Recv()
 		if errors.Is(err, io.EOF) {

@@ -16,7 +16,7 @@ type phoneServer struct {
 	calls []string
 }
 
-func (p *phoneServer) SendMessage(stream bds.Phone_SendMessageServer) (err error) {
+func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err error) {
 	for {
 		req, err := stream.Recv()
 		if err != nil {
@@ -33,19 +33,19 @@ func (p *phoneServer) SendMessage(stream bds.Phone_SendMessageServer) (err error
 				switch m {
 				case ".":
 				case "Hi!":
-					_ = stream.Send(&bds.SendMessageResponse{
+					_ = stream.Send(&bds.SendMsgBytesResponse{
 						Msg: []byte("Hello!"),
 					})
 				case "How are you?":
-					_ = stream.Send(&bds.SendMessageResponse{
+					_ = stream.Send(&bds.SendMsgBytesResponse{
 						Msg: []byte("Fine, you?"),
 					})
 				case "See you later":
-					_ = stream.Send(&bds.SendMessageResponse{
+					_ = stream.Send(&bds.SendMsgBytesResponse{
 						Msg: []byte("See you!"),
 					})
 				default:
-					_ = stream.Send(&bds.SendMessageResponse{
+					_ = stream.Send(&bds.SendMsgBytesResponse{
 						Msg: []byte("Sorry, I don't understand :/"),
 					})
 				}
