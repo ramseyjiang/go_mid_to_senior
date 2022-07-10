@@ -6,15 +6,15 @@ devices, mobile applications, and browsers to backend services.
 https://miro.medium.com/max/1400/1*tL5DQq_TAMSCstRO-V2DOQ.png (gRPC working with different languages.)
 
 gRPC has one client library for all popular languages. gRPC was created to interconnect the microservices. Mostly used
-as an internal APIs.
+as internal APIs.
 
 There are 4 types of gRPC: unary, server-streaming, client-streaming, and bidirectional streaming.
 
-1. Unary: A method is unary type where the client sends a single request to the server and gets a single response back,
-   just like a normal function call. A unary call is complete when the response is returned. Unary RPC calls are well
-   suited, when data to be transferred is small. It is available even with Http1 and Http2. Others are available with
-   Http2 only. Its format is "rpc SayHello(HelloRequest) returns (HelloResponse)". Unary is what a tradition API looks
-   like HTTP REST. HTTP2 as we have seen, enable APIs to have streaming capabilities.
+1. Unary: A method is a unary type where the client sends a single request to the server and gets a single response
+   back, just like a normal function call. A unary call is complete when the response is returned. Unary RPC calls are
+   well suited, when data to be transferred is small. It is available even with Http1 and Http2. Others are available
+   with Http2 only. Its format is "rpc SayHello(HelloRequest) returns (HelloResponse)". Unary is what a tradition API
+   looks like HTTP REST. HTTP2 as we have seen, enable APIs to have streaming capabilities.
    (Unary image)https://miro.medium.com/max/1400/1*E1A0qmNxq3LsAm9f_ptIeA.png
 
 2. Server streaming: A server streaming method is where the client sends a request to the server and gets a stream to
@@ -32,14 +32,11 @@ There are 4 types of gRPC: unary, server-streaming, client-streaming, and bidire
    Its format is "rpc BidiHello(stream HelloRequest) returns (stream HelloResponse)".
    (Bi-directional streaming image)https://miro.medium.com/max/1400/1*PTQkkSJQufmSNkM-3VfZNQ.png
 
+gRPC Servers are async by default. This means they don't block threads on requests. Therefore, each gRPC server can
+serve millions of requests in parallel.
 
-gRPC Servers are async by default. 
-This means they don't block threads on requests.
-Therefore, each gRPC server can serve millions of requests in parallel.
-
-gRPC Clients can be async or sync(blocking)
-Clients can decide which model works best for the performance needs.
-gRPC Clients can perform client side load balancing.
+gRPC Clients can be async or sync(blocking). Clients can decide which model works best for their performance needs. gRPC
+Clients can perform client-side load balancing.
 
 For security, gRPC strongly recommend for you to use SSL(encryption the wire) in your API.
 

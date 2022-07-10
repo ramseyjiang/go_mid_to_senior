@@ -16,8 +16,6 @@ type phoneServer struct {
 	unary.PhoneServer
 }
 
-const numMinLen = 9
-
 func main() {
 	listener, err := net.Listen("tcp", "0.0.0.0:50055")
 	if err != nil {
@@ -38,7 +36,7 @@ func main() {
 func (p *phoneServer) GetContactName(ctx context.Context, req *unary.GetContactNameRequest) (resp *unary.GetContactNameResponse, err error) {
 	reqNum, _ := strconv.ParseUint(req.Number, 10, 64)
 
-	if len(req.Number) < numMinLen {
+	if len(req.Number) < 9 {
 		return &unary.GetContactNameResponse{}, errors.New("invalid number")
 	}
 
