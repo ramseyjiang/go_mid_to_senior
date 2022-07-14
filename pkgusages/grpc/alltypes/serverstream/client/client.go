@@ -30,7 +30,7 @@ func main() {
 }
 
 func ServerStreamListContacts(client ss.PhoneClient) {
-	respStream, err := client.ListContacts(context.Background(), &ss.ListContactsRequest{})
+	respStream, err := client.AllContacts(context.Background(), &ss.AllContactsRequest{})
 	if err != nil {
 		log.Fatalf("error while calling Server Stream Phone RPC: %v", err)
 	}
@@ -46,6 +46,6 @@ func ServerStreamListContacts(client ss.PhoneClient) {
 			log.Fatalf("error while reading stream: %v", err)
 		}
 
-		log.Println("Response from Server Stream Phone RPC: number is", msg.Number, "firstname is ", msg.Firstname, "lastname is", msg.Lastname)
+		log.Println("Response from Server Stream Phone RPC: number is", msg.Contact.Number, "firstname is ", msg.Contact.Firstname, "lastname is", msg.Contact.Lastname)
 	}
 }

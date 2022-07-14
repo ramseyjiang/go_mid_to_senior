@@ -12,7 +12,7 @@ import (
 
 type phoneServer struct {
 	ss.PhoneServer
-	contacts []*ss.ListContactsResponse
+	contacts []*ss.Contact
 }
 
 func main() {
@@ -32,14 +32,15 @@ func main() {
 	}
 }
 
-func (p *phoneServer) ListContacts(_ *ss.ListContactsRequest, stream ss.Phone_ListContactsServer) (err error) {
+func (p *phoneServer) AllContacts(_ *ss.AllContactsRequest, stream ss.Phone_AllContactsServer) (err error) {
 	p.loadContacts()
 	for _, contact := range p.contacts {
-		if err = stream.Send(&ss.ListContactsResponse{
-			Firstname: contact.Firstname,
-			Lastname:  contact.Lastname,
-			Number:    contact.Number,
-		}); err != nil {
+		res := &ss.AllContactsResponse{
+			Contact: contact,
+		}
+
+		// Use the stream object to send the response stream message
+		if err = stream.Send(res); err != nil {
 			return err
 		}
 	}
@@ -49,7 +50,7 @@ func (p *phoneServer) ListContacts(_ *ss.ListContactsRequest, stream ss.Phone_Li
 
 // loadContacts can be defined by yourself or read from database.
 func (p *phoneServer) loadContacts() {
-	p.contacts = []*ss.ListContactsResponse{
+	p.contacts = []*ss.Contact{
 		0: {
 			Firstname: "Stephen",
 			Lastname:  "Curry",

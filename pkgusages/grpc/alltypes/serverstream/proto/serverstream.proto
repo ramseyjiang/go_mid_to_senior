@@ -3,16 +3,32 @@ option go_package = "alltypes/serverstream/proto";
 
 package pb;
 
-// server stream services
-service Phone {
-  // server stream RPC
-  rpc ListContacts(ListContactsRequest) returns (stream ListContactsResponse) {}
-}
-
-message ListContactsRequest {}
-
-message ListContactsResponse {
+// model
+message Contact {
   string firstname = 1;
   string lastname = 2;
   uint64 number = 3;
+}
+
+// server stream services, server stream RPCs are below.
+service Phone {
+  rpc AllContacts(AllContactsRequest) returns (stream AllContactsResponse) {}
+  rpc PageContacts(PageContactsRequest) returns (stream PageContactsResponse) {}
+}
+
+message AllContactsRequest {}
+
+message AllContactsResponse {
+  Contact contact = 1;
+}
+
+message PageContactsRequest {
+  string page_size = 1;
+}
+
+message PageContactsResponse {
+  int32 page_amount = 1;
+  int32 page_size = 2;
+  int32 current_page = 3;
+  repeated Contact contact = 4;
 }

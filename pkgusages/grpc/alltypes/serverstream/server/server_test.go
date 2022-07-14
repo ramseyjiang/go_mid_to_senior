@@ -49,64 +49,80 @@ func server(ctx context.Context) (client ss.PhoneClient, closer func()) {
 
 // use slice and for loop to simulate server-side streaming.
 // In the for loop, it will get replies using out.Recv() function and store them at outs slice.
-func TestPhoneServerListContacts(t *testing.T) {
+func TestPhoneServerAllContacts(t *testing.T) {
 	ctx := context.Background()
 
 	client, closer := server(ctx)
 	defer closer()
 
 	type expectation struct {
-		out []*ss.ListContactsResponse
+		out []*ss.AllContactsResponse
 		err error
 	}
 
 	tests := map[string]struct {
-		in       *ss.ListContactsRequest
+		in       *ss.AllContactsRequest
 		expected expectation
 	}{
 		"Must_Success": {
-			in: &ss.ListContactsRequest{},
+			in: &ss.AllContactsRequest{},
 			expected: expectation{
-				out: []*ss.ListContactsResponse{
+				out: []*ss.AllContactsResponse{
 					{
-						Firstname: "Stephen",
-						Lastname:  "Curry",
-						Number:    220123621,
+						Contact: &ss.Contact{
+							Firstname: "Stephen",
+							Lastname:  "Curry",
+							Number:    220123621,
+						},
 					},
 					{
-						Firstname: "Klay",
-						Lastname:  "Thompson",
-						Number:    220123632,
+						Contact: &ss.Contact{
+							Firstname: "Klay",
+							Lastname:  "Thompson",
+							Number:    220123632,
+						},
 					},
 					{
-						Firstname: "Draymond",
-						Lastname:  "Green",
-						Number:    220123651,
+						Contact: &ss.Contact{
+							Firstname: "Draymond",
+							Lastname:  "Green",
+							Number:    220123651,
+						},
 					},
 					{
-						Firstname: "Andrew",
-						Lastname:  "Wiggins",
-						Number:    220123662,
+						Contact: &ss.Contact{
+							Firstname: "Andrew",
+							Lastname:  "Wiggins",
+							Number:    220123662,
+						},
 					},
 					{
-						Firstname: "Jorden",
-						Lastname:  "Poole",
-						Number:    220123671,
+						Contact: &ss.Contact{
+							Firstname: "Jorden",
+							Lastname:  "Poole",
+							Number:    220123671,
+						},
 					},
 					{
-						Firstname: "Kevon",
-						Lastname:  "Looney",
-						Number:    220123621,
+						Contact: &ss.Contact{
+							Firstname: "Kevon",
+							Lastname:  "Looney",
+							Number:    220123621,
+						},
 					},
 					{
-						Firstname: "Otto",
-						Lastname:  "Porter",
-						Number:    220123232,
+						Contact: &ss.Contact{
+							Firstname: "Otto",
+							Lastname:  "Porter",
+							Number:    220123232,
+						},
 					},
 					{
-						Firstname: "Garry",
-						Lastname:  "Payton",
-						Number:    220123355,
+						Contact: &ss.Contact{
+							Firstname: "Garry",
+							Lastname:  "Payton",
+							Number:    220123355,
+						},
 					},
 				},
 				err: nil,
@@ -116,9 +132,9 @@ func TestPhoneServerListContacts(t *testing.T) {
 
 	for scenario, tt := range tests {
 		t.Run(scenario, func(t *testing.T) {
-			out, err := client.ListContacts(ctx, tt.in)
+			out, err := client.AllContacts(ctx, tt.in)
 
-			var outs []*ss.ListContactsResponse
+			var outs []*ss.AllContactsResponse
 
 			for {
 				o, err := out.Recv()
@@ -137,9 +153,9 @@ func TestPhoneServerListContacts(t *testing.T) {
 					t.Errorf("Out -> \nWant: %q\nGot : %q", tt.expected.out, outs)
 				} else {
 					for i, o := range outs {
-						if o.Firstname != tt.expected.out[i].Firstname ||
-							o.Lastname != tt.expected.out[i].Lastname ||
-							o.Number != tt.expected.out[i].Number {
+						if o.Contact.Firstname != tt.expected.out[i].Contact.Firstname ||
+							o.Contact.Lastname != tt.expected.out[i].Contact.Lastname ||
+							o.Contact.Number != tt.expected.out[i].Contact.Number {
 							t.Errorf("Out -> \nWant: %q\nGot : %q", tt.expected.out, outs)
 						}
 					}

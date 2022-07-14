@@ -22,8 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PhoneClient interface {
-	// server stream RPC
-	ListContacts(ctx context.Context, in *ListContactsRequest, opts ...grpc.CallOption) (Phone_ListContactsClient, error)
+	AllContacts(ctx context.Context, in *AllContactsRequest, opts ...grpc.CallOption) (Phone_AllContactsClient, error)
+	PageContacts(ctx context.Context, in *PageContactsRequest, opts ...grpc.CallOption) (Phone_PageContactsClient, error)
 }
 
 type phoneClient struct {
@@ -34,12 +34,12 @@ func NewPhoneClient(cc grpc.ClientConnInterface) PhoneClient {
 	return &phoneClient{cc}
 }
 
-func (c *phoneClient) ListContacts(ctx context.Context, in *ListContactsRequest, opts ...grpc.CallOption) (Phone_ListContactsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Phone_ServiceDesc.Streams[0], "/pb.Phone/ListContacts", opts...)
+func (c *phoneClient) AllContacts(ctx context.Context, in *AllContactsRequest, opts ...grpc.CallOption) (Phone_AllContactsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Phone_ServiceDesc.Streams[0], "/pb.Phone/AllContacts", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &phoneListContactsClient{stream}
+	x := &phoneAllContactsClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -49,17 +49,49 @@ func (c *phoneClient) ListContacts(ctx context.Context, in *ListContactsRequest,
 	return x, nil
 }
 
-type Phone_ListContactsClient interface {
-	Recv() (*ListContactsResponse, error)
+type Phone_AllContactsClient interface {
+	Recv() (*AllContactsResponse, error)
 	grpc.ClientStream
 }
 
-type phoneListContactsClient struct {
+type phoneAllContactsClient struct {
 	grpc.ClientStream
 }
 
-func (x *phoneListContactsClient) Recv() (*ListContactsResponse, error) {
-	m := new(ListContactsResponse)
+func (x *phoneAllContactsClient) Recv() (*AllContactsResponse, error) {
+	m := new(AllContactsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *phoneClient) PageContacts(ctx context.Context, in *PageContactsRequest, opts ...grpc.CallOption) (Phone_PageContactsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Phone_ServiceDesc.Streams[1], "/pb.Phone/PageContacts", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &phonePageContactsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Phone_PageContactsClient interface {
+	Recv() (*PageContactsResponse, error)
+	grpc.ClientStream
+}
+
+type phonePageContactsClient struct {
+	grpc.ClientStream
+}
+
+func (x *phonePageContactsClient) Recv() (*PageContactsResponse, error) {
+	m := new(PageContactsResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -70,16 +102,19 @@ func (x *phoneListContactsClient) Recv() (*ListContactsResponse, error) {
 // All implementations should embed UnimplementedPhoneServer
 // for forward compatibility
 type PhoneServer interface {
-	// server stream RPC
-	ListContacts(*ListContactsRequest, Phone_ListContactsServer) error
+	AllContacts(*AllContactsRequest, Phone_AllContactsServer) error
+	PageContacts(*PageContactsRequest, Phone_PageContactsServer) error
 }
 
 // UnimplementedPhoneServer should be embedded to have forward compatible implementations.
 type UnimplementedPhoneServer struct {
 }
 
-func (UnimplementedPhoneServer) ListContacts(*ListContactsRequest, Phone_ListContactsServer) error {
-	return status.Errorf(codes.Unimplemented, "method ListContacts not implemented")
+func (UnimplementedPhoneServer) AllContacts(*AllContactsRequest, Phone_AllContactsServer) error {
+	return status.Errorf(codes.Unimplemented, "method AllContacts not implemented")
+}
+func (UnimplementedPhoneServer) PageContacts(*PageContactsRequest, Phone_PageContactsServer) error {
+	return status.Errorf(codes.Unimplemented, "method PageContacts not implemented")
 }
 
 // UnsafePhoneServer may be embedded to opt out of forward compatibility for this service.
@@ -93,24 +128,45 @@ func RegisterPhoneServer(s grpc.ServiceRegistrar, srv PhoneServer) {
 	s.RegisterService(&Phone_ServiceDesc, srv)
 }
 
-func _Phone_ListContacts_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(ListContactsRequest)
+func _Phone_AllContacts_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(AllContactsRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(PhoneServer).ListContacts(m, &phoneListContactsServer{stream})
+	return srv.(PhoneServer).AllContacts(m, &phoneAllContactsServer{stream})
 }
 
-type Phone_ListContactsServer interface {
-	Send(*ListContactsResponse) error
+type Phone_AllContactsServer interface {
+	Send(*AllContactsResponse) error
 	grpc.ServerStream
 }
 
-type phoneListContactsServer struct {
+type phoneAllContactsServer struct {
 	grpc.ServerStream
 }
 
-func (x *phoneListContactsServer) Send(m *ListContactsResponse) error {
+func (x *phoneAllContactsServer) Send(m *AllContactsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _Phone_PageContacts_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(PageContactsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(PhoneServer).PageContacts(m, &phonePageContactsServer{stream})
+}
+
+type Phone_PageContactsServer interface {
+	Send(*PageContactsResponse) error
+	grpc.ServerStream
+}
+
+type phonePageContactsServer struct {
+	grpc.ServerStream
+}
+
+func (x *phonePageContactsServer) Send(m *PageContactsResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -123,8 +179,13 @@ var Phone_ServiceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "ListContacts",
-			Handler:       _Phone_ListContacts_Handler,
+			StreamName:    "AllContacts",
+			Handler:       _Phone_AllContacts_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "PageContacts",
+			Handler:       _Phone_PageContacts_Handler,
 			ServerStreams: true,
 		},
 	},
