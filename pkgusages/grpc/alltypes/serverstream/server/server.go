@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"net"
+	"strconv"
 
 	ss "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/serverstream/proto"
 	"google.golang.org/grpc"
@@ -13,6 +14,11 @@ import (
 type phoneServer struct {
 	ss.PhoneServer
 	contacts []*ss.Contact
+}
+
+type pageContact struct {
+	CurrentPage int32
+	contacts    []*ss.Contact
 }
 
 func main() {
@@ -37,6 +43,39 @@ func (p *phoneServer) AllContacts(_ *ss.AllContactsRequest, stream ss.Phone_AllC
 	for _, contact := range p.contacts {
 		res := &ss.AllContactsResponse{
 			Contact: contact,
+		}
+
+		// Use the stream object to send the response stream message
+		if err = stream.Send(res); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (p *phoneServer) PageContacts(req *ss.PageContactsRequest, stream ss.Phone_PageContactsServer) (err error) {
+	p.loadContacts()
+	pageSize, _ := strconv.ParseInt(req.PageSize, 10, 64)
+	reqPageSize := int32(pageSize)
+	if reqPageSize < 1 {
+		return errors.New("failed to serve, input page size should be a number and gather than 0")
+	}
+
+	pageAmount := (int32(len(p.contacts)) + reqPageSize - 1) / reqPageSize
+	pageContent := make([]pageContact, pageAmount)
+	for i := 0; int32(i) < pageAmount; i++ {
+		pageContent[i].CurrentPage = int32(i + 1)
+		pageLastElementIndex := reqPageSize * int32(i+1)
+		if reqPageSize*int32(i+1) > int32(len(p.contacts)) {
+			pageLastElementIndex = int32(len(p.contacts))
+		}
+		pageContent[i].contacts = p.contacts[reqPageSize*int32(i) : pageLastElementIndex]
+		res := &ss.PageContactsResponse{
+			PageAmount:  pageAmount,
+			PageSize:    reqPageSize,
+			CurrentPage: int32(i + 1),
+			Contact:     pageContent[i].contacts,
 		}
 
 		// Use the stream object to send the response stream message
