@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"math/rand"
 	"time"
 )
@@ -11,12 +11,12 @@ const arrayMaxNum = 100
 
 func main() {
 	arr := generateUnsortedArr()
-	fmt.Println("Initial array is:", arr)
-	fmt.Println("Bubble sorted array is: ", bubbleSort(arr))
-	fmt.Println("Quick sorted array is: ", quickSort(arr))
-	fmt.Println("merge sorted array is: ", mergeSort(arr))
-	fmt.Println("Selection sorted array is: ", selectionQuick(arr))
-	fmt.Println("Insertion sorted array is: ", insertionSort(arr))
+	log.Println("Initial array is:", arr)
+	log.Println("Quick sorted array is: ", quickSort(arr))
+	log.Println("merge sorted array is: ", mergeSort(arr))
+	log.Println("Bubble sorted array is: ", bubbleSort(arr))
+	log.Println("Insertion sorted array is: ", insertionSort(arr))
+	log.Println("Selection sorted array is: ", selectionQuick(arr))
 }
 
 func generateUnsortedArr() []int {
@@ -25,19 +25,6 @@ func generateUnsortedArr() []int {
 	for i := 0; i <= arrayNum-1; i++ {
 		arr[i] = rand.Intn(arrayMaxNum)
 	}
-	return arr
-}
-
-// bubbleSort Time complexity is O(n*n)
-func bubbleSort(arr []int) []int {
-	for i := 0; i < len(arr); i++ {
-		for j := len(arr) - 1; j > i; j-- {
-			if arr[j] < arr[j-1] {
-				arr[j], arr[j-1] = arr[j-1], arr[j]
-			}
-		}
-	}
-
 	return arr
 }
 
@@ -99,6 +86,29 @@ func merge(left, right []int) (result []int) {
 	return result
 }
 
+// bubbleSort Time complexity is O(n*n)
+func bubbleSort(arr []int) []int {
+	for i := 0; i < len(arr); i++ {
+		for j := len(arr) - 1; j > i; j-- {
+			if arr[j] < arr[j-1] {
+				arr[j], arr[j-1] = arr[j-1], arr[j]
+			}
+		}
+	}
+
+	return arr
+}
+
+// Time complexity is O(n*n), the best is O(n), the worst is O(n*n)
+func insertionSort(arr []int) []int {
+	for i := 0; i < len(arr); i++ {
+		for j := i; j > 0 && arr[j-1] > arr[j]; j-- {
+			arr[j], arr[j-1] = arr[j-1], arr[j]
+		}
+	}
+	return arr
+}
+
 // selectionQuick Time complexity is O(n*n), the best is O(n*n), the worst is O(n*n)
 func selectionQuick(arr []int) []int {
 	if len(arr) <= 1 {
@@ -121,15 +131,5 @@ func selectionQuick(arr []int) []int {
 		}
 	}
 
-	return arr
-}
-
-// Time complexity is O(n*n), the best is O(n), the worst is O(n*n)
-func insertionSort(arr []int) []int {
-	for i := 0; i < len(arr); i++ {
-		for j := i; j > 0 && arr[j-1] > arr[j]; j-- {
-			arr[j], arr[j-1] = arr[j-1], arr[j]
-		}
-	}
 	return arr
 }
