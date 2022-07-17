@@ -164,3 +164,119 @@ func TestPhoneServerAllContacts(t *testing.T) {
 		})
 	}
 }
+
+func TestPhoneServerPageContacts(t *testing.T) {
+	ctx := context.Background()
+
+	client, closer := server(ctx)
+	defer closer()
+
+	type expectation struct {
+		out []*ss.PageContactsResponse
+		err error
+	}
+
+	tests := map[string]struct {
+		in       *ss.PageContactsRequest
+		expected expectation
+	}{
+		"Must_Success": {
+			in: &ss.PageContactsRequest{
+				PageSize: "4",
+			},
+			expected: expectation{
+				out: []*ss.PageContactsResponse{
+					{
+						PageAmount:  2,
+						PageSize:    4,
+						CurrentPage: 1,
+						Contact: []*ss.Contact{
+							{
+								Firstname: "Stephen",
+								Lastname:  "Curry",
+								Number:    220123621,
+							},
+							{
+								Firstname: "Klay",
+								Lastname:  "Thompson",
+								Number:    220123632,
+							},
+							{
+								Firstname: "Draymond",
+								Lastname:  "Green",
+								Number:    220123651,
+							},
+							{
+								Firstname: "Andrew",
+								Lastname:  "Wiggins",
+								Number:    220123662,
+							},
+						},
+					},
+					{
+						PageAmount:  2,
+						PageSize:    4,
+						CurrentPage: 2,
+						Contact: []*ss.Contact{
+							{
+								Firstname: "Jorden",
+								Lastname:  "Poole",
+								Number:    220123671,
+							},
+							{
+								Firstname: "Kevon",
+								Lastname:  "Looney",
+								Number:    220123621,
+							},
+							{
+								Firstname: "Otto",
+								Lastname:  "Porter",
+								Number:    220123232,
+							},
+							{
+								Firstname: "Garry",
+								Lastname:  "Payton",
+								Number:    220123355,
+							},
+						},
+					},
+				},
+				err: nil,
+			},
+		},
+	}
+
+	for scenario, tt := range tests {
+		t.Run(scenario, func(t *testing.T) {
+			out, err := client.PageContacts(ctx, tt.in)
+
+			var outs []*ss.PageContactsResponse
+
+			for {
+				o, err := out.Recv()
+				if errors.Is(err, io.EOF) {
+					break
+				}
+				outs = append(outs, o)
+			}
+
+			if err != nil {
+				if tt.expected.err.Error() != err.Error() {
+					t.Errorf("Err -> \nWant: %q\nGot: %q\n", tt.expected.err, err)
+				}
+			} else {
+				if len(outs) != len(tt.expected.out) {
+					t.Errorf("Out -> \nWant: %q\nGot : %q", tt.expected.out, outs)
+				} else {
+					for i, o := range outs {
+						if o.CurrentPage != tt.expected.out[i].CurrentPage ||
+							o.PageSize != tt.expected.out[i].PageSize ||
+							o.PageAmount != tt.expected.out[i].PageAmount {
+							t.Errorf("Out -> \nWant: %q\nGot : %q", tt.expected.out, outs)
+						}
+					}
+				}
+			}
+		})
+	}
+}
