@@ -47,7 +47,8 @@ func ServerStreamListContacts(client ss.PhoneClient) {
 			log.Fatalf("error while reading stream: %v", err)
 		}
 
-		log.Println("Response from Server Stream Phone RPC: number is", msg.Contact.Number, "firstname is ", msg.Contact.Firstname, "lastname is", msg.Contact.Lastname)
+		log.Println("Response from Server Stream Phone RPC: number is", msg.Contact.Number,
+			"firstname is ", msg.Contact.Firstname, "lastname is", msg.Contact.Lastname)
 	}
 }
 
