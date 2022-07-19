@@ -6,14 +6,14 @@ package pb;
 // client stream services
 service Phone {
   // client stream RPC
-  rpc RecordCallHistory(stream RecordCallHistoryRequest) returns (RecordCallHistoryResponse) {}
+  rpc CallRecord(stream CallRecordRequest) returns (CallRecordResponse) {}
 }
 
-message RecordCallHistoryRequest{
+message CallRecordRequest{
   string number = 1;
 }
 
-message RecordCallHistoryResponse {
+message CallRecordResponse {
   int32 callCount = 1;
   int32 durationCall = 2;
 }

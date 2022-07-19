@@ -16,7 +16,7 @@ type phoneServer struct {
 	cs.PhoneServer
 }
 
-func (p *phoneServer) RecordCallHistory(stream cs.Phone_RecordCallHistoryServer) (err error) {
+func (p *phoneServer) CallRecord(stream cs.Phone_CallRecordServer) (err error) {
 	var callCount int32
 	start := time.Now()
 
@@ -24,7 +24,7 @@ func (p *phoneServer) RecordCallHistory(stream cs.Phone_RecordCallHistoryServer)
 		_, err = stream.Recv()
 		if err != nil {
 			if errors.Is(err, io.EOF) {
-				return stream.SendAndClose(&cs.RecordCallHistoryResponse{
+				return stream.SendAndClose(&cs.CallRecordResponse{
 					CallCount:    callCount,
 					DurationCall: int32(time.Since(start)),
 				})

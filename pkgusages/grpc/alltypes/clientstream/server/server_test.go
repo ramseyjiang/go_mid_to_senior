@@ -56,16 +56,16 @@ func TestPhoneServerRecordCallHistory(t *testing.T) {
 	defer closer()
 
 	type expectation struct {
-		out *cs.RecordCallHistoryResponse
+		out *cs.CallRecordResponse
 		err error
 	}
 
 	tests := map[string]struct {
-		in       []*cs.RecordCallHistoryRequest
+		in       []*cs.CallRecordRequest
 		expected expectation
 	}{
 		"Must_Success": {
-			in: []*cs.RecordCallHistoryRequest{
+			in: []*cs.CallRecordRequest{
 				{
 					Number: "11111111111",
 				},
@@ -77,16 +77,16 @@ func TestPhoneServerRecordCallHistory(t *testing.T) {
 				},
 			},
 			expected: expectation{
-				out: &cs.RecordCallHistoryResponse{
+				out: &cs.CallRecordResponse{
 					CallCount: 3,
 				},
 				err: nil,
 			},
 		},
 		"Empty_Request": {
-			in: []*cs.RecordCallHistoryRequest{},
+			in: []*cs.CallRecordRequest{},
 			expected: expectation{
-				out: &cs.RecordCallHistoryResponse{
+				out: &cs.CallRecordResponse{
 					CallCount: 0,
 				},
 				err: nil,
@@ -96,7 +96,7 @@ func TestPhoneServerRecordCallHistory(t *testing.T) {
 
 	for scenario, tt := range tests {
 		t.Run(scenario, func(t *testing.T) {
-			outClient, err := client.RecordCallHistory(ctx)
+			outClient, err := client.CallRecord(ctx)
 
 			for _, v := range tt.in {
 				if err := outClient.Send(v); err != nil {

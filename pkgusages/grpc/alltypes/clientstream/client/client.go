@@ -26,11 +26,11 @@ func main() {
 
 	log.Println("Starting to do a Client Stream Phone RPC...")
 
-	ClientStreamRecordCallHistory(client)
+	ClientStreamCallRecord(client)
 }
 
-func ClientStreamRecordCallHistory(client cs.PhoneClient) {
-	requests := []*cs.RecordCallHistoryRequest{
+func ClientStreamCallRecord(client cs.PhoneClient) {
+	requests := []*cs.CallRecordRequest{
 		{
 			Number: "11111111111",
 		},
@@ -42,7 +42,7 @@ func ClientStreamRecordCallHistory(client cs.PhoneClient) {
 		},
 	}
 
-	respStream, err := client.RecordCallHistory(context.Background())
+	respStream, err := client.CallRecord(context.Background())
 	if err != nil {
 		log.Fatalf("error while calling Client Streaming: %v", err)
 	}
