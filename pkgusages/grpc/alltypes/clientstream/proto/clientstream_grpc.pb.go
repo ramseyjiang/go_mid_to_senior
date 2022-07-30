@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PhoneClient interface {
 	// client stream RPC
-	CallRecord(ctx context.Context, opts ...grpc.CallOption) (Phone_CallRecordClient, error)
+	NumCheck(ctx context.Context, opts ...grpc.CallOption) (Phone_NumCheckClient, error)
 }
 
 type phoneClient struct {
@@ -34,34 +34,34 @@ func NewPhoneClient(cc grpc.ClientConnInterface) PhoneClient {
 	return &phoneClient{cc}
 }
 
-func (c *phoneClient) CallRecord(ctx context.Context, opts ...grpc.CallOption) (Phone_CallRecordClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Phone_ServiceDesc.Streams[0], "/pb.Phone/CallRecord", opts...)
+func (c *phoneClient) NumCheck(ctx context.Context, opts ...grpc.CallOption) (Phone_NumCheckClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Phone_ServiceDesc.Streams[0], "/pb.Phone/NumCheck", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &phoneCallRecordClient{stream}
+	x := &phoneNumCheckClient{stream}
 	return x, nil
 }
 
-type Phone_CallRecordClient interface {
-	Send(*CallRecordRequest) error
-	CloseAndRecv() (*CallRecordResponse, error)
+type Phone_NumCheckClient interface {
+	Send(*NumCheckRequest) error
+	CloseAndRecv() (*NumCheckResponse, error)
 	grpc.ClientStream
 }
 
-type phoneCallRecordClient struct {
+type phoneNumCheckClient struct {
 	grpc.ClientStream
 }
 
-func (x *phoneCallRecordClient) Send(m *CallRecordRequest) error {
+func (x *phoneNumCheckClient) Send(m *NumCheckRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *phoneCallRecordClient) CloseAndRecv() (*CallRecordResponse, error) {
+func (x *phoneNumCheckClient) CloseAndRecv() (*NumCheckResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	m := new(CallRecordResponse)
+	m := new(NumCheckResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -73,15 +73,15 @@ func (x *phoneCallRecordClient) CloseAndRecv() (*CallRecordResponse, error) {
 // for forward compatibility
 type PhoneServer interface {
 	// client stream RPC
-	CallRecord(Phone_CallRecordServer) error
+	NumCheck(Phone_NumCheckServer) error
 }
 
 // UnimplementedPhoneServer should be embedded to have forward compatible implementations.
 type UnimplementedPhoneServer struct {
 }
 
-func (UnimplementedPhoneServer) CallRecord(Phone_CallRecordServer) error {
-	return status.Errorf(codes.Unimplemented, "method CallRecord not implemented")
+func (UnimplementedPhoneServer) NumCheck(Phone_NumCheckServer) error {
+	return status.Errorf(codes.Unimplemented, "method NumCheck not implemented")
 }
 
 // UnsafePhoneServer may be embedded to opt out of forward compatibility for this service.
@@ -95,26 +95,26 @@ func RegisterPhoneServer(s grpc.ServiceRegistrar, srv PhoneServer) {
 	s.RegisterService(&Phone_ServiceDesc, srv)
 }
 
-func _Phone_CallRecord_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(PhoneServer).CallRecord(&phoneCallRecordServer{stream})
+func _Phone_NumCheck_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(PhoneServer).NumCheck(&phoneNumCheckServer{stream})
 }
 
-type Phone_CallRecordServer interface {
-	SendAndClose(*CallRecordResponse) error
-	Recv() (*CallRecordRequest, error)
+type Phone_NumCheckServer interface {
+	SendAndClose(*NumCheckResponse) error
+	Recv() (*NumCheckRequest, error)
 	grpc.ServerStream
 }
 
-type phoneCallRecordServer struct {
+type phoneNumCheckServer struct {
 	grpc.ServerStream
 }
 
-func (x *phoneCallRecordServer) SendAndClose(m *CallRecordResponse) error {
+func (x *phoneNumCheckServer) SendAndClose(m *NumCheckResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *phoneCallRecordServer) Recv() (*CallRecordRequest, error) {
-	m := new(CallRecordRequest)
+func (x *phoneNumCheckServer) Recv() (*NumCheckRequest, error) {
+	m := new(NumCheckRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -130,8 +130,8 @@ var Phone_ServiceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "CallRecord",
-			Handler:       _Phone_CallRecord_Handler,
+			StreamName:    "NumCheck",
+			Handler:       _Phone_NumCheck_Handler,
 			ClientStreams: true,
 		},
 	},

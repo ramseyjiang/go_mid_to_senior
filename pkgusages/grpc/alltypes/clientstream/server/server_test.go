@@ -50,44 +50,50 @@ func server(ctx context.Context) (client cs.PhoneClient, closer func()) {
 // use for loop to simulate client-side streaming.
 // In the for loop, it will send requests to the RecordCallHistory client using outClient.Send().
 // Once all requests have been sent, we will close the sending.
-func TestPhoneServerRecordCallHistory(t *testing.T) {
+func TestPhoneServerNumCheck(t *testing.T) {
 	ctx := context.Background()
 	client, closer := server(ctx)
 	defer closer()
 
 	type expectation struct {
-		out *cs.CallRecordResponse
+		out []*cs.NumCheckResponse
 		err error
 	}
 
 	tests := map[string]struct {
-		in       []*cs.CallRecordRequest
+		in       []*cs.NumCheckRequest
 		expected expectation
 	}{
 		"Must_Success": {
-			in: []*cs.CallRecordRequest{
+			in: []*cs.NumCheckRequest{
 				{
-					Number: "11111111111",
+					Number: "30",
 				},
 				{
-					Number: "22222222222",
+					Number: "11",
 				},
 				{
-					Number: "33333333333",
+					Number: "0",
 				},
 			},
 			expected: expectation{
-				out: &cs.CallRecordResponse{
-					CallCount: 3,
-				},
-				err: nil,
-			},
-		},
-		"Empty_Request": {
-			in: []*cs.CallRecordRequest{},
-			expected: expectation{
-				out: &cs.CallRecordResponse{
-					CallCount: 0,
+				out: []*cs.NumCheckResponse{
+					{
+						CheckResult: []*cs.Result{
+							{
+								Msg:    "Stephen Curry phone is 220123621.",
+								Status: "Stay",
+							},
+							{
+								Msg:    "Klay Thompson phone is 220123632.",
+								Status: "Stay",
+							},
+							{
+								Msg:    "0 Has joined another team.",
+								Status: "Left",
+							},
+						},
+					},
 				},
 				err: nil,
 			},
@@ -96,7 +102,7 @@ func TestPhoneServerRecordCallHistory(t *testing.T) {
 
 	for scenario, tt := range tests {
 		t.Run(scenario, func(t *testing.T) {
-			outClient, err := client.CallRecord(ctx)
+			outClient, err := client.NumCheck(ctx)
 
 			for _, v := range tt.in {
 				if err := outClient.Send(v); err != nil {
@@ -114,8 +120,11 @@ func TestPhoneServerRecordCallHistory(t *testing.T) {
 					t.Errorf("Err -> \nWant: %q\nGot: %q\n", tt.expected.err, err)
 				}
 			} else {
-				if tt.expected.out.CallCount != out.CallCount {
-					t.Errorf("Out -> \nWant: %q\nGot : %q", tt.expected.out, out)
+				for i, o := range out.CheckResult {
+					if o.Status != tt.expected.out[0].CheckResult[i].Status &&
+						o.Msg != tt.expected.out[0].CheckResult[i].Msg {
+						t.Errorf("Out -> \nWant: %q\nGot : %q", tt.expected.out, out)
+					}
 				}
 			}
 

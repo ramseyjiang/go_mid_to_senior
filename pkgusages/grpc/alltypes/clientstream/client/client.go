@@ -26,41 +26,54 @@ func main() {
 
 	log.Println("Starting to do a Client Stream Phone RPC...")
 
-	ClientStreamCallRecord(client)
+	ClientStreamNumCheck(client)
 }
 
-func ClientStreamCallRecord(client cs.PhoneClient) {
-	requests := []*cs.CallRecordRequest{
+func ClientStreamNumCheck(client cs.PhoneClient) {
+	requests := []*cs.NumCheckRequest{
 		{
-			Number: "11111111111",
+			Number: "30",
 		},
 		{
-			Number: "22222222222",
+			Number: "23",
 		},
 		{
-			Number: "33333333333",
+			Number: "11",
+		},
+		{
+			Number: "22",
+		},
+		{
+			Number: "3",
+		},
+		{
+			Number: "5",
+		},
+		{
+			Number: "0",
+		},
+		{
+			Number: "32",
 		},
 	}
 
-	respStream, err := client.CallRecord(context.Background())
+	respStream, err := client.NumCheck(context.Background())
 	if err != nil {
 		log.Fatalf("error while calling Client Streaming: %v", err)
 	}
 
 	for _, req := range requests {
-		log.Printf("Sending req: %v\n", req)
+		log.Printf("Sending req %v\n", req)
 		err = respStream.Send(req)
 		if err != nil {
 			return
 		}
-		time.Sleep(5 * time.Second)
+		time.Sleep(2 * time.Second)
 	}
 
 	res, err := respStream.CloseAndRecv()
 	if err != nil {
-		log.Fatalf("error while receiving response from GreetClientStreaming: %v", err)
+		log.Fatalf("error while receiving response from ClientStreamServer: %v", err)
 	}
-
-	log.Println("RecordCallHistoryResponse: CallCount is", res.CallCount)
-	log.Println("RecordCallHistoryResponse: DurationCall time is", res.DurationCall)
+	log.Println(res.CheckResult)
 }

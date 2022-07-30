@@ -6,14 +6,25 @@ package pb;
 // client stream services
 service Phone {
   // client stream RPC
-  rpc CallRecord(stream CallRecordRequest) returns (CallRecordResponse) {}
+  rpc NumCheck(stream NumCheckRequest) returns (NumCheckResponse) {}
 }
 
-message CallRecordRequest{
+// model
+message Contact {
+  string firstname = 1;
+  string lastname = 2;
+  uint64 phone_number = 3;
+}
+
+message NumCheckRequest{
   string number = 1;
 }
 
-message CallRecordResponse {
-  int32 callCount = 1;
-  int32 durationCall = 2;
+message NumCheckResponse {
+  repeated Result CheckResult = 1;
+}
+
+message Result {
+  string msg = 1;
+  string status = 2;
 }
