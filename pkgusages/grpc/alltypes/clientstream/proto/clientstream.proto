@@ -3,12 +3,6 @@ option go_package = "alltypes/clientstream/proto";
 
 package pb;
 
-// client stream services
-service Phone {
-  // client stream RPC
-  rpc NumCheck(stream NumCheckRequest) returns (NumCheckResponse) {}
-}
-
 // model
 message Contact {
   string firstname = 1;
@@ -16,12 +10,18 @@ message Contact {
   uint64 phone_number = 3;
 }
 
+// client stream services
+service Phone {
+  // client stream RPC
+  rpc NumCheck(stream NumCheckRequest) returns (NumCheckResponse) {}
+}
+
 message NumCheckRequest{
   string number = 1;
 }
 
 message NumCheckResponse {
-  repeated Result CheckResult = 1;
+  repeated Result check_result = 1;
 }
 
 message Result {
