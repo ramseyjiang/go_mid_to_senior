@@ -17,13 +17,21 @@ type phoneServer struct {
 	contacts []*cs.Contact
 }
 
-func (p *phoneServer) contains(s []int, key int) bool {
-	for _, k := range s {
-		if k == key {
-			return true
-		}
+func main() {
+	listener, err := net.Listen("tcp", "0.0.0.0:50057")
+	if err != nil {
+		_ = errors.New("failed to listen: the port")
 	}
-	return false
+	log.Print("Server started")
+	s := grpc.NewServer()
+	cs.RegisterPhoneServer(s, &phoneServer{})
+
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+
+	if err = s.Serve(listener); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
 }
 
 func (p *phoneServer) NumCheck(stream cs.Phone_NumCheckServer) (err error) {
@@ -49,6 +57,7 @@ func (p *phoneServer) NumCheck(stream cs.Phone_NumCheckServer) (err error) {
 		}
 
 		// process each request after every err != nil
+		log.Println(req.Number)
 		k, _ := strconv.Atoi(req.Number)
 		if p.contacts[k] != nil {
 			result = &cs.Result{
@@ -63,23 +72,6 @@ func (p *phoneServer) NumCheck(stream cs.Phone_NumCheckServer) (err error) {
 		}
 		// append a new result
 		results = append(results, result)
-	}
-}
-
-func main() {
-	listener, err := net.Listen("tcp", "0.0.0.0:50057")
-	if err != nil {
-		_ = errors.New("failed to listen: the port")
-	}
-	log.Print("Server started")
-	s := grpc.NewServer()
-	cs.RegisterPhoneServer(s, &phoneServer{})
-
-	// Register reflection service on gRPC server.
-	reflection.Register(s)
-
-	if err = s.Serve(listener); err != nil {
-		log.Fatalf("failed to serve: %v", err)
 	}
 }
 
@@ -122,4 +114,13 @@ func (p *phoneServer) loadContacts() {
 			PhoneNumber: 220123623,
 		},
 	}
+}
+
+func (p *phoneServer) contains(s []int, key int) bool {
+	for _, k := range s {
+		if k == key {
+			return true
+		}
+	}
+	return false
 }

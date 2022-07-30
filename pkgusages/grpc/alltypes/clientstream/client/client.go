@@ -68,7 +68,7 @@ func ClientStreamNumCheck(client cs.PhoneClient) {
 		if err != nil {
 			return
 		}
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 	}
 
 	res, err := respStream.CloseAndRecv()
