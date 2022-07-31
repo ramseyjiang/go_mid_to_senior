@@ -28,60 +28,60 @@ func main() {
 
 	log.Println("Starting to do a Bidirectional Stream Phone RPC...")
 
-	// BidirectionalStreamSendBytesMsg(client)
+	BidirectionalStreamSendBytesMsg(client)
 	BidirectionalStreamSendStrMsg(client)
 }
 
-// func BidirectionalStreamSendBytesMsg(client bds.PhoneClient) {
-// 	requests := []*bds.SendMsgBytesRequest{
-// 		{
-// 			Msg: []byte("Hi!"),
-// 		},
-// 		{
-// 			Msg: []byte("How are you?"),
-// 		},
-// 		{
-// 			Msg: []byte("end"),
-// 		},
-// 		{
-// 			Msg: []byte("Thank you!"),
-// 		},
-// 		{
-// 			Msg: []byte("end"),
-// 		},
-// 	}
-//
-// 	respStream, err := client.SendMsgBytes(context.Background())
-// 	if err != nil {
-// 		log.Fatalf("error while calling Bidirectional Streaming: %v", err)
-// 	}
-//
-// 	for _, req := range requests {
-// 		log.Printf("Sending req: %v\n", req)
-// 		err = respStream.Send(req)
-// 		if err != nil {
-// 			return
-// 		}
-// 		time.Sleep(1 * time.Second)
-// 	}
-//
-// 	err = respStream.CloseSend()
-// 	if err != nil {
-// 		log.Fatalf("error while receiving response from Bidirectional Streaming: %v", err)
-// 	}
-//
-// 	var responses []*bds.SendMsgBytesResponse
-// 	for {
-// 		resp, err := respStream.Recv()
-// 		if errors.Is(err, io.EOF) {
-// 			break
-// 		}
-// 		responses = append(responses, resp)
-// 		time.Sleep(1 * time.Second)
-// 		log.Println("SendMessageResponse:", resp)
-// 	}
-// 	log.Println("All SendMessageResponse", responses)
-// }
+func BidirectionalStreamSendBytesMsg(client bds.PhoneClient) {
+	requests := []*bds.SendMsgBytesRequest{
+		{
+			Msg: []byte("Hi!"),
+		},
+		{
+			Msg: []byte("How are you?"),
+		},
+		{
+			Msg: []byte("end"),
+		},
+		{
+			Msg: []byte("Thank you!"),
+		},
+		{
+			Msg: []byte("end"),
+		},
+	}
+
+	respStream, err := client.SendMsgBytes(context.Background())
+	if err != nil {
+		log.Fatalf("error while calling Bidirectional Streaming: %v", err)
+	}
+
+	for _, req := range requests {
+		log.Printf("Sending req: %v\n", req)
+		err = respStream.Send(req)
+		if err != nil {
+			return
+		}
+		time.Sleep(1 * time.Second)
+	}
+
+	err = respStream.CloseSend()
+	if err != nil {
+		log.Fatalf("error while receiving response from Bidirectional Streaming: %v", err)
+	}
+
+	var responses []*bds.SendMsgBytesResponse
+	for {
+		resp, err := respStream.Recv()
+		if errors.Is(err, io.EOF) {
+			break
+		}
+		responses = append(responses, resp)
+		time.Sleep(1 * time.Second)
+		log.Println("SendMessageResponse:", resp)
+	}
+	log.Println("All SendMessageResponse", responses)
+}
 
 func BidirectionalStreamSendStrMsg(client bds.PhoneClient) {
 	requests := []*bds.SendMsgStrRequest{

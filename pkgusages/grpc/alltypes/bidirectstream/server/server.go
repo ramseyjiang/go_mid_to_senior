@@ -52,9 +52,9 @@ func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err err
 		log.Println("record calls received number is ", len(p.calls))
 
 		if p.calls[len(p.calls)-1] == "end" {
-			for _, m := range p.calls {
+			for _, msg := range p.calls {
 				// time.Sleep(time.Second)
-				switch m {
+				switch msg {
 				case "end":
 					_ = stream.Send(&bds.SendMsgBytesResponse{
 						Msg: []byte("Have a good one!"),
@@ -99,9 +99,9 @@ func (p *phoneServer) SendMsgStr(stream bds.Phone_SendMsgStrServer) (err error) 
 		p.calls = append(p.calls, req.Msg)
 		log.Println("record calls received number is ", len(p.calls))
 
-		for _, m := range p.calls {
+		for _, msg := range p.calls {
 			time.Sleep(time.Second)
-			switch m {
+			switch msg {
 			case "end":
 				_ = stream.Send(&bds.SendMsgStrResponse{
 					Msg: "Have a good one!",
