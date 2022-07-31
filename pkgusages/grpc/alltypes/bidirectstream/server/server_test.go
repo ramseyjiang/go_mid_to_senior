@@ -85,10 +85,13 @@ func TestPhoneServerSendMessage(t *testing.T) {
 						Msg: []byte("Hello!"),
 					},
 					{
-						Msg: []byte("Fine, you?"),
+						Msg: []byte("Good, good, how are you?"),
 					},
 					{
 						Msg: []byte("Sorry, I don't understand :/"),
+					},
+					{
+						Msg: []byte("Have a good one!"),
 					},
 				},
 				err: nil,
