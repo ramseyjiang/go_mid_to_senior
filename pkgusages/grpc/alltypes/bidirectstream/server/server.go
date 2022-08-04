@@ -53,7 +53,7 @@ func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err err
 
 		if p.calls[len(p.calls)-1] == "end" {
 			for _, msg := range p.calls {
-				// time.Sleep(time.Second)
+				time.Sleep(time.Second)
 				switch msg {
 				case "end":
 					_ = stream.Send(&bds.SendMsgBytesResponse{

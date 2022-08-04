@@ -57,7 +57,7 @@ func BidirectionalStreamSendBytesMsg(client bds.PhoneClient) {
 	}
 
 	for _, req := range requests {
-		log.Printf("Sending req: %v\n", req)
+		log.Printf("Sending bytes req: %v\n", req)
 		err = respStream.Send(req)
 		if err != nil {
 			return
