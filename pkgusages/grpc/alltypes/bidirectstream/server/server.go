@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"strings"
 	"time"
 
 	bds "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/bidirectstream/proto"
@@ -101,26 +102,26 @@ func (p *phoneServer) SendMsgStr(stream bds.Phone_SendMsgStrServer) (err error) 
 
 		for _, msg := range p.calls {
 			time.Sleep(time.Second)
-			switch msg {
-			case "end":
+			switch split := strings.Split(msg, "."); split[1][1:] {
+			case "Have a good one!":
 				_ = stream.Send(&bds.SendMsgStrResponse{
 					Msg: "Have a good one!",
 				})
-			case "Hi!":
+			case "What's up?":
 				_ = stream.Send(&bds.SendMsgStrResponse{
-					Msg: "Hello!",
+					Msg: "Great, how are you, Mills!",
 				})
-			case "How are you?":
+			case "Do you want to have a new contract?":
 				_ = stream.Send(&bds.SendMsgStrResponse{
-					Msg: "Good, good, how are you?",
+					Msg: "Of course, bro! The largest I can get, please.",
 				})
-			case "See you later":
+			case "How much do you want?":
 				_ = stream.Send(&bds.SendMsgStrResponse{
-					Msg: "See you!",
+					Msg: "The largest I can get, please.",
 				})
 			default:
 				_ = stream.Send(&bds.SendMsgStrResponse{
-					Msg: "Sorry, I don't understand!",
+					Msg: "Sorry, I don't understand! I think you can.",
 				})
 			}
 		}

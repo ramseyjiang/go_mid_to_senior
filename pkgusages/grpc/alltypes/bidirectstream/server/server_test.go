@@ -156,34 +156,34 @@ func TestPhoneServerSendMsgStr(t *testing.T) {
 		"Must_Success": {
 			in: []*bds.SendMsgStrRequest{
 				{
-					Msg: "Hi!",
+					Msg: "Hey Green. What's up?",
 				},
 				{
-					Msg: "How are you?",
+					Msg: "Not bad, bro. Do you want to have a new contract?",
 				},
 				{
-					Msg: "end",
+					Msg: "Please be serious. How much do you want?",
 				},
 				{
-					Msg: "Thank you!",
+					Msg: "That will be great for you. But we don't have enough space if you get that.",
 				},
 				{
-					Msg: "end",
+					Msg: "Ok, let's hold to see what will happen. Have a good one!",
 				},
 			},
 			expected: expectation{
 				out: []*bds.SendMsgStrResponse{
 					{
-						Msg: "Hello!",
+						Msg: "Great, how are you, Mills!",
 					},
 					{
-						Msg: "Good, good, how are you?",
+						Msg: "Of course, bro! The largest I can get, please.",
 					},
 					{
-						Msg: "Have a good one!",
+						Msg: "The largest I can get, please.",
 					},
 					{
-						Msg: "Sorry, I don't understand!",
+						Msg: "Sorry, I don't understand! I think you can.",
 					},
 					{
 						Msg: "Have a good one!",

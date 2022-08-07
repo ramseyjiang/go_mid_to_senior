@@ -85,19 +85,19 @@ func BidirectionalStreamSendBytesMsg(client bds.PhoneClient) {
 func BidirectionalStreamSendStrMsg(client bds.PhoneClient) {
 	requests := []*bds.SendMsgStrRequest{
 		{
-			Msg: "Hi!",
+			Msg: "Hey Green. What's up?",
 		},
 		{
-			Msg: "How are you?",
+			Msg: "Not bad, bro. Do you want to have a new contract?",
 		},
 		{
-			Msg: "end",
+			Msg: "Please be serious. How much do you want?",
 		},
 		{
-			Msg: "Thank you!",
+			Msg: "That will be great for you. But we don't have enough space if you get that.",
 		},
 		{
-			Msg: "end",
+			Msg: "Ok, let's hold to see what will happen. Have a good one!",
 		},
 	}
 
