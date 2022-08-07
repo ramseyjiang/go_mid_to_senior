@@ -49,7 +49,7 @@ func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err err
 		}
 
 		p.calls = append(p.calls, string(req.Msg))
-		log.Println("record calls received number is ", len(p.calls))
+		log.Println("record Bytes calls received number is ", len(p.calls))
 
 		if p.calls[len(p.calls)-1] == "end" {
 			for _, msg := range p.calls {
@@ -97,7 +97,7 @@ func (p *phoneServer) SendMsgStr(stream bds.Phone_SendMsgStrServer) (err error) 
 		}
 
 		p.calls = append(p.calls, req.Msg)
-		log.Println("record calls received number is ", len(p.calls))
+		log.Println("record Str calls received number is ", len(p.calls))
 
 		for _, msg := range p.calls {
 			time.Sleep(time.Second)

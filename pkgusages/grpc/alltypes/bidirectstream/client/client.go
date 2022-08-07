@@ -77,9 +77,9 @@ func BidirectionalStreamSendBytesMsg(client bds.PhoneClient) {
 		}
 		responses = append(responses, resp)
 		time.Sleep(1 * time.Second)
-		log.Println("SendMessageResponse:", resp)
+		log.Println("Bytes SendMessageResponse:", resp)
 	}
-	log.Println("All SendMessageResponse", responses)
+	log.Println("All bytes SendMessageResponse", responses)
 }
 
 func BidirectionalStreamSendStrMsg(client bds.PhoneClient) {
@@ -117,11 +117,11 @@ func BidirectionalStreamSendStrMsg(client bds.PhoneClient) {
 		if errors.Is(err, io.EOF) {
 			break
 		}
-		log.Println("SendMessageResponse:", resp)
+		log.Println("Str SendMessageResponse:", resp)
 		time.Sleep(1 * time.Second)
 		responses = append(responses, resp)
 	}
-	log.Println("All SendMessageResponse", responses)
+	log.Println("All str SendMessageResponse", responses)
 
 	err = respStream.CloseSend()
 	if err != nil {
