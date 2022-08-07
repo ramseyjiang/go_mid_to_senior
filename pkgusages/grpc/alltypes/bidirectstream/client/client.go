@@ -58,8 +58,7 @@ func BidirectionalStreamSendBytesMsg(client bds.PhoneClient) {
 
 	for _, req := range requests {
 		log.Printf("Sending bytes req: %v\n", req)
-		err = respStream.Send(req)
-		if err != nil {
+		if err = respStream.Send(req); err != nil {
 			return
 		}
 		time.Sleep(1 * time.Second)
@@ -110,16 +109,14 @@ func BidirectionalStreamSendStrMsg(client bds.PhoneClient) {
 	var responses []*bds.SendMsgStrResponse
 	for _, req := range requests {
 		log.Printf("Sending str req: %v\n", req)
-		err = respStream.Send(req)
-		time.Sleep(1 * time.Second)
-		if err != nil {
+		if err = respStream.Send(req); err != nil {
 			return
 		}
+		time.Sleep(1 * time.Second)
 		resp, err := respStream.Recv()
 		if errors.Is(err, io.EOF) {
 			break
 		}
-		time.Sleep(1 * time.Second)
 		log.Println("SendMessageResponse:", resp)
 		time.Sleep(1 * time.Second)
 		responses = append(responses, resp)

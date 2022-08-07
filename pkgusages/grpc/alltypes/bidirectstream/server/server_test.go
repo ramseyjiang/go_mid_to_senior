@@ -48,9 +48,7 @@ func server(ctx context.Context) (client bds.PhoneClient, closer func()) {
 	return client, closer
 }
 
-// send requests in the for loop using outClient.Send().
-// And then, it will get responses using outClient.Recv() and store them at outs slice.
-func TestPhoneServerSendMessage(t *testing.T) {
+func TestPhoneServerSendMsgBytes(t *testing.T) {
 	ctx := context.Background()
 	client, closer := server(ctx)
 	defer closer()
@@ -88,7 +86,7 @@ func TestPhoneServerSendMessage(t *testing.T) {
 						Msg: []byte("Good, good, how are you?"),
 					},
 					{
-						Msg: []byte("Sorry, I don't understand :/"),
+						Msg: []byte("Sorry, I don't understand!"),
 					},
 					{
 						Msg: []byte("Have a good one!"),
@@ -132,6 +130,103 @@ func TestPhoneServerSendMessage(t *testing.T) {
 				} else {
 					for i, o := range outs {
 						if !bytes.Equal(o.Msg, tt.expected.out[i].Msg) {
+							t.Errorf("Out -> \nWant: %q\nGot : %q", tt.expected.out, outs)
+						}
+					}
+				}
+			}
+		})
+	}
+}
+
+func TestPhoneServerSendMsgStr(t *testing.T) {
+	ctx := context.Background()
+	client, closer := server(ctx)
+	defer closer()
+
+	type expectation struct {
+		out []*bds.SendMsgStrResponse
+		err error
+	}
+
+	tests := map[string]struct {
+		in       []*bds.SendMsgStrRequest
+		expected expectation
+	}{
+		"Must_Success": {
+			in: []*bds.SendMsgStrRequest{
+				{
+					Msg: "Hi!",
+				},
+				{
+					Msg: "How are you?",
+				},
+				{
+					Msg: "end",
+				},
+				{
+					Msg: "Thank you!",
+				},
+				{
+					Msg: "end",
+				},
+			},
+			expected: expectation{
+				out: []*bds.SendMsgStrResponse{
+					{
+						Msg: "Hello!",
+					},
+					{
+						Msg: "Good, good, how are you?",
+					},
+					{
+						Msg: "Have a good one!",
+					},
+					{
+						Msg: "Sorry, I don't understand!",
+					},
+					{
+						Msg: "Have a good one!",
+					},
+				},
+				err: nil,
+			},
+		},
+	}
+
+	for scenario, tt := range tests {
+		t.Run(scenario, func(t *testing.T) {
+			outClient, err := client.SendMsgStr(ctx)
+
+			for _, v := range tt.in {
+				if err := outClient.Send(v); err != nil {
+					t.Errorf("Err -> %q", err)
+				}
+			}
+
+			if err := outClient.CloseSend(); err != nil {
+				t.Errorf("Err -> %q", err)
+			}
+
+			var outs []*bds.SendMsgStrResponse
+			for {
+				o, err := outClient.Recv()
+				if errors.Is(err, io.EOF) {
+					break
+				}
+				outs = append(outs, o)
+			}
+
+			if err != nil {
+				if tt.expected.err.Error() != err.Error() {
+					t.Errorf("Err -> \nWant: %q\nGot: %q\n", tt.expected.err, err)
+				}
+			} else {
+				if len(outs) != len(tt.expected.out) {
+					t.Errorf("Out -> \nWant: %q\nGot : %q", tt.expected.out, outs)
+				} else {
+					for i, o := range outs {
+						if o.Msg != tt.expected.out[i].Msg {
 							t.Errorf("Out -> \nWant: %q\nGot : %q", tt.expected.out, outs)
 						}
 					}

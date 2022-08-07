@@ -73,7 +73,7 @@ func (p *phoneServer) SendMsgBytes(stream bds.Phone_SendMsgBytesServer) (err err
 					})
 				default:
 					_ = stream.Send(&bds.SendMsgBytesResponse{
-						Msg: []byte("Sorry, I don't understand :/"),
+						Msg: []byte("Sorry, I don't understand!"),
 					})
 				}
 			}
@@ -120,7 +120,7 @@ func (p *phoneServer) SendMsgStr(stream bds.Phone_SendMsgStrServer) (err error) 
 				})
 			default:
 				_ = stream.Send(&bds.SendMsgStrResponse{
-					Msg: "Sorry, I don't understand :/",
+					Msg: "Sorry, I don't understand!",
 				})
 			}
 		}
