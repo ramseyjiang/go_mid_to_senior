@@ -5,15 +5,14 @@ import (
 	"log"
 	"strconv"
 
-	"google.golang.org/grpc/credentials"
-
 	tlsunary "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/tlsunary/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 func main() {
-	opts := genClientTLSOpts()
-	cc, err := grpc.Dial("localhost:50055", opts...)
+	optClient := genClientTLSOpts()
+	cc, err := grpc.Dial("localhost:50055", optClient...)
 	if err != nil {
 		log.Fatalf("could not connect: %v", err)
 	}

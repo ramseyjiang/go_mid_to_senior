@@ -7,10 +7,9 @@ import (
 	"net"
 	"strconv"
 
-	"google.golang.org/grpc/credentials"
-
 	tlsunary "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/tlsunary/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -25,8 +24,8 @@ func main() {
 	}
 	log.Print("Server started")
 
-	opts := genServerTLSOpts(err)
-	s := grpc.NewServer(opts...)
+	optServer := genServerTLSOpts()
+	s := grpc.NewServer(optServer...)
 	tlsunary.RegisterPhoneServer(s, &phoneServer{})
 
 	// Register reflection service on gRPC server.
@@ -37,7 +36,7 @@ func main() {
 	}
 }
 
-func genServerTLSOpts(err error) []grpc.ServerOption {
+func genServerTLSOpts() []grpc.ServerOption {
 	var opts []grpc.ServerOption
 	certFile := "cert/server.crt"
 	keyFile := "cert/server.pem"
