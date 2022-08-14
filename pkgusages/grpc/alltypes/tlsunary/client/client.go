@@ -12,16 +12,7 @@ import (
 )
 
 func main() {
-	var opts []grpc.DialOption
-	certFile := "cert/ca.crt"
-	creds, err := credentials.NewClientTLSFromFile(certFile, "")
-
-	if err != nil {
-		log.Fatalf("error while loading CA trust certificate: %v\n", err)
-	}
-
-	opts = append(opts, grpc.WithTransportCredentials(creds))
-
+	opts := genClientTLSOpts()
 	cc, err := grpc.Dial("localhost:50055", opts...)
 	if err != nil {
 		log.Fatalf("could not connect: %v", err)
@@ -40,6 +31,16 @@ func main() {
 	GetServerContactName(client)
 	GetServerContactNum(client)
 	ListContacts(client)
+}
+
+func genClientTLSOpts() (opts []grpc.DialOption) {
+	certFile := "cert/ca.crt"
+	creds, err := credentials.NewClientTLSFromFile(certFile, "")
+	if err != nil {
+		log.Fatalf("error while loading CA trust certificate: %v\n", err)
+	}
+	opts = append(opts, grpc.WithTransportCredentials(creds))
+	return opts
 }
 
 func GetServerContactName(client tlsunary.PhoneClient) {

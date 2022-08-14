@@ -25,17 +25,7 @@ func main() {
 	}
 	log.Print("Server started")
 
-	var opts []grpc.ServerOption
-	certFile := "cert/server.crt"
-	keyFile := "cert/server.pem"
-	creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)
-
-	if err != nil {
-		log.Fatalf("Failed loading certficates: %v\n", err)
-	}
-
-	opts = append(opts, grpc.Creds(creds))
-
+	opts := genServerTLSOpts(err)
 	s := grpc.NewServer(opts...)
 	tlsunary.RegisterPhoneServer(s, &phoneServer{})
 
@@ -45,6 +35,18 @@ func main() {
 	if err = s.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
+}
+
+func genServerTLSOpts(err error) []grpc.ServerOption {
+	var opts []grpc.ServerOption
+	certFile := "cert/server.crt"
+	keyFile := "cert/server.pem"
+	creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)
+	if err != nil {
+		log.Fatalf("Failed loading certficates: %v\n", err)
+	}
+	opts = append(opts, grpc.Creds(creds))
+	return opts
 }
 
 func (p *phoneServer) GetContactName(ctx context.Context, req *tlsunary.GetContactNameRequest) (resp *tlsunary.GetContactNameResponse, err error) {
