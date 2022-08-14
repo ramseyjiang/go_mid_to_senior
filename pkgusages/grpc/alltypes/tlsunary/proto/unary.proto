@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "alltypes/unary/proto";
+option go_package = "alltypes/tlsunary/proto";
 
 package pb;
 
