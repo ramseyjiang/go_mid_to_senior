@@ -12,6 +12,7 @@
 # "Share" files: ca.crt (needed by the client), server.csr (needed by the CA)
 
 # Changes these CN's to match your hosts in your environment if needed.
+# chmod +x ./cert/gen.sh
 SERVER_CN=localhost
 MY_SUBJECT="/CN=${SERVER_CN}"
 
