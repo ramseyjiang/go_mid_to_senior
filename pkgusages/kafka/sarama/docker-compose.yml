@@ -1,0 +1,27 @@
+version: '3.0'
+services:
+
+  single-zookeeper:
+    image: wurstmeister/zookeeper:latest
+    expose:
+      - "2181"
+    restart: always
+    container_name: single-zookeeper
+
+  single-kafka:
+    image: wurstmeister/kafka:latest
+    depends_on:
+      - single-zookeeper
+    ports:
+      - "9093:9093"
+    expose:
+      - "9092"
+    environment:
+      KAFKA_CREATE_TOPICS: "sarama_topic:2:1"
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://single-kafka:9092,OUTSIDE://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9093
+      KAFKA_ZOOKEEPER_CONNECT: single-zookeeper:2181
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+    restart: always
+    container_name: single-kafka
