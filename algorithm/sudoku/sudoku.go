@@ -56,7 +56,7 @@ func solveSudoku(board [][]byte) {
 
 		// fill in available choices
 		for k := byte(1); k <= 9; k++ {
-			board[j][i] = 48 + k
+			board[j][i] = 48 + k // 48 is based on According to ASCII table, it means number 0.
 			if ValidRule(board, j, i) {
 				j, i, e := findNextEmpty(board)
 				if e != nil {
