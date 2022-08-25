@@ -6,7 +6,7 @@ import (
 
 // go test -v -run TestGetInstance
 func TestGetInstance(t *testing.T) {
-	s := getInstance()
+	s := GetInstance()
 	if s == nil {
 		t.Fatalf("First sigletone is nil")
 	}
@@ -16,7 +16,7 @@ func TestGetInstance(t *testing.T) {
 		t.Errorf("First value is not setted")
 	}
 
-	s2 := getInstance()
+	s2 := GetInstance()
 	if s2 != s {
 		t.Error("New instance different")
 	}
