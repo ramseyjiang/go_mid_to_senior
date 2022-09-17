@@ -66,5 +66,4 @@ func TestSinglyLink_DeleteAt(t *testing.T) {
 	if !reflect.DeepEqual(values, expected) {
 		t.Errorf("Expected %v, got %v", expected, values)
 	}
-
 }
