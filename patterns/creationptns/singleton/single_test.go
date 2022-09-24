@@ -14,58 +14,21 @@ func TestGetInstance(t *testing.T) {
 	checkTitle := s.GetTitle()
 	if checkTitle != "First value" {
 		t.Errorf("First value is not setted")
+	} else {
+		t.Log("GetTitle and SetTitle work very well.")
 	}
 
 	s2 := GetInstance()
 	if s2 != s {
 		t.Error("New instance different")
+	} else {
+		t.Log("s2 equal with s, because they are all using Singleton struct.")
 	}
 	s2.SetTitle("New title")
 	newTitle := s.GetTitle()
 	if newTitle != "New title" {
 		t.Errorf("Title different after change")
-	}
-}
-
-func Test_singleton_GetTitle(t *testing.T) {
-	type fields struct {
-		title string
-	}
-	var tests []struct {
-		name   string
-		fields fields
-		want   string
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			s := &singleton{
-				title: tt.fields.title,
-			}
-			if got := s.GetTitle(); got != tt.want {
-				t.Errorf("GetTitle() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_singleton_SetTitle(t *testing.T) {
-	type fields struct {
-		title string
-	}
-	type args struct {
-		t string
-	}
-	var tests []struct {
-		name   string
-		fields fields
-		args   args
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			s := &singleton{
-				title: tt.fields.title,
-			}
-			s.SetTitle(tt.args.t)
-		})
+	} else {
+		t.Log("GetTitle and SetTitle work very well.")
 	}
 }
