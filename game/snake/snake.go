@@ -24,7 +24,7 @@ type Coordinate struct {
 type Snake struct {
 	points                           []*Coordinate
 	horizontalDirect, verticalDirect int
-	symbol                           rune
+	symbol                           int32
 }
 
 // Egg type consists of 2 things.
@@ -32,7 +32,7 @@ type Snake struct {
 // symbol is used to represent an egg's display in the terminal.
 type Egg struct {
 	point  *Coordinate
-	symbol rune
+	symbol int32
 }
 
 var snake *Snake
@@ -71,7 +71,6 @@ const FrameBorderTopRight = '╗'
 const FrameBorderBottomRight = '╝'
 const FrameBorderBottomLeft = '╚'
 
-// This program just prints "Hello, World!".  Press ESC to exit.
 func main() {
 	initScreen()
 	initGameObj()
@@ -147,10 +146,10 @@ func readKeyboardInput() chan string {
 // gameControl is used control the snake game base on the player input.
 // p or Enter is used to pause the game.
 // q or ESC is used to exit the game.
-// up arrow or w is used to go up.
-// down arrow or s is used to go down.
-// left arrow or a is used to go left.
-// right arrow or w is used to go right.
+// up arrow or W is used to go up.
+// down arrow or S is used to go down.
+// left arrow or A is used to go left.
+// right arrow or D is used to go right.
 func gameControl(keyInput chan string) {
 	key := getKeyInput(keyInput)
 	switch key {
@@ -326,7 +325,7 @@ func updateGameState() {
 	if isGamePaused {
 		return
 	}
-	clearScreen()
+	clearEatenEgg()
 	updateSnake()
 	updateSpeed()
 	updateEgg()
@@ -417,7 +416,6 @@ func initScreen() {
 		Foreground(tcell.ColorWhite)
 	Screen.SetStyle(defStyle)
 	screenWidth, screenHeight = Screen.Size()
-	fmt.Println("screenWidth and screenHeight are", screenWidth, screenHeight)
 
 	if screenWidth < FrameWidth || screenHeight < FrameHeight {
 		fmt.Printf("The game frame is defined with %d width and %d height. Increase terminal size and try again ", FrameWidth, FrameHeight)
@@ -425,7 +423,7 @@ func initScreen() {
 	}
 }
 
-func printScreen(x, y, borderThickness int, style tcell.Style, char rune) {
+func drawElement(x, y, borderThickness int, style tcell.Style, char int32) {
 	for i := 0; i < borderThickness; i++ {
 		for j := 0; j < borderThickness; j++ {
 			Screen.SetContent(x+i, y+j, char, nil, style)
@@ -439,7 +437,7 @@ func getFrameTopLeftCoordinate() (int, int) {
 
 // displayFrame is used to draw the game's border.
 func displayFrame() {
-	printUnfilledRectangle(getFrameTopLeftCoordinate())
+	drawPlayArea(getFrameTopLeftCoordinate())
 	Screen.Show()
 }
 
@@ -450,44 +448,44 @@ func displayGameObjects() {
 }
 
 func displaySnake() {
-	style := tcell.StyleDefault.Foreground(tcell.ColorDarkGreen.TrueColor())
+	style := tcell.StyleDefault.Foreground(tcell.ColorLawnGreen.TrueColor())
 	for _, snakeCoordinate := range snake.points {
-		printScreen(snakeCoordinate.x, snakeCoordinate.y, 1, style, snake.symbol)
+		drawElement(snakeCoordinate.x, snakeCoordinate.y, 1, style, snake.symbol)
 	}
 }
 
 func displayEgg() {
 	style := tcell.StyleDefault.Foreground(tcell.ColorOrange.TrueColor())
-	printScreen(egg.point.x, egg.point.y, 1, style, egg.symbol)
-}
-
-func displayGamePausedInfo() {
-	_, frameY := getFrameTopLeftCoordinate()
-	printAtCenter(frameY-2, "Game Paused !!", true)
-	printAtCenter(frameY-1, "Press p or Enter to resume", true)
-}
-
-func displayGameOverInfo() {
-	centerY := (screenHeight - FrameHeight) / 2
-	printAtCenter(centerY-1, "Game Over !!", false)
-	printAtCenter(centerY, fmt.Sprintf("Your Score : %d", score), false)
+	drawElement(egg.point.x, egg.point.y, 1, style, egg.symbol)
 }
 
 func displayGameScore() {
 	_, frameY := getFrameTopLeftCoordinate()
-	printAtCenter(frameY+FrameHeight+2, fmt.Sprintf("Current Score : %d", score), false)
+	showNoticeScreenCenter(frameY+FrameHeight+2, fmt.Sprintf("Current Score : %d", score), false)
 }
 
 func displaySpeedLevel() {
 	_, frameY := getFrameTopLeftCoordinate()
-	printAtCenter(frameY+FrameHeight+3, fmt.Sprintf("Current Speed : %d", speed), false)
+	showNoticeScreenCenter(frameY+FrameHeight+3, fmt.Sprintf("Current Speed : %d", speed), false)
 }
 
-// printAtCenter is used to print passed content at center horizontally, while vertical coordinate is passed to function.
-func printAtCenter(startY int, content string, trackClear bool) {
+func displayGamePausedInfo() {
+	_, frameY := getFrameTopLeftCoordinate()
+	showNoticeScreenCenter(frameY-2, "Game Paused !!", true)
+	showNoticeScreenCenter(frameY-1, "Press p or Enter to resume", true)
+}
+
+func displayGameOverInfo() {
+	centerY := (screenHeight - FrameHeight) / 2
+	showNoticeScreenCenter(centerY-1, "Game Over !!", false)
+	showNoticeScreenCenter(centerY, fmt.Sprintf("Your Score : %d", score), false)
+}
+
+// showNoticeScreenCenter is used to print passed content at center horizontally, while vertical coordinate is passed to function.
+func showNoticeScreenCenter(startY int, content string, trackClear bool) {
 	startX := (screenWidth - len(content)) / 2
 	for i := 0; i < len(content); i++ {
-		printScreen(startX+i, startY, 1, tcell.StyleDefault, rune(content[i]))
+		drawElement(startX+i, startY, 1, tcell.StyleDefault, int32(content[i]))
 		if trackClear {
 			coordinatesToClear = append(coordinatesToClear, &Coordinate{startX + i, startY})
 		}
@@ -495,34 +493,35 @@ func printAtCenter(startY int, content string, trackClear bool) {
 	Screen.Show()
 }
 
-// clearScreen is used to clear necessary coordinates represented by variable coordinatesToClear
-func clearScreen() {
+// clearEatenEgg is used to clear necessary coordinates represented by variable coordinatesToClear
+func clearEatenEgg() {
 	for _, coordinate := range coordinatesToClear {
-		printScreen(coordinate.x, coordinate.y, 1, tcell.StyleDefault, ' ')
+		drawElement(coordinate.x, coordinate.y, 1, tcell.StyleDefault, ' ')
 	}
 }
 
-func printUnfilledRectangle(xOrigin, yOrigin int) {
-	var upperBorder, lowerBorder rune
+func drawPlayArea(xOrigin, yOrigin int) {
+	var upperBorder, lowerBorder int32
 	verticalBorder := FrameBorderVertical
 	for i := 0; i < FrameWidth; i++ {
-		if i == 0 {
+		switch i {
+		case 0:
 			upperBorder = FrameBorderTopLeft
 			lowerBorder = FrameBorderBottomLeft
-		} else if i == FrameWidth-1 {
+		case FrameWidth - 1:
 			upperBorder = FrameBorderTopRight
 			lowerBorder = FrameBorderBottomRight
-		} else {
+		default:
 			upperBorder = FrameBorderHorizontal
 			lowerBorder = FrameBorderHorizontal
 		}
-		printScreen(xOrigin+i, yOrigin, FrameBorderThickness, tcell.StyleDefault, upperBorder)
-		printScreen(xOrigin+i, yOrigin+FrameHeight, FrameBorderThickness, tcell.StyleDefault, lowerBorder)
+		drawElement(xOrigin+i, yOrigin, FrameBorderThickness, tcell.StyleDefault, upperBorder)               // print top border
+		drawElement(xOrigin+i, yOrigin+FrameHeight-1, FrameBorderThickness, tcell.StyleDefault, lowerBorder) // print bottom border
 	}
 
 	// side boundary
 	for i := 1; i < FrameHeight; i++ {
-		printScreen(xOrigin, yOrigin+i, FrameBorderThickness, tcell.StyleDefault, verticalBorder)
-		printScreen(xOrigin+FrameWidth-1, yOrigin+i, FrameBorderThickness, tcell.StyleDefault, verticalBorder)
+		drawElement(xOrigin, yOrigin+i, FrameBorderThickness, tcell.StyleDefault, verticalBorder)              // print left side border
+		drawElement(xOrigin+FrameWidth-1, yOrigin+i, FrameBorderThickness, tcell.StyleDefault, verticalBorder) // print right side border
 	}
 }
