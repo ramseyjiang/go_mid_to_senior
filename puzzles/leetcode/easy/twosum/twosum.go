@@ -16,15 +16,17 @@ func twoSum1(nums []int, target int) (res []int) {
 }
 
 /*
-Runtime: 4 ms, faster than 95.85% of Go online submissions for Two Sum.
-Memory Usage: 4.4 MB, less than 16.38% of Go online submissions for Two Sum.
+Runtime: 8 ms, faster than 82.76% of Go online submissions for Two Sum.
+Memory Usage: 4.3 MB, less than 39.15% of Go online submissions for Two Sum.
+
+Runtime: 4 ms, faster than 95.95% of Go online submissions for Two Sum.
+Memory Usage: 4.2 MB, less than 56.57% of Go online submissions for Two Sum.
 */
 func twoSum2(nums []int, target int) (res []int) {
 	record := make(map[int]int)
-	res = make([]int, 2)
 	for i := 0; i < len(nums); i++ {
 		if val, ok := record[target-nums[i]]; ok {
-			res = []int{i, val}
+			res = append(res, i, val)
 			break
 		}
 		record[nums[i]] = i
