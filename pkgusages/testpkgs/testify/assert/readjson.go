@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -22,14 +22,19 @@ func processData(file string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err = f.Close()
+		if err != nil {
+			log.Println(err.Error())
+		}
+	}(f)
 	return unmarshalAndPrint(f)
 }
 
 // unmarshalAndPrint is used to read json.
 // For testing, instead of preparing data and opening a file, we just pass a literal JSON string to strings.NewReader
 func unmarshalAndPrint(f io.Reader) error {
-	data, err := ioutil.ReadAll(f)
+	data, err := io.ReadAll(f)
 	if err != nil {
 		return err
 	}

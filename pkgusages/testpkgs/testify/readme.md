@@ -16,3 +16,6 @@
 5. Mocking out Downstream HTTP Calls with net/http/httptest && GRPC response
 
 These 5 mocking techs are almost matching 5 points write better codes for tests.
+
+assert.Nil() and require.Nil(), both are used to check err is nil or not. require.Nil() always is used for checking
+requests have all params or not.
