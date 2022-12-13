@@ -32,7 +32,7 @@ func (e *Egg) displayEgg() {
 func (e *Egg) getNewEggCoordinate() (int, int) {
 	rand.Seed(time.Now().UnixMicro())
 	randomX := rand.Intn(FrameWidth - 3)
-	randomY := rand.Intn(FrameHeight - 1)
+	randomY := rand.Intn(FrameHeight - 2)
 
 	newCoordinate := &Coordinate{
 		randomX, randomY,

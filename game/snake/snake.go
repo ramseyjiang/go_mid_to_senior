@@ -28,6 +28,7 @@ func (sn *Snake) displaySnake() {
 	style := tcell.StyleDefault.Foreground(tcell.ColorLawnGreen.TrueColor())
 	for _, snakeCoordinate := range snake.points {
 		drawElement(snakeCoordinate.x, snakeCoordinate.y, 1, style, snake.symbol)
+		// screen.SetContent(snakeCoordinate.x, snakeCoordinate.y, snake.symbol, nil, style)
 	}
 }
 
@@ -97,19 +98,20 @@ func (sn *Snake) setSnakeWithinFrame(snakeCoordinate *Coordinate) {
 	// Determine game frame bottom boundary is equal to sum of top boundary and frame’s height
 	bottomY := originY + FrameHeight - 1
 
-	// If snake’s y coordinate is less than or equal to top boundary then set new y coordinate as bottom boundary — 1
+	// Below logic is used to make the snake can through the boundary.
+	// If snake’s y coordinate is less than or equal to top boundary then set new y coordinate as bottom boundary—1, through the top
 	if snakeCoordinate.y <= topY {
 		snakeCoordinate.y = bottomY - 1
 	}
-	// If snake’s y coordinate is greater than or equal to bottom boundary then set new y coordinate as top boundary + 1
+	// If snake’s y coordinate is greater than or equal to bottom boundary then set new y coordinate as top boundary+1, through the bottom
 	if snakeCoordinate.y >= bottomY {
 		snakeCoordinate.y = topY + 1
 	}
-	// If snake’s x coordinate is greater than or equal to right boundary then set new x coordinate as left boundary + 1
+	// If snake’s x coordinate is greater than or equal to right boundary then set new x coordinate as left boundary+1, through the right
 	if snakeCoordinate.x >= rightX {
 		snakeCoordinate.x = leftX + 1
 	}
-	// If snake’s x coordinate is less than or equal to left boundary then set new x coordinate as right boundary — 1
+	// If snake’s x coordinate is less than or equal to left boundary then set new x coordinate as right boundary—1, through the left
 	if snakeCoordinate.x <= leftX {
 		snakeCoordinate.x = rightX - 1
 	}
