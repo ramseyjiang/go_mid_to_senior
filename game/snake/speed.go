@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-var score, speed int
-
 func GetSpeedLevel() time.Duration {
 	speed1 := 120 * time.Millisecond
 	speed2 := 90 * time.Millisecond
@@ -16,18 +14,18 @@ func GetSpeedLevel() time.Duration {
 	scoreLevel2 := 2
 	scoreLevel3 := 3
 
-	if score > scoreLevel1 && score <= scoreLevel2 {
-		speed = 1
+	if game.Score > scoreLevel1 && game.Score <= scoreLevel2 {
+		game.Speed = 1
 		return speed2
 	}
 
-	if score > scoreLevel2 && score <= scoreLevel3 {
-		speed = 2
+	if game.Score > scoreLevel2 && game.Score <= scoreLevel3 {
+		game.Speed = 2
 		return speed3
 	}
 
-	if score > scoreLevel3 {
-		speed = 3
+	if game.Score > scoreLevel3 {
+		game.Speed = 3
 		return speed4
 	}
 
@@ -41,5 +39,5 @@ func updateSpeed() {
 
 func DisplaySpeedLevel() {
 	_, frameY := getFrameTopLeftCoordinate()
-	showNoticeScreenCenter(frameY+FrameHeight+3, fmt.Sprintf("Current Speed : %d", speed), false)
+	showNoticeScreenCenter(frameY+FrameHeight+3, fmt.Sprintf("Current Speed : %d", game.Speed), false)
 }

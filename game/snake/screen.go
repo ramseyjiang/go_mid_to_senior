@@ -13,31 +13,6 @@ var screen tcell.Screen
 // screenWidth and screenHeight are used to hold screen's full width and height respectively.
 var screenWidth, screenHeight int
 
-// InitGameObj is used to set initial values for the snake variable and the egg variable
-// xDirect and yDirect is used to determine the snake init direction.
-// xDirect=1, yDirect=0 means leftward.
-// xDirect=0, yDirect=-1 means upward.
-// xDirect=0, yDirect=1 means downward.
-// xDirect=-1, yDirect=0 means rightward.
-func InitGameObj() {
-	InitScreen()
-	snake = &Snake{
-		points:  snake.getInitialSnakeCoordinates(),
-		xDirect: 1,
-		yDirect: 0,
-		symbol:  SymbolSnake,
-	}
-
-	egg = &Egg{
-		pos:    egg.getInitialEggCoordinates(),
-		symbol: SymbolEgg,
-	}
-
-	DisplayFrame()
-	DisplayGameScore()
-	DisplaySpeedLevel()
-}
-
 func InitScreen() {
 	screen, err = tcell.NewScreen()
 	if err != nil {
@@ -96,7 +71,7 @@ func drawPlayArea(xOrigin, yOrigin int) {
 
 func DisplayGameScore() {
 	_, frameY := getFrameTopLeftCoordinate()
-	showNoticeScreenCenter(frameY+FrameHeight+2, fmt.Sprintf("Current Score : %d", score), false)
+	showNoticeScreenCenter(frameY+FrameHeight+2, fmt.Sprintf("Current Score : %d", game.Score), false)
 }
 
 func DisplayGamePausedInfo() {
@@ -108,5 +83,5 @@ func DisplayGamePausedInfo() {
 func DisplayGameOverInfo() {
 	centerY := (screenHeight - FrameHeight) / 2
 	showNoticeScreenCenter(centerY-1, "Game Over !!", false)
-	showNoticeScreenCenter(centerY, fmt.Sprintf("Your Score : %d", score), false)
+	showNoticeScreenCenter(centerY, fmt.Sprintf("Your Score : %d", game.Score), false)
 }

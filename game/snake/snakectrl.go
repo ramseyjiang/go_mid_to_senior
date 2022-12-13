@@ -47,46 +47,46 @@ func ControlSnake(keyInput chan string) {
 		screen.Fini()
 		os.Exit(0)
 	case "Rune[p]":
-		IsGamePaused = !IsGamePaused
+		game.IsGamePaused = !game.IsGamePaused
 	case "Enter":
-		IsGamePaused = !IsGamePaused
+		game.IsGamePaused = !game.IsGamePaused
 	case "Up":
-		if !IsGamePaused && snake.yDirect == 0 {
+		if !game.IsGamePaused && snake.yDirect == 0 {
 			snake.yDirect = -1
 			snake.xDirect = 0
 		}
 	case "Down":
-		if !IsGamePaused && snake.yDirect == 0 {
+		if !game.IsGamePaused && snake.yDirect == 0 {
 			snake.yDirect = 1
 			snake.xDirect = 0
 		}
 	case "Left":
-		if !IsGamePaused && snake.xDirect == 0 {
+		if !game.IsGamePaused && snake.xDirect == 0 {
 			snake.yDirect = 0
 			snake.xDirect = -1
 		}
 	case "Right":
-		if !IsGamePaused && snake.xDirect == 0 {
+		if !game.IsGamePaused && snake.xDirect == 0 {
 			snake.yDirect = 0
 			snake.xDirect = 1
 		}
 	case "Rune[w]":
-		if !IsGamePaused && snake.yDirect == 0 {
+		if !game.IsGamePaused && snake.yDirect == 0 {
 			snake.yDirect = -1
 			snake.xDirect = 0
 		}
 	case "Rune[s]":
-		if !IsGamePaused && snake.yDirect == 0 {
+		if !game.IsGamePaused && snake.yDirect == 0 {
 			snake.yDirect = 1
 			snake.xDirect = 0
 		}
 	case "Rune[a]":
-		if !IsGamePaused && snake.xDirect == 0 {
+		if !game.IsGamePaused && snake.xDirect == 0 {
 			snake.yDirect = 0
 			snake.xDirect = -1
 		}
 	case "Rune[d]":
-		if !IsGamePaused && snake.xDirect == 0 {
+		if !game.IsGamePaused && snake.xDirect == 0 {
 			snake.yDirect = 0
 			snake.xDirect = 1
 		}

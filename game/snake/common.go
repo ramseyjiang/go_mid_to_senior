@@ -10,10 +10,6 @@ type Coordinate struct {
 // coordinatesToClear is used to keep track of coordinates to clear after each movement.
 var coordinatesToClear []*Coordinate
 
-var (
-	IsGameOver   bool
-	IsGamePaused bool
-)
 var err error
 
 func drawElement(x, y, borderThickness int, style tcell.Style, char int32) {

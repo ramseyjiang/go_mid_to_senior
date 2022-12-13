@@ -58,7 +58,7 @@ func (sn *Snake) getInitialSnakeCoordinates() []*Coordinate {
 
 // updateSnake is used to check if game should be over when snake eating itself, otherwise grow the snake when the snake eating an egg.
 // If the snake does not eat an egg, you need to remove the first coordinate from the snake’s points to maintain its length.
-// If the snake has eaten an egg, you increase the score and call the function to display the updated score.
+// If the snake has eaten an egg, you increase the game.Score and call the function to display the updated game.Score.
 // The last thing to check while updating the snake is to determine if the snake’s movement is such that it has bitten itself.
 // If it does, the game is over.
 func (sn *Snake) updateSnake() {
@@ -75,11 +75,11 @@ func (sn *Snake) updateSnake() {
 		coordinatesToClear = append(coordinatesToClear, snake.points[0])
 		snake.points = snake.points[1:]
 	} else {
-		score++
+		game.Score++
 		DisplayGameScore()
 	}
 	if sn.isSnakeEatingItself() {
-		IsGameOver = true
+		game.IsGameOver = true
 	}
 }
 
