@@ -27,8 +27,7 @@ func (sn *Snake) getSnakeHeadCoordinates() (int, int) {
 func (sn *Snake) displaySnake() {
 	style := tcell.StyleDefault.Foreground(tcell.ColorLawnGreen.TrueColor())
 	for _, snakeCoordinate := range snake.points {
-		drawElement(snakeCoordinate.x, snakeCoordinate.y, 1, style, snake.symbol)
-		// screen.SetContent(snakeCoordinate.x, snakeCoordinate.y, snake.symbol, nil, style)
+		screen.SetContent(snakeCoordinate.x, snakeCoordinate.y, snake.symbol, nil, style)
 	}
 }
 

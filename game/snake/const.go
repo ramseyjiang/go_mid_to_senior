@@ -2,7 +2,7 @@ package snake
 
 // SymbolSnake and SymbolEgg is used to display snake and egg position at the beginning.
 // 0x2588 means a rectangle, 0x25CF means a cycle point.
-const SymbolSnake = 0x25A8
+const SymbolSnake = 0x2588
 const SymbolEgg = 0x25CF
 
 // FrameWidth and FrameHeight is used to change it according to your need
