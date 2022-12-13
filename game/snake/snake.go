@@ -6,6 +6,20 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
+// Snake type consists of 4 things.
+// It can move up, down, left, or right depending on user control, and we need to keep it that way unless the user wishes to change the direction.
+// A field name points which will be a slice of pointers of type Coordinate, it includes multiple points to represent a snake.
+// xDirect is determined the horizontal direction for the snake.
+// The yDirect is determined the vertical direction for the snake.
+// The symbol is a tag to represent the snake body.
+type Snake struct {
+	points           []*Coordinate
+	xDirect, yDirect int
+	symbol           int32
+}
+
+var snake *Snake
+
 func Start() {
 	InitGameObj()
 	keyInput := ReadKeyboardInput()

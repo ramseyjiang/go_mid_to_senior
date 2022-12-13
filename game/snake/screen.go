@@ -7,6 +7,12 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
+// screen is used to hold screen information that comes from tcell package
+var screen tcell.Screen
+
+// screenWidth and screenHeight are used to hold screen's full width and height respectively.
+var screenWidth, screenHeight int
+
 // InitGameObj is used to set initial values for the snake variable and the egg variable
 // xDirect and yDirect is used to determine the snake init direction.
 // xDirect=1, yDirect=0 means leftward.
@@ -23,7 +29,7 @@ func InitGameObj() {
 	}
 
 	egg = &Egg{
-		point:  getInitialEggCoordinates(),
+		pos:    getInitialEggCoordinates(),
 		symbol: SymbolEgg,
 	}
 
@@ -44,10 +50,10 @@ func InitScreen() {
 	}
 
 	// Using tcell set different colors in background and foreground
-	playGroundColor := tcell.StyleDefault.
+	defaultStyle := tcell.StyleDefault.
 		Background(tcell.ColorBlack).
 		Foreground(tcell.ColorWhite)
-	screen.SetStyle(playGroundColor)
+	screen.SetStyle(defaultStyle)
 	screenWidth, screenHeight = screen.Size()
 
 	if screenWidth < FrameWidth || screenHeight < FrameHeight {
@@ -68,11 +74,11 @@ func drawPlayArea(xOrigin, yOrigin int) {
 	for i := 0; i < FrameWidth; i++ {
 		switch i {
 		case 0:
-			upperBorder = FrameBorderTopLeft
-			lowerBorder = FrameBorderBottomLeft
+			upperBorder = FrameBorderHorizontal
+			lowerBorder = FrameBorderVertical
 		case FrameWidth - 1:
-			upperBorder = FrameBorderTopRight
-			lowerBorder = FrameBorderBottomRight
+			upperBorder = FrameBorderHorizontal
+			lowerBorder = FrameBorderVertical
 		default:
 			upperBorder = FrameBorderHorizontal
 			lowerBorder = FrameBorderHorizontal
@@ -95,8 +101,8 @@ func DisplayGameScore() {
 
 func DisplayGamePausedInfo() {
 	_, frameY := getFrameTopLeftCoordinate()
-	showNoticeScreenCenter(frameY-2, "Game Paused !!", true)
-	showNoticeScreenCenter(frameY-1, "Press p or Enter to resume", true)
+	showNoticeScreenCenter(frameY+4, "Game Paused ! Press r to restart.", true)
+	showNoticeScreenCenter(frameY+3, "Press p or Enter to resume", true)
 }
 
 func DisplayGameOverInfo() {

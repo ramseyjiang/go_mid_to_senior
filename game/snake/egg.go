@@ -7,6 +7,16 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
+// Egg type consists of 2 things.
+// pos is used to represent the position in the terminal.
+// symbol is used to represent an egg's display in the terminal.
+type Egg struct {
+	pos    *Coordinate
+	symbol int32
+}
+
+var egg *Egg
+
 func getInitialEggCoordinates() *Coordinate {
 	eggInitialCoordinate := &Coordinate{FrameWidth / 2, FrameHeight / 2}
 	transformCoordinateInsideFrame(eggInitialCoordinate)
@@ -16,7 +26,7 @@ func getInitialEggCoordinates() *Coordinate {
 
 func displayEgg() {
 	style := tcell.StyleDefault.Foreground(tcell.ColorOrange.TrueColor())
-	drawElement(egg.point.x, egg.point.y, 1, style, egg.symbol)
+	drawElement(egg.pos.x, egg.pos.y, 1, style, egg.symbol)
 }
 
 func getNewEggCoordinate() (int, int) {
@@ -38,7 +48,7 @@ func getNewEggCoordinate() (int, int) {
 // Only the egg is inside a snake, the snake will grow up.
 func isEggInsideSnake() bool {
 	for _, snakeCoordinate := range snake.points {
-		if snakeCoordinate.x == egg.point.x && snakeCoordinate.y == egg.point.y {
+		if snakeCoordinate.x == egg.pos.x && snakeCoordinate.y == egg.pos.y {
 			return true
 		}
 	}
@@ -47,8 +57,8 @@ func isEggInsideSnake() bool {
 
 func updateEgg() {
 	for isEggInsideSnake() {
-		coordinatesToClear = append(coordinatesToClear, egg.point)
-		egg.point.x, egg.point.y = getNewEggCoordinate()
+		coordinatesToClear = append(coordinatesToClear, egg.pos)
+		egg.pos.x, egg.pos.y = getNewEggCoordinate()
 	}
 }
 

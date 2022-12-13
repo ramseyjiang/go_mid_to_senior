@@ -2,6 +2,21 @@ package snake
 
 import "github.com/gdamore/tcell/v2"
 
+// Coordinate will hold multiple integers name x and y representing the position on the terminal screen.
+type Coordinate struct {
+	x, y int
+}
+
+// coordinatesToClear is used to keep track of coordinates to clear after each movement.
+var coordinatesToClear []*Coordinate
+
+var score, speed int
+var (
+	IsGameOver   bool
+	IsGamePaused bool
+)
+var err error
+
 func drawElement(x, y, borderThickness int, style tcell.Style, char int32) {
 	for i := 0; i < borderThickness; i++ {
 		for j := 0; j < borderThickness; j++ {
