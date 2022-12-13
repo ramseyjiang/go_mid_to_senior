@@ -17,19 +17,19 @@ type Egg struct {
 
 var egg *Egg
 
-func getInitialEggCoordinates() *Coordinate {
+func (e *Egg) getInitialEggCoordinates() *Coordinate {
 	eggInitialCoordinate := &Coordinate{FrameWidth / 2, FrameHeight / 2}
 	transformCoordinateInsideFrame(eggInitialCoordinate)
 
 	return eggInitialCoordinate
 }
 
-func displayEgg() {
+func (e *Egg) displayEgg() {
 	style := tcell.StyleDefault.Foreground(tcell.ColorOrange.TrueColor())
 	drawElement(egg.pos.x, egg.pos.y, 1, style, egg.symbol)
 }
 
-func getNewEggCoordinate() (int, int) {
+func (e *Egg) getNewEggCoordinate() (int, int) {
 	rand.Seed(time.Now().UnixMicro())
 	randomX := rand.Intn(FrameWidth - 3)
 	randomY := rand.Intn(FrameHeight - 1)
@@ -46,7 +46,7 @@ func getNewEggCoordinate() (int, int) {
 // isEggInsideSnake is used to check whether an agg is eaten by the snake.
 // If the egg is eaten, the egg coordinates equal to one of snake body coordinates.
 // Only the egg is inside a snake, the snake will grow up.
-func isEggInsideSnake() bool {
+func (e *Egg) isEggInsideSnake() bool {
 	for _, snakeCoordinate := range snake.points {
 		if snakeCoordinate.x == egg.pos.x && snakeCoordinate.y == egg.pos.y {
 			return true
@@ -55,15 +55,15 @@ func isEggInsideSnake() bool {
 	return false
 }
 
-func updateEgg() {
-	for isEggInsideSnake() {
+func (e *Egg) updateEgg() {
+	for e.isEggInsideSnake() {
 		coordinatesToClear = append(coordinatesToClear, egg.pos)
-		egg.pos.x, egg.pos.y = getNewEggCoordinate()
+		egg.pos.x, egg.pos.y = e.getNewEggCoordinate()
 	}
 }
 
 // clearEatenEgg is used to clear necessary coordinates represented by variable coordinatesToClear
-func clearEatenEgg() {
+func (e *Egg) clearEatenEgg() {
 	for _, coordinate := range coordinatesToClear {
 		drawElement(coordinate.x, coordinate.y, 1, tcell.StyleDefault, ' ')
 	}

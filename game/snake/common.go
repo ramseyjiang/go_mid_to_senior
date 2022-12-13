@@ -10,7 +10,6 @@ type Coordinate struct {
 // coordinatesToClear is used to keep track of coordinates to clear after each movement.
 var coordinatesToClear []*Coordinate
 
-var score, speed int
 var (
 	IsGameOver   bool
 	IsGamePaused bool

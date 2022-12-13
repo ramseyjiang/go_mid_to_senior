@@ -1,8 +1,6 @@
 package snake
 
 import (
-	"time"
-
 	"github.com/gdamore/tcell/v2"
 )
 
@@ -20,32 +18,13 @@ type Snake struct {
 
 var snake *Snake
 
-func Start() {
-	InitGameObj()
-	keyInput := ReadKeyboardInput()
-	for !IsGameOver {
-		if IsGamePaused {
-			DisplayGamePausedInfo()
-		}
-		ControlSnake(keyInput)
-		UpdateGameState()
-		displaySnake()
-		displayEgg()
-		screen.Show()
-		time.Sleep(GetSpeedLevel())
-	}
-
-	DisplayGameOverInfo()
-	time.Sleep(3 * time.Second)
-}
-
 // getSnakeHeadCoordinates is used to return a head coordinate.
-func getSnakeHeadCoordinates() (int, int) {
+func (sn *Snake) getSnakeHeadCoordinates() (int, int) {
 	snakeHead := snake.points[len(snake.points)-1]
 	return snakeHead.x, snakeHead.y
 }
 
-func displaySnake() {
+func (sn *Snake) displaySnake() {
 	style := tcell.StyleDefault.Foreground(tcell.ColorLawnGreen.TrueColor())
 	for _, snakeCoordinate := range snake.points {
 		drawElement(snakeCoordinate.x, snakeCoordinate.y, 1, style, snake.symbol)
@@ -56,7 +35,7 @@ func displaySnake() {
 // If the func has snakeInitialCoordinateLen1 and snakeInitialCoordinateLen2, the snake length is 2.
 // If the func has snakeInitialCoordinateLen1, snakeInitialCoordinateLen2, snakeInitialCoordinateLen3, the snake length is 3.
 // The coordinates are hard coded to appear somewhere at left section of game frame.
-func getInitialSnakeCoordinates() []*Coordinate {
+func (sn *Snake) getInitialSnakeCoordinates() []*Coordinate {
 	snakeInitialCoordinateLen1 := &Coordinate{8, 5}
 	transformCoordinateInsideFrame(snakeInitialCoordinateLen1)
 
@@ -82,31 +61,31 @@ func getInitialSnakeCoordinates() []*Coordinate {
 // If the snake has eaten an egg, you increase the score and call the function to display the updated score.
 // The last thing to check while updating the snake is to determine if the snake’s movement is such that it has bitten itself.
 // If it does, the game is over.
-func updateSnake() {
-	snakeHeadX, snakeHeadY := getSnakeHeadCoordinates()
+func (sn *Snake) updateSnake() {
+	snakeHeadX, snakeHeadY := sn.getSnakeHeadCoordinates()
 	newSnakeHead := &Coordinate{
 		snakeHeadX + snake.xDirect,
 		snakeHeadY + snake.yDirect,
 	}
-	setSnakeWithinFrame(newSnakeHead)
+	sn.setSnakeWithinFrame(newSnakeHead)
 	// After determining if the snake’s new head coordinate we just need to append to existing coordinates.
 	snake.points = append(snake.points, newSnakeHead)
 
-	if !isEggInsideSnake() {
+	if !egg.isEggInsideSnake() {
 		coordinatesToClear = append(coordinatesToClear, snake.points[0])
 		snake.points = snake.points[1:]
 	} else {
 		score++
 		DisplayGameScore()
 	}
-	if isSnakeEatingItself() {
+	if sn.isSnakeEatingItself() {
 		IsGameOver = true
 	}
 }
 
 // setSnakeWithinFrame is used to set snake’s coordinates within game frame and make the snake can pass a border when touch it.
 // It is also used to make sure the snake is moving inside the game frame we have defined.
-func setSnakeWithinFrame(snakeCoordinate *Coordinate) {
+func (sn *Snake) setSnakeWithinFrame(snakeCoordinate *Coordinate) {
 	originX, originY := getFrameTopLeftCoordinate()
 
 	// Determine game frame left boundary is the same as frame’s top left x coordinate
@@ -138,22 +117,12 @@ func setSnakeWithinFrame(snakeCoordinate *Coordinate) {
 
 // isSnakeEatingItself is used to check whether snake body coordinates equal to snake head.
 // Only the snake eats itself, the game is over.
-func isSnakeEatingItself() bool {
-	headX, headY := getSnakeHeadCoordinates()
+func (sn *Snake) isSnakeEatingItself() bool {
+	headX, headY := sn.getSnakeHeadCoordinates()
 	for _, snakeCoordinate := range snake.points[:len(snake.points)-1] {
 		if headX == snakeCoordinate.x && headY == snakeCoordinate.y {
 			return true
 		}
 	}
 	return false
-}
-
-func UpdateGameState() {
-	if IsGamePaused {
-		return
-	}
-	clearEatenEgg()
-	updateSnake()
-	updateSpeed()
-	updateEgg()
 }

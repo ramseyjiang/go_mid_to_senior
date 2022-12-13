@@ -22,14 +22,14 @@ var screenWidth, screenHeight int
 func InitGameObj() {
 	InitScreen()
 	snake = &Snake{
-		points:  getInitialSnakeCoordinates(),
+		points:  snake.getInitialSnakeCoordinates(),
 		xDirect: 1,
 		yDirect: 0,
 		symbol:  SymbolSnake,
 	}
 
 	egg = &Egg{
-		pos:    getInitialEggCoordinates(),
+		pos:    egg.getInitialEggCoordinates(),
 		symbol: SymbolEgg,
 	}
 

@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+var score, speed int
+
 func GetSpeedLevel() time.Duration {
 	speed1 := 120 * time.Millisecond
 	speed2 := 90 * time.Millisecond
