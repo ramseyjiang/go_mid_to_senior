@@ -1,215 +1,66 @@
-package main
+package snake
 
 import (
-	"fmt"
-	"math/rand"
-	"os"
 	"time"
 
 	"github.com/gdamore/tcell/v2"
-	"github.com/gdamore/tcell/v2/encoding"
 )
 
-// Coordinate will hold multiple integers name x and y representing the position on the terminal screen.
-type Coordinate struct {
-	x, y int
-}
-
-// Snake type consists of 4 things.
-// It can move up, down, left, or right depending on user control, and we need to keep it that way unless the user wishes to change the direction.
-// A field name points which will be a slice of pointers of type Coordinate, it includes multiple points to represent a snake.
-// horizontalDirect is determined the horizontal direction for the snake.
-// The verticalDirect is determined the vertical direction for the snake.
-// The symbol is a tag to represent the snake body.
-type Snake struct {
-	points                           []*Coordinate
-	horizontalDirect, verticalDirect int
-	symbol                           int32
-}
-
-// Egg type consists of 2 things.
-// point is used to represent the position in the terminal.
-// symbol is used to represent an egg's display in the terminal.
-type Egg struct {
-	point  *Coordinate
-	symbol int32
-}
-
-var snake *Snake
-var egg *Egg
-
-// coordinatesToClear is used to keep track of coordinates to clear after each movement.
-var coordinatesToClear []*Coordinate
-
-// Screen is used to hold Screen information that comes from tcell package
-var Screen tcell.Screen
-
-// screenWidth and screenHeight are used to hold Screen's full width and height respectively.
-var screenWidth, screenHeight int
-
-var score, speed int
-var isGamePaused, isGameOver bool
-
-// SnakeSymbol and EggSymbol is used to display snake and egg position at the beginning.
-// 0x2588 means a rectangle, 0x25CF means a cycle point.
-const SnakeSymbol = 0x2588
-const EggSymbol = 0x25CF
-
-// FrameWidth and FrameHeight is used to change it according to your need
-// When run this game, please let your terminal has enough height and width, otherwise, please adjust screenWidth and screenHeight value.
-const FrameWidth = 80
-const FrameHeight = 20
-
-// FrameBorderThickness means game frame's border thickness
-const FrameBorderThickness = 1
-
-// FrameBorderVertical and others const below is used to represent game frame border symbols to make it look a bit fancy
-const FrameBorderVertical = '║'
-const FrameBorderHorizontal = '═'
-const FrameBorderTopLeft = '╔'
-const FrameBorderTopRight = '╗'
-const FrameBorderBottomRight = '╝'
-const FrameBorderBottomLeft = '╚'
-
-func main() {
-	initScreen()
-	initGameObj()
-	displayFrame()
-	displayGameScore()
-	displaySpeedLevel()
-	keyInput := readKeyboardInput()
-	for !isGameOver {
-		if isGamePaused {
-			displayGamePausedInfo()
+func Start() {
+	InitGameObj()
+	keyInput := ReadKeyboardInput()
+	for !IsGameOver {
+		if IsGamePaused {
+			DisplayGamePausedInfo()
 		}
-		gameControl(keyInput)
-		updateGameState()
-		displayGameObjects()
-		time.Sleep(getSpeedLevel())
+		ControlSnake(keyInput)
+		UpdateGameState()
+		displaySnake()
+		displayEgg()
+		screen.Show()
+		time.Sleep(GetSpeedLevel())
 	}
 
-	displayGameOverInfo()
+	DisplayGameOverInfo()
 	time.Sleep(3 * time.Second)
-}
-
-func getSpeedLevel() time.Duration {
-	speed1 := 120 * time.Millisecond
-	speed2 := 90 * time.Millisecond
-	speed3 := 60 * time.Millisecond
-	speed4 := 30 * time.Millisecond
-	scoreLevel1 := 1
-	scoreLevel2 := 2
-	scoreLevel3 := 3
-
-	if score > scoreLevel1 && score <= scoreLevel2 {
-		speed = 1
-		return speed2
-	}
-
-	if score > scoreLevel2 && score <= scoreLevel3 {
-		speed = 2
-		return speed3
-	}
-
-	if score > scoreLevel3 {
-		speed = 3
-		return speed4
-	}
-
-	return speed1
-}
-
-func getKeyInput(keyInput chan string) string {
-	var key string
-	select {
-	case key = <-keyInput:
-	default:
-		key = ""
-	}
-	return key
-}
-
-// readKeyboardInput is used to run a goroutine in a loop and returns a channel string from keyboard input.
-func readKeyboardInput() chan string {
-	keyInput := make(chan string)
-	go func() {
-		for {
-			switch ev := Screen.PollEvent().(type) {
-			case *tcell.EventKey:
-				keyInput <- ev.Name()
-			}
-		}
-	}()
-	return keyInput
-}
-
-// gameControl is used control the snake game base on the player input.
-// p or Enter is used to pause the game.
-// q or ESC is used to exit the game.
-// up arrow or W is used to go up.
-// down arrow or S is used to go down.
-// left arrow or A is used to go left.
-// right arrow or D is used to go right.
-func gameControl(keyInput chan string) {
-	key := getKeyInput(keyInput)
-	switch key {
-	case "Rune[q]":
-		Screen.Fini()
-		os.Exit(0)
-	case "Esc":
-		Screen.Fini()
-		os.Exit(0)
-	case "Rune[p]":
-		isGamePaused = !isGamePaused
-	case "Enter":
-		isGamePaused = !isGamePaused
-	case "Up":
-		if !isGamePaused && snake.verticalDirect == 0 {
-			snake.verticalDirect = -1
-			snake.horizontalDirect = 0
-		}
-	case "Down":
-		if !isGamePaused && snake.verticalDirect == 0 {
-			snake.verticalDirect = 1
-			snake.horizontalDirect = 0
-		}
-	case "Left":
-		if !isGamePaused && snake.horizontalDirect == 0 {
-			snake.verticalDirect = 0
-			snake.horizontalDirect = -1
-		}
-	case "Right":
-		if !isGamePaused && snake.horizontalDirect == 0 {
-			snake.verticalDirect = 0
-			snake.horizontalDirect = 1
-		}
-	case "Rune[w]":
-		if !isGamePaused && snake.verticalDirect == 0 {
-			snake.verticalDirect = -1
-			snake.horizontalDirect = 0
-		}
-	case "Rune[s]":
-		if !isGamePaused && snake.verticalDirect == 0 {
-			snake.verticalDirect = 1
-			snake.horizontalDirect = 0
-		}
-	case "Rune[a]":
-		if !isGamePaused && snake.horizontalDirect == 0 {
-			snake.verticalDirect = 0
-			snake.horizontalDirect = -1
-		}
-	case "Rune[d]":
-		if !isGamePaused && snake.horizontalDirect == 0 {
-			snake.verticalDirect = 0
-			snake.horizontalDirect = 1
-		}
-	}
 }
 
 // getSnakeHeadCoordinates is used to return a head coordinate.
 func getSnakeHeadCoordinates() (int, int) {
 	snakeHead := snake.points[len(snake.points)-1]
 	return snakeHead.x, snakeHead.y
+}
+
+func displaySnake() {
+	style := tcell.StyleDefault.Foreground(tcell.ColorLawnGreen.TrueColor())
+	for _, snakeCoordinate := range snake.points {
+		drawElement(snakeCoordinate.x, snakeCoordinate.y, 1, style, snake.symbol)
+	}
+}
+
+// getInitialSnakeCoordinates is used to get a snake original coordinate and length.
+// If the func has snakeInitialCoordinateLen1 and snakeInitialCoordinateLen2, the snake length is 2.
+// If the func has snakeInitialCoordinateLen1, snakeInitialCoordinateLen2, snakeInitialCoordinateLen3, the snake length is 3.
+// The coordinates are hard coded to appear somewhere at left section of game frame.
+func getInitialSnakeCoordinates() []*Coordinate {
+	snakeInitialCoordinateLen1 := &Coordinate{8, 5}
+	transformCoordinateInsideFrame(snakeInitialCoordinateLen1)
+
+	snakeInitialCoordinateLen2 := &Coordinate{8, 6}
+	transformCoordinateInsideFrame(snakeInitialCoordinateLen2)
+
+	// snakeInitialCoordinateLen3 := &Coordinate{8, 7}
+	// transformCoordinateInsideFrame(snakeInitialCoordinateLen3)
+
+	// snakeInitialCoordinateLen4 := &Coordinate{8, 8}
+	// transformCoordinateInsideFrame(snakeInitialCoordinateLen4)
+
+	return []*Coordinate{
+		{snakeInitialCoordinateLen1.x, snakeInitialCoordinateLen1.y},
+		{snakeInitialCoordinateLen2.x, snakeInitialCoordinateLen2.y},
+		// {snakeInitialCoordinateLen3.x, snakeInitialCoordinateLen3.y},
+		// {snakeInitialCoordinateLen4.x, snakeInitialCoordinateLen4.y},
+	}
 }
 
 // updateSnake is used to check if game should be over when snake eating itself, otherwise grow the snake when the snake eating an egg.
@@ -220,8 +71,8 @@ func getSnakeHeadCoordinates() (int, int) {
 func updateSnake() {
 	snakeHeadX, snakeHeadY := getSnakeHeadCoordinates()
 	newSnakeHead := &Coordinate{
-		snakeHeadX + snake.horizontalDirect,
-		snakeHeadY + snake.verticalDirect,
+		snakeHeadX + snake.xDirect,
+		snakeHeadY + snake.yDirect,
 	}
 	setSnakeWithinFrame(newSnakeHead)
 	// After determining if the snake’s new head coordinate we just need to append to existing coordinates.
@@ -232,10 +83,10 @@ func updateSnake() {
 		snake.points = snake.points[1:]
 	} else {
 		score++
-		displayGameScore()
+		DisplayGameScore()
 	}
 	if isSnakeEatingItself() {
-		isGameOver = true
+		IsGameOver = true
 	}
 }
 
@@ -283,245 +134,12 @@ func isSnakeEatingItself() bool {
 	return false
 }
 
-// isEggInsideSnake is used to check whether an agg is eaten by the snake.
-// If the egg is eaten, the egg coordinates equal to one of snake body coordinates.
-// Only the egg is inside a snake, the snake will grow up.
-func isEggInsideSnake() bool {
-	for _, snakeCoordinate := range snake.points {
-		if snakeCoordinate.x == egg.point.x && snakeCoordinate.y == egg.point.y {
-			return true
-		}
-	}
-	return false
-}
-
-func getNewEggCoordinate() (int, int) {
-	rand.Seed(time.Now().UnixMicro())
-	randomX := rand.Intn(FrameWidth - 3)
-	randomY := rand.Intn(FrameHeight - 1)
-
-	newCoordinate := &Coordinate{
-		randomX, randomY,
-	}
-
-	transformCoordinateInsideFrame(newCoordinate)
-
-	return newCoordinate.x, newCoordinate.y
-}
-
-func updateEgg() {
-	for isEggInsideSnake() {
-		coordinatesToClear = append(coordinatesToClear, egg.point)
-		egg.point.x, egg.point.y = getNewEggCoordinate()
-	}
-}
-
-func updateSpeed() {
-	_ = getSpeedLevel()
-	displaySpeedLevel()
-}
-
-func updateGameState() {
-	if isGamePaused {
+func UpdateGameState() {
+	if IsGamePaused {
 		return
 	}
 	clearEatenEgg()
 	updateSnake()
 	updateSpeed()
 	updateEgg()
-}
-
-func transformCoordinateInsideFrame(coordinate *Coordinate) {
-	frameOriginX, frameOriginY := getFrameTopLeftCoordinate()
-	frameOriginX += 1
-	frameOriginY += 1
-	coordinate.x += frameOriginX
-	coordinate.y += frameOriginY
-	for coordinate.x >= frameOriginX+FrameWidth {
-		coordinate.x--
-	}
-	for coordinate.y >= frameOriginY+FrameHeight {
-		coordinate.y--
-	}
-}
-
-// initGameObj is used to set initial values for the snake variable and the egg variable
-// horizontalDirect and verticalDirect is used to determine the snake init direction.
-// horizontalDirect=1, verticalDirect=0 means leftward.
-// horizontalDirect=0, verticalDirect=-1 means upward.
-// horizontalDirect=0, verticalDirect=1 means downward.
-// horizontalDirect=-1, verticalDirect=0 means rightward.
-func initGameObj() {
-	snake = &Snake{
-		points:           getInitialSnakeCoordinates(),
-		horizontalDirect: 1,
-		verticalDirect:   0,
-		symbol:           SnakeSymbol,
-	}
-
-	egg = &Egg{
-		point:  getInitialEggCoordinates(),
-		symbol: EggSymbol,
-	}
-}
-
-// getInitialSnakeCoordinates is used to get a snake original coordinate and length.
-// If the func has snakeInitialCoordinateLen1 and snakeInitialCoordinateLen2, the snake length is 2.
-// If the func has snakeInitialCoordinateLen1, snakeInitialCoordinateLen2, snakeInitialCoordinateLen3, the snake length is 3.
-// The coordinates are hard coded to appear somewhere at left section of game frame.
-func getInitialSnakeCoordinates() []*Coordinate {
-	snakeInitialCoordinateLen1 := &Coordinate{8, 5}
-	transformCoordinateInsideFrame(snakeInitialCoordinateLen1)
-
-	snakeInitialCoordinateLen2 := &Coordinate{8, 6}
-	transformCoordinateInsideFrame(snakeInitialCoordinateLen2)
-
-	// snakeInitialCoordinateLen3 := &Coordinate{8, 7}
-	// transformCoordinateInsideFrame(snakeInitialCoordinateLen3)
-
-	// snakeInitialCoordinateLen4 := &Coordinate{8, 8}
-	// transformCoordinateInsideFrame(snakeInitialCoordinateLen4)
-
-	return []*Coordinate{
-		{snakeInitialCoordinateLen1.x, snakeInitialCoordinateLen1.y},
-		{snakeInitialCoordinateLen2.x, snakeInitialCoordinateLen2.y},
-		// {snakeInitialCoordinateLen3.x, snakeInitialCoordinateLen3.y},
-		// {snakeInitialCoordinateLen4.x, snakeInitialCoordinateLen4.y},
-	}
-}
-
-func getInitialEggCoordinates() *Coordinate {
-	eggInitialCoordinate := &Coordinate{FrameWidth / 2, FrameHeight / 2}
-	transformCoordinateInsideFrame(eggInitialCoordinate)
-
-	return eggInitialCoordinate
-}
-
-func initScreen() {
-	encoding.Register()
-	var err error
-	Screen, err = tcell.NewScreen()
-	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
-	}
-	if err = Screen.Init(); err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
-	}
-
-	// Using tcell set different colors in background and foreground
-	defStyle := tcell.StyleDefault.
-		Background(tcell.ColorBlack).
-		Foreground(tcell.ColorWhite)
-	Screen.SetStyle(defStyle)
-	screenWidth, screenHeight = Screen.Size()
-
-	if screenWidth < FrameWidth || screenHeight < FrameHeight {
-		fmt.Printf("The game frame is defined with %d width and %d height. Increase terminal size and try again ", FrameWidth, FrameHeight)
-		os.Exit(1)
-	}
-}
-
-func drawElement(x, y, borderThickness int, style tcell.Style, char int32) {
-	for i := 0; i < borderThickness; i++ {
-		for j := 0; j < borderThickness; j++ {
-			Screen.SetContent(x+i, y+j, char, nil, style)
-		}
-	}
-}
-
-func getFrameTopLeftCoordinate() (int, int) {
-	return (screenWidth-FrameWidth)/2 - 1, (screenHeight-FrameHeight)/2 - 1
-}
-
-// displayFrame is used to draw the game's border.
-func displayFrame() {
-	drawPlayArea(getFrameTopLeftCoordinate())
-	Screen.Show()
-}
-
-func displayGameObjects() {
-	displaySnake()
-	displayEgg()
-	Screen.Show()
-}
-
-func displaySnake() {
-	style := tcell.StyleDefault.Foreground(tcell.ColorLawnGreen.TrueColor())
-	for _, snakeCoordinate := range snake.points {
-		drawElement(snakeCoordinate.x, snakeCoordinate.y, 1, style, snake.symbol)
-	}
-}
-
-func displayEgg() {
-	style := tcell.StyleDefault.Foreground(tcell.ColorOrange.TrueColor())
-	drawElement(egg.point.x, egg.point.y, 1, style, egg.symbol)
-}
-
-func displayGameScore() {
-	_, frameY := getFrameTopLeftCoordinate()
-	showNoticeScreenCenter(frameY+FrameHeight+2, fmt.Sprintf("Current Score : %d", score), false)
-}
-
-func displaySpeedLevel() {
-	_, frameY := getFrameTopLeftCoordinate()
-	showNoticeScreenCenter(frameY+FrameHeight+3, fmt.Sprintf("Current Speed : %d", speed), false)
-}
-
-func displayGamePausedInfo() {
-	_, frameY := getFrameTopLeftCoordinate()
-	showNoticeScreenCenter(frameY-2, "Game Paused !!", true)
-	showNoticeScreenCenter(frameY-1, "Press p or Enter to resume", true)
-}
-
-func displayGameOverInfo() {
-	centerY := (screenHeight - FrameHeight) / 2
-	showNoticeScreenCenter(centerY-1, "Game Over !!", false)
-	showNoticeScreenCenter(centerY, fmt.Sprintf("Your Score : %d", score), false)
-}
-
-// showNoticeScreenCenter is used to print passed content at center horizontally, while vertical coordinate is passed to function.
-func showNoticeScreenCenter(startY int, content string, trackClear bool) {
-	startX := (screenWidth - len(content)) / 2
-	for i := 0; i < len(content); i++ {
-		drawElement(startX+i, startY, 1, tcell.StyleDefault, int32(content[i]))
-		if trackClear {
-			coordinatesToClear = append(coordinatesToClear, &Coordinate{startX + i, startY})
-		}
-	}
-	Screen.Show()
-}
-
-// clearEatenEgg is used to clear necessary coordinates represented by variable coordinatesToClear
-func clearEatenEgg() {
-	for _, coordinate := range coordinatesToClear {
-		drawElement(coordinate.x, coordinate.y, 1, tcell.StyleDefault, ' ')
-	}
-}
-
-func drawPlayArea(xOrigin, yOrigin int) {
-	var upperBorder, lowerBorder int32
-	verticalBorder := FrameBorderVertical
-	for i := 0; i < FrameWidth; i++ {
-		switch i {
-		case 0:
-			upperBorder = FrameBorderTopLeft
-			lowerBorder = FrameBorderBottomLeft
-		case FrameWidth - 1:
-			upperBorder = FrameBorderTopRight
-			lowerBorder = FrameBorderBottomRight
-		default:
-			upperBorder = FrameBorderHorizontal
-			lowerBorder = FrameBorderHorizontal
-		}
-		drawElement(xOrigin+i, yOrigin, FrameBorderThickness, tcell.StyleDefault, upperBorder)               // print top border
-		drawElement(xOrigin+i, yOrigin+FrameHeight-1, FrameBorderThickness, tcell.StyleDefault, lowerBorder) // print bottom border
-	}
-
-	// side boundary
-	for i := 1; i < FrameHeight; i++ {
-		drawElement(xOrigin, yOrigin+i, FrameBorderThickness, tcell.StyleDefault, verticalBorder)              // print left side border
-		drawElement(xOrigin+FrameWidth-1, yOrigin+i, FrameBorderThickness, tcell.StyleDefault, verticalBorder) // print right side border
-	}
 }
