@@ -1,0 +1,2 @@
+Two channels are given. Numbers are written first. It is necessary that the numbers are read from the first one as they
+arrive, something happens to them (for example, they are squared) and the result is written to the second channel.
