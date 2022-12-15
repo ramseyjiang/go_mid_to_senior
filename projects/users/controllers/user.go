@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ramseyjiang/go_mid_to_senior/projects/users/entity"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/models"
 	"github.com/ramseyjiang/go_mid_to_senior/projects/users/service"
 )
 
@@ -23,7 +23,7 @@ func init() {
 }
 
 func (controller *userController) Create(c *gin.Context) {
-	var input entity.User
+	var input models.User
 	err := c.ShouldBind(&input)
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)

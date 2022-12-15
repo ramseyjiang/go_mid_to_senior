@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/ramseyjiang/go_mid_to_senior/projects/users/config"
-	"github.com/ramseyjiang/go_mid_to_senior/projects/users/entity"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/models"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/gorm"
 )
@@ -57,7 +57,7 @@ func TestSuite(t *testing.T) {
 }
 
 func getModels() []interface{} {
-	return []interface{}{&entity.User{}}
+	return []interface{}{&models.User{}}
 }
 
 // Setup db value
