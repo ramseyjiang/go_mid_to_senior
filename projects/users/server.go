@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/ramseyjiang/go_mid_to_senior/projects/users/config"
-	"github.com/ramseyjiang/go_mid_to_senior/projects/users/controllers"
+	"github.com/ramseyjiang/go_mid_to_senior/projects/users/ctrls"
 	"github.com/ramseyjiang/go_mid_to_senior/projects/users/migrations"
 )
 
@@ -44,8 +44,8 @@ func init() {
 	 - using code:  gin.SetMode(gin.ReleaseMode)
 
 	[GIN-debug] GET    /                         --> main.main.func1 (2 handlers)
-	[GIN-debug] GET    /users                    --> github.com/ramseyjiang/go_mid_to_senior/projects/users/controllers.userControllerInterface.GetAll-fm (2 handlers)
-	[GIN-debug] POST   /users                    --> github.com/ramseyjiang/go_mid_to_senior/projects/users/controllers.userControllerInterface.Create-fm (2 handlers)
+	[GIN-debug] GET    /users                    --> github.com/ramseyjiang/go_mid_to_senior/projects/users/ctrls.userCtrlInterface.GetAll-fm (2 handlers)
+	[GIN-debug] POST   /users                    --> github.com/ramseyjiang/go_mid_to_senior/projects/users/ctrls.userCtrlInterface.Create-fm (2 handlers)
 	[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 	Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 	[GIN-debug] Listening and serving HTTP on :8080
@@ -74,8 +74,8 @@ func main() {
 		})
 	})
 
-	router.GET("/users", controllers.UserController.GetAll)
-	router.POST("/users", controllers.UserController.Create)
+	router.GET("/users", ctrls.UserCtrl.GetAll)
+	router.POST("/users", ctrls.UserCtrl.Create)
 
 	_ = router.Run(":" + port)
 }

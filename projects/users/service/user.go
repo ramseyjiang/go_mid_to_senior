@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"strings"
 
 	"github.com/google/uuid"
@@ -15,14 +14,12 @@ func UserCreate(input models.User) (*models.User, error) {
 	_, err := UserGetByEmail(input.Email)
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
-	} else if err == nil {
-		return nil, errors.New("email not available")
 	}
 
 	db := config.GetDB()
 	input.ID = uuid.New().String()
-	if err1 := db.Model(input).Create(&input).Error; err1 != nil {
-		return nil, err1
+	if err = db.Model(input).Create(&input).Error; err != nil {
+		return nil, err
 	}
 
 	return &input, nil

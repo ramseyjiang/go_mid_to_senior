@@ -1,4 +1,4 @@
-package controllers
+package ctrls
 
 import (
 	"errors"
@@ -9,20 +9,20 @@ import (
 	"github.com/ramseyjiang/go_mid_to_senior/projects/users/service"
 )
 
-type userControllerInterface interface {
+type userCtrlInterface interface {
 	Create(*gin.Context)
 	GetAll(*gin.Context)
 }
 
-type userController struct{}
+type userCtrl struct{}
 
-var UserController userControllerInterface
+var UserCtrl userCtrlInterface
 
 func init() {
-	UserController = new(userController)
+	UserCtrl = new(userCtrl)
 }
 
-func (controller *userController) Create(c *gin.Context) {
+func (ctrl *userCtrl) Create(c *gin.Context) {
 	var input models.User
 	err := c.ShouldBind(&input)
 	if err != nil {
@@ -41,7 +41,7 @@ func (controller *userController) Create(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func (controller *userController) GetAll(c *gin.Context) {
+func (ctrl *userCtrl) GetAll(c *gin.Context) {
 	resp, _ := service.UserGetAll()
 
 	c.JSON(http.StatusOK, resp)
