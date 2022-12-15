@@ -14,8 +14,7 @@ import (
 )
 
 var (
-	defaultPort = "8088"
-	path        = ".env"
+	path = ".env"
 )
 
 func init() {
