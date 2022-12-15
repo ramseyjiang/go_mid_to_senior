@@ -65,7 +65,7 @@ func TestGetBooks(t *testing.T) {
 	}
 
 	// Check the response body is what we expect.
-	expected := `[{"id":2,"first_name":"Krish","last_name":"Bhanushali","email_address":"krishsb2405@gmail.com","phone_number":"7798775575"},{"id":3,"first_name":"Kelly","last_name":"Franco","email_address":"kelly.franco@gmail.com","phone_number":"1112223333"},{"id":4,"first_name":"John","last_name":"Doe","email_address":"john.doe@gmail.com","phone_number":"1234567890"},{"id":5,"first_name":"xyz","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"},{"id":6,"first_name":"xyz","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"},{"id":7,"first_name":"xyz","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"},{"id":8,"first_name":"xyz","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"},{"id":9,"first_name":"xyz","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"}]`
+	expected := `[{"id":2,"first_name":"Krish","last_name":"Bhanushali","email":"krishsb2405@gmail.com","phone_number":"7798775575"},{"id":3,"first_name":"Kelly","last_name":"Franco","email":"kelly.franco@gmail.com","phone_number":"1112223333"},{"id":4,"first_name":"John","last_name":"Doe","email":"john.doe@gmail.com","phone_number":"1234567890"},{"id":5,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"},{"id":6,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"},{"id":7,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"},{"id":8,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"},{"id":9,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}]`
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
@@ -92,7 +92,7 @@ func TestGetBookByID(t *testing.T) {
 	}
 
 	// Check the response body is what we expect.
-	expected := `{"id":2,"first_name":"Krish","last_name":"Bhanushali","email_address":"krishsb2405@gmail.com","phone_number":"7798775575"}`
+	expected := `{"id":2,"first_name":"Krish","last_name":"Bhanushali","email":"krishsb2405@gmail.com","phone_number":"7798775575"}`
 
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
@@ -122,7 +122,7 @@ func TestGetBookByIDNotFound(t *testing.T) {
 }
 
 func TestCreateBook(t *testing.T) {
-	var jsonStr = []byte(`{"first_name":"xyz","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"}`)
+	var jsonStr = []byte(`{"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`)
 
 	req, err := http.NewRequest("POST", "/book", bytes.NewBuffer(jsonStr))
 
@@ -141,7 +141,7 @@ func TestCreateBook(t *testing.T) {
 			status, http.StatusOK)
 	}
 
-	expected := `{"id":16,"first_name":"xyz","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"}`
+	expected := `{"id":16,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`
 
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
@@ -150,7 +150,7 @@ func TestCreateBook(t *testing.T) {
 }
 
 func TestEditBook(t *testing.T) {
-	var jsonStr = []byte(`{"id":15,"first_name":"xyz change","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"}`)
+	var jsonStr = []byte(`{"id":15,"first_name":"xyz change","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`)
 
 	req, err := http.NewRequest("PUT", "/book", bytes.NewBuffer(jsonStr))
 
@@ -169,7 +169,7 @@ func TestEditBook(t *testing.T) {
 			status, http.StatusOK)
 	}
 
-	expected := `{"id":15,"first_name":"xyz change","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"}`
+	expected := `{"id":15,"first_name":"xyz change","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`
 
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
@@ -196,7 +196,7 @@ func TestDeleteEntry(t *testing.T) {
 			status, http.StatusOK)
 	}
 
-	expected := `{"id":15,"first_name":"xyz change","last_name":"pqr","email_address":"xyz@pqr.com","phone_number":"1234567890"}`
+	expected := `{"id":15,"first_name":"xyz change","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`
 
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",

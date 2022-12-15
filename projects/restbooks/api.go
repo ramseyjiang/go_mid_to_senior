@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -13,14 +12,14 @@ import (
 
 // var host = "http://localhost"
 var port = "12345"
-var connectionString = "root:123456@tcp(127.0.0.1:3306)/go_web?charset=utf8&parseTime=True&loc=Local"
+var connectionString = "root:12345678@tcp(127.0.0.1:3306)/go_web?charset=utf8&parseTime=True&loc=Local"
 
-type addressBook struct {
-	ID           int    `json:"id,omitempty"`
-	FirstName    string `json:"first_name,omitempty"`
-	LastName     string `json:"last_name,omitempty"`
-	EmailAddress string `json:"email_address,omitempty"`
-	PhoneNumber  string `json:"phone_number,omitempty"`
+type User struct {
+	ID        string `json:"id,omitempty"`
+	FirstName string `json:"first_name,omitempty"`
+	LastName  string `json:"last_name,omitempty"`
+	Email     string `json:"email,omitempty"`
+	Mobile    int64  `json:"mobile,omitempty"`
 }
 
 func main() {
@@ -31,10 +30,10 @@ func main() {
 	apiRouter.PathPrefix("/health").HandlerFunc(CheckHealth).Methods("GET")
 
 	// /api/entries returns listing all the address book
-	apiRouter.PathPrefix("/books").HandlerFunc(GetBooks).Methods("GET")
+	apiRouter.PathPrefix("/book/list").HandlerFunc(GetBooks).Methods("GET")
 
 	// GET /api/book?id=1 returns the book with id 1.
-	apiRouter.PathPrefix("/book").HandlerFunc(GetBookByID).Methods("GET")
+	apiRouter.PathPrefix("/book/get").HandlerFunc(GetBookByID).Methods("GET")
 
 	// POST /api/book creates an book
 	apiRouter.PathPrefix("/book").HandlerFunc(CreateBook).Methods("POST")
@@ -50,7 +49,6 @@ func main() {
 
 	// GET /api/download-entries-CSV exports CSV from the database
 	// apiRouter.PathPrefix("/download-entries-csv").HandlerFunc(DownloadEntriesToCSV).Methods("GET")
-	fmt.Println("Listening on port :12345")
 
 	_ = http.ListenAndServe(":"+port, router)
 }
@@ -71,54 +69,43 @@ func CheckHealth(writer http.ResponseWriter, req *http.Request) {
 func GetBooks(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open("mysql", connectionString)
 	defer func(db *sql.DB) {
-		err1 := db.Close()
-		if err1 != nil {
+		err = db.Close()
+		if err != nil {
 			return
 		}
 	}(db)
-
 	if err != nil {
-		fmt.Println(err)
 		respondWithError(w, http.StatusInternalServerError, "Could not connect to the database")
-
 		return
 	}
 
-	var books []addressBook
-
-	rows, err := db.Query("SELECT * from address_book;")
-
+	var books []User
+	rows, err := db.Query("SELECT * from users;")
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Something went wrong.")
 		return
 	}
-
 	defer func(rows *sql.Rows) {
-		err1 := rows.Close()
-		if err1 != nil {
-			fmt.Println(err1)
+		err = rows.Close()
+		if err != nil {
+			fmt.Println(err)
 		}
 	}(rows)
 
 	for rows.Next() {
-		var book addressBook
-
-		var id int
-
+		var book User
+		var id string
 		var firstName sql.NullString
-
 		var lastName sql.NullString
+		var email sql.NullString
+		var mobile sql.NullInt64
 
-		var emailAddress sql.NullString
-
-		var phoneNumber sql.NullString
-
-		_ = rows.Scan(&id, &firstName, &lastName, &emailAddress, &phoneNumber)
+		_ = rows.Scan(&id, &firstName, &lastName, &email, &mobile)
 		book.ID = id
 		book.FirstName = firstName.String
 		book.LastName = lastName.String
-		book.EmailAddress = emailAddress.String
-		book.PhoneNumber = phoneNumber.String
+		book.Email = email.String
+		book.Mobile = mobile.Int64
 		books = append(books, book)
 	}
 	respondWithJSON(w, http.StatusOK, books)
@@ -128,12 +115,12 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 // URL : /book?id=1
 // Parameters: int id
 // Method: GET
-// Output: JSON Encoded Address Book Book object if found else JSON Encoded Exception.
+// Output: JSON Encoded Address Book object if found else JSON Encoded Exception.
 func GetBookByID(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open("mysql", connectionString)
 	defer func(db *sql.DB) {
-		err1 := db.Close()
-		if err1 != nil {
+		err = db.Close()
+		if err != nil {
 			return
 		}
 	}(db)
@@ -144,16 +131,12 @@ func GetBookByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	id := r.URL.Query().Get("id")
-
 	var firstName sql.NullString
-
 	var lastName sql.NullString
+	var email sql.NullString
+	var mobile sql.NullInt64
 
-	var emailAddress sql.NullString
-
-	var phoneNumber sql.NullString
-
-	err = db.QueryRow("SELECT first_name, last_name, email_address, phone_number from address_book where id=?", id).Scan(&firstName, &lastName, &emailAddress, &phoneNumber)
+	err = db.QueryRow("SELECT first_name, last_name, email, mobile from users where id=?", id).Scan(&firstName, &lastName, &email, &mobile)
 
 	switch {
 	case err == sql.ErrNoRows:
@@ -163,12 +146,12 @@ func GetBookByID(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
 		return
 	default:
-		var book addressBook
-		book.ID, _ = strconv.Atoi(id)
+		var book User
+		book.ID = id
 		book.FirstName = firstName.String
 		book.LastName = lastName.String
-		book.EmailAddress = emailAddress.String
-		book.PhoneNumber = phoneNumber.String
+		book.Email = email.String
+		book.Mobile = mobile.Int64
 		respondWithJSON(w, http.StatusOK, book)
 	}
 }
@@ -181,7 +164,7 @@ func GetBookByID(w http.ResponseWriter, r *http.Request) {
  {
  "first_name":"John",
  "last_name":"Doe",
- "email_address":"john.doe@gmail.com",
+ "email":"john.doe@gmail.com",
  "phone_number":"1234567890",
  }
 */
@@ -200,23 +183,19 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var book addressBook
-
+	var book User
 	decoder := json.NewDecoder(r.Body)
 	err = decoder.Decode(&book)
-
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
 		return
 	}
 
-	statement, err := db.Prepare("insert into address_book (first_name, last_name, email_address, phone_number) values(?,?,?,?)")
-
+	statement, err := db.Prepare("insert into users (first_name, last_name, email, mobile) values(?,?,?,?)")
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
 		return
 	}
-
 	defer func(statement *sql.Stmt) {
 		err1 := statement.Close()
 		if err1 != nil {
@@ -224,8 +203,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 		}
 	}(statement)
 
-	res, err := statement.Exec(book.FirstName, book.LastName, book.EmailAddress, book.PhoneNumber)
-
+	res, err := statement.Exec(book.FirstName, book.LastName, book.Email, book.Mobile)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "There was problem entering the book.")
 		return
@@ -233,7 +211,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 
 	if rowsAffected, _ := res.RowsAffected(); rowsAffected == 1 {
 		id, _ := res.LastInsertId()
-		book.ID = int(id)
+		book.ID = string(id)
 		respondWithJSON(w, http.StatusOK, book)
 	}
 }
@@ -247,7 +225,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
  "id":1,
  "first_name":"Krish",
  "last_name":"Bhanushali",
- "email_address":"krishsb2405@gmail.com",
+ "email":"krishsb2405@gmail.com",
  "phone_number":"7798775575"
  }
 */
@@ -266,18 +244,15 @@ func UpdateBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var book addressBook
-
+	var book User
 	decoder := json.NewDecoder(r.Body)
 	err = decoder.Decode(&book)
-
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
 		return
 	}
 
-	statement, err := db.Prepare("update address_book set first_name=?, last_name=?, email_address=?, phone_number=? where id=?")
-
+	statement, err := db.Prepare("update users set first_name=?, last_name=?, email=?, mobile=? where id=?")
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
 		return
@@ -290,8 +265,7 @@ func UpdateBook(w http.ResponseWriter, r *http.Request) {
 		}
 	}(statement)
 
-	res, err1 := statement.Exec(book.FirstName, book.LastName, book.EmailAddress, book.PhoneNumber, book.ID)
-
+	res, err1 := statement.Exec(book.FirstName, book.LastName, book.Email, book.Mobile, book.ID)
 	if err1 != nil {
 		respondWithError(w, http.StatusInternalServerError, "There was problem entering the book.")
 		return
@@ -322,16 +296,11 @@ func DeleteBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	id := r.URL.Query().Get("id")
-
 	var firstName sql.NullString
-
 	var lastName sql.NullString
-
-	var emailAddress sql.NullString
-
-	var phoneNumber sql.NullString
-
-	err = db.QueryRow("SELECT first_name, last_name, email_address, phone_number from address_book where id=?", id).Scan(&firstName, &lastName, &emailAddress, &phoneNumber)
+	var email sql.NullString
+	var mobile sql.NullInt64
+	err = db.QueryRow("SELECT first_name, last_name, email, mobile from users where id=?", id).Scan(&firstName, &lastName, &email, &mobile)
 
 	switch {
 	case err == sql.ErrNoRows:
@@ -341,28 +310,25 @@ func DeleteBook(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
 		return
 	default:
-		res, err1 := db.Exec("DELETE from address_book where id=?", id)
-
+		res, err1 := db.Exec("DELETE from users where id=?", id)
 		if err1 != nil {
 			respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
 			return
 		}
 
 		count, err2 := res.RowsAffected()
-
 		if err2 != nil {
 			respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
 			return
 		}
 
 		if count == 1 {
-			var book addressBook
-
-			book.ID, _ = strconv.Atoi(id)
+			var book User
+			book.ID = id
 			book.FirstName = firstName.String
 			book.LastName = lastName.String
-			book.EmailAddress = emailAddress.String
-			book.PhoneNumber = phoneNumber.String
+			book.Email = email.String
+			book.Mobile = mobile.Int64
 
 			respondWithJSON(w, http.StatusOK, book)
 
@@ -397,7 +363,7 @@ func UploadEntriesThroughCSV(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var book addressBook
+	var book User
 
 	for _, row := range csvData {
 		if row[1] != "first_name" {
@@ -408,15 +374,15 @@ func UploadEntriesThroughCSV(w http.ResponseWriter, r *http.Request) {
 			book.LastName = row[2]
 		}
 
-		if row[3] != "email_address" {
+		if row[3] != "email" {
 			book.EmailAddress = row[3]
 		}
 
-		if row[4] != "phone_number" {
+		if row[4] != "mobile" {
 			book.PhoneNumber = row[4]
 		}
 
-		if book.FirstName != "" && book.LastName != "" && book.EmailAddress != "" && book.PhoneNumber != "" {
+		if book.FirstName != "" && book.LastName != "" && book.Email != "" && book.Mobile != "" {
 			jsonString, err1 := json.Marshal(book)
 			if err1 != nil {
 				respondWithError(w, http.StatusBadRequest, "Something went wrong while parsing the CSV.")
@@ -466,7 +432,7 @@ func DownloadEntriesToCSV(w http.ResponseWriter, r *http.Request) {
 
 	defer response.Body.Close()
 
-	var books []addressBook
+	var books []User
 
 	data, _ := ioutil.ReadAll(response.Body)
 	err = json.Unmarshal(data, &books)
@@ -480,7 +446,7 @@ func DownloadEntriesToCSV(w http.ResponseWriter, r *http.Request) {
 	t := time.Now().Unix()
 	fileName := "address-book-" + strconv.Itoa(int(t)) + ".csv"
 	writer := csv.NewWriter(b)
-	heading := []string{"id", "first_name", "last_name", "email_address", "phone_number"}
+	heading := []string{"id", "first_name", "last_name", "email", "phone_number"}
 	_ = writer.Write(heading)
 
 	for _, book := range books {
