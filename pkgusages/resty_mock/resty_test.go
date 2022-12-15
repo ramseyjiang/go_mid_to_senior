@@ -2,6 +2,7 @@ package restymock
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"testing"
@@ -19,9 +20,9 @@ func Test_GetXML(t *testing.T) {
 		want     *XML
 		wantErr  error
 	}{
-		"happy path": {
+		"xml happy path": {
 			data:     `<root><Name>Oleg</Name></root>`,
-			path:     "https://example.com/mynameis",
+			path:     "https://xxxx",
 			respCode: 200,
 			want:     &XML{Name: "Oleg"},
 			wantErr:  nil,
@@ -29,6 +30,7 @@ func Test_GetXML(t *testing.T) {
 	}
 
 	for name, tt := range tests {
+		fmt.Println(name)
 		t.Run(name, func(t *testing.T) {
 			defer httpmock.DeactivateAndReset()
 			rst := resty.New()
@@ -40,6 +42,7 @@ func Test_GetXML(t *testing.T) {
 			httpmock.ActivateNonDefault(rst.GetClient())
 			httpmock.RegisterResponder("GET", tt.path, newResponder(tt.respCode, tt.data, "application/xml"))
 			got, err := s.GetXML(tt.path)
+			// fmt.Println(tt.want, got)
 			if tt.wantErr != nil && !errors.Is(err, tt.wantErr) {
 				t.Errorf("GetXML() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -57,9 +60,9 @@ func Test_XMLError(t *testing.T) {
 		want     *XML
 		wantErr  bool
 	}{
-		"error response": {
+		"xml error response": {
 			data:     ``,
-			path:     "https://example.com/mynameis",
+			path:     "https://xxx.com/xxx",
 			respCode: 500,
 			want:     nil,
 			wantErr:  true,
@@ -68,6 +71,7 @@ func Test_XMLError(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
+			fmt.Println(name)
 			defer httpmock.DeactivateAndReset()
 			rst := resty.New()
 			s := &Service{
@@ -95,9 +99,9 @@ func Test_JSON(t *testing.T) {
 		want     *JSON
 		wantErr  error
 	}{
-		"happy path": {
+		"json happy path": {
 			data:     `{"name":"Oleg"}`,
-			path:     "https://example.com/mynameis",
+			path:     "https://xxx.com/xxx",
 			respCode: 200,
 			want:     &JSON{Name: "Oleg"},
 			wantErr:  nil,
@@ -106,6 +110,7 @@ func Test_JSON(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
+			fmt.Println(name)
 			defer httpmock.DeactivateAndReset()
 			rst := resty.New()
 			s := &Service{
@@ -115,6 +120,7 @@ func Test_JSON(t *testing.T) {
 			httpmock.ActivateNonDefault(rst.GetClient())
 			httpmock.RegisterResponder("GET", tt.path, newResponder(tt.respCode, tt.data, "application/json"))
 			got, err := s.GetJSON(tt.path)
+			// fmt.Println(tt.want, got)
 			if tt.wantErr != nil && !errors.Is(err, tt.wantErr) {
 				t.Errorf("GetJSON() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -124,9 +130,10 @@ func Test_JSON(t *testing.T) {
 	}
 }
 
+// this test is skipped since it's intended to fail.
+// If not replace the tt.data to &JSON{Name: "Oleg"}, Test_JSONStringResponder will always fail.
 func Test_JSONStringResponder(t *testing.T) {
-	// this test is skipped since it's intended to fail
-	t.SkipNow()
+	// t.SkipNow() // it is used to make "Test ignored."
 	tests := map[string]struct {
 		data     string
 		path     string
@@ -145,6 +152,7 @@ func Test_JSONStringResponder(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
+			fmt.Println(name)
 			defer httpmock.DeactivateAndReset()
 			rst := resty.New()
 			s := &Service{
@@ -154,6 +162,7 @@ func Test_JSONStringResponder(t *testing.T) {
 			httpmock.ActivateNonDefault(rst.GetClient())
 			httpmock.RegisterResponder("GET", tt.path, httpmock.NewStringResponder(tt.respCode, tt.data))
 			got, err := s.GetJSON(tt.path)
+			fmt.Println(tt.want, got) // &{Oleg} &{}, using httpmock.NewStringResponder cannot get real json data.
 			if tt.wantErr != nil && !errors.Is(err, tt.wantErr) {
 				t.Errorf("GetJSON() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -200,7 +209,8 @@ func Test_JSONJsonResponder(t *testing.T) {
 	}
 }
 
-func Test_MininalCase(t *testing.T) {
+// All the below includes "Minimal", they are simple ways to make tests they hard codes almost all things.
+func Test_MinimalCase(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 	httpmock.RegisterResponder("GET", "https://example.com", httpmock.NewStringResponder(200, "resp string"))
@@ -215,7 +225,7 @@ func Test_MininalCase(t *testing.T) {
 	assert.Equal(t, "resp string", string(body))
 }
 
-func Test_MininalResty(t *testing.T) {
+func Test_MinimalResty(t *testing.T) {
 	rst := resty.New()
 	httpmock.ActivateNonDefault(rst.GetClient())
 	defer httpmock.DeactivateAndReset()
@@ -224,7 +234,7 @@ func Test_MininalResty(t *testing.T) {
 	assert.Equal(t, "resp string", resp.String())
 }
 
-func Test_MininalCustomJSON(t *testing.T) {
+func Test_MinimalCustomJSON(t *testing.T) {
 	rst := resty.New()
 	httpmock.ActivateNonDefault(rst.GetClient())
 	defer httpmock.DeactivateAndReset()
@@ -240,7 +250,7 @@ func Test_MininalCustomJSON(t *testing.T) {
 	assert.Equal(t, &JSON{Name: "Oleg"}, resp.Result().(*JSON))
 }
 
-func Test_MininalCustomXML(t *testing.T) {
+func Test_MinimalCustomXML(t *testing.T) {
 	rst := resty.New()
 	httpmock.ActivateNonDefault(rst.GetClient())
 	defer httpmock.DeactivateAndReset()
