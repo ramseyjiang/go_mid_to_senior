@@ -57,7 +57,7 @@ func main() {
 	defer func(sqlDB *sql.DB) {
 		err := sqlDB.Close()
 		if err != nil {
-			log.Fatal(err)
+			log.Println("DB connected error:", err.Error())
 		}
 	}(sqlDB)
 

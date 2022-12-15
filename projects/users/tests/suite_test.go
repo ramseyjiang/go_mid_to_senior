@@ -81,10 +81,10 @@ func (t *SuiteTest) TearDownSuite() {
 		}
 	}(sqlDB)
 
-	// Drop Table
-	for _, val := range getModels() {
-		_ = t.db.Migrator().DropTable(val)
-	}
+	// Drop Table, if open the comment, it will drop users table during tests run.
+	// for _, val := range getModels() {
+	// 	_ = t.db.Migrator().DropTable(val)
+	// }
 }
 
 // Run Before a Test
