@@ -13,6 +13,7 @@ import (
 )
 
 var db *gorm.DB
+var err error
 
 func GetDB() *gorm.DB {
 	return db
@@ -27,10 +28,7 @@ func ConnectGorm() {
 		os.Getenv("DB_PORT"),
 		os.Getenv("DB_DATABASE"),
 	)
-	fmt.Println(databaseConfig)
-	var err error
 	db, err = gorm.Open(mysql.Open(databaseConfig), initConfig())
-
 	if err != nil {
 		fmt.Println(err)
 		panic("Fail To Connect Database")

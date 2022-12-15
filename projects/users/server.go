@@ -62,11 +62,7 @@ func main() {
 	}(sqlDB)
 
 	migrations.MigrateTable()
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
+	port := os.Getenv("SERVER_PORT")
 
 	router := gin.New()
 	router.Use(gin.Recovery())
