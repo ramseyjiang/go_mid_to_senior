@@ -8,20 +8,26 @@ import (
 
 func (t *SuiteTest) TestCreateUser() {
 	_, err := service.UserCreate(models.User{
-		Name:  "First",
-		Email: "first@gmail.com",
+		FirstName: "First",
+		LastName:  "test",
+		Email:     "first@gmail.com",
+		Mobile:    022012311,
 	})
 	assert.NoError(t.T(), err)
 
 	_, err = service.UserCreate(models.User{
-		Name:  "Second",
-		Email: "second@gmail.com",
+		FirstName: "Second",
+		LastName:  "test",
+		Email:     "second@gmail.com",
+		Mobile:    022012312,
 	})
 	assert.NoError(t.T(), err)
 
 	_, err = service.UserCreate(models.User{
-		Name:  "Third",
-		Email: "second@gmail.com",
+		FirstName: "Third",
+		LastName:  "test",
+		Email:     "second@gmail.com",
+		Mobile:    022012313,
 	})
 	assert.Error(t.T(), err) // Duplicate Email Error
 }
