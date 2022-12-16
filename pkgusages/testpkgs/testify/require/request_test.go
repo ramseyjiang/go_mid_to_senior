@@ -5,9 +5,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
+// TestSavePlayerInfo is used individual-subtest way to test happy path and error scenarios.
 func TestSavePlayerInfo(t *testing.T) {
 	testServer := httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "application/json")
@@ -19,9 +21,16 @@ func TestSavePlayerInfo(t *testing.T) {
 	}))
 	defer testServer.Close()
 
-	t.Run("sad path: invalid stats", func(t *testing.T) {
+	t.Run("happy path", func(t *testing.T) {
 		s := PlayerInfo{Name: "Denis Rodman", Team: "Chicago Bulls", Position: "Forward"}
 		err := savePlayerInfo(s, testServer.URL)
-		require.Nil(t, err)
+		require.NoError(t, err)
+	})
+
+	t.Run("sad path: invalid stats", func(t *testing.T) {
+		s := PlayerInfo{Name: "Denis Green", Team: "Warriors"}
+		err := savePlayerInfo(s, testServer.URL)
+		require.Error(t, err)
+		assert.Equal(t, "missing data", err.Error())
 	})
 }

@@ -7,14 +7,6 @@ import (
 	"net/http"
 )
 
-func handle() {
-	playerInfo := PlayerInfo{Name: "White Mambda", Team: "San Antonio Spurs", Position: "Forward"}
-	err := savePlayerInfo(playerInfo, "http://players.nba.com")
-	if err != nil {
-		panic(err)
-	}
-}
-
 type PlayerInfo struct {
 	Name     string
 	Team     string
@@ -34,5 +26,6 @@ func savePlayerInfo(playerInfo PlayerInfo, url string) error {
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	_, err = client.Do(req)
+
 	return err
 }
