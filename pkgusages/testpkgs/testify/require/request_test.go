@@ -23,13 +23,19 @@ func TestSavePlayerInfo(t *testing.T) {
 
 	t.Run("happy path", func(t *testing.T) {
 		s := PlayerInfo{Name: "Denis Rodman", Team: "Chicago Bulls", Position: "Forward"}
+		// Act
 		err := savePlayerInfo(s, testServer.URL)
+
+		// Assert
 		require.NoError(t, err)
 	})
 
 	t.Run("sad path: invalid stats", func(t *testing.T) {
 		s := PlayerInfo{Name: "Denis Green", Team: "Warriors"}
+		// Act
 		err := savePlayerInfo(s, testServer.URL)
+
+		// Assert
 		require.Error(t, err)
 		assert.Equal(t, "missing data", err.Error())
 	})
