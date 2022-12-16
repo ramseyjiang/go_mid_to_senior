@@ -8,8 +8,18 @@ import (
 )
 
 func TestUnmarshalAndPrint(t *testing.T) {
-	t.Run("testing unmarshalAndPrint()", func(t *testing.T) {
-		err := unmarshalAndPrint(strings.NewReader(`[{"name": "Dubi Gal", "age": 900}]`))
-		assert.Nil(t, err)
+	t.Run("happy path", func(t *testing.T) {
+		// Act
+		err := unmarshalAndPrint(strings.NewReader(`[{"name": "Dubi Gal", "age": 90}]`))
+		// Assert
+		assert.NoError(t, err)
+	})
+
+	t.Run("sad path", func(t *testing.T) {
+		// Act
+		err := unmarshalAndPrint(strings.NewReader(`{"name": "Dubi Gal", "age": 90}`))
+		// Assert
+		assert.Error(t, err)
+		assert.Equal(t, "json format error", err.Error())
 	})
 }

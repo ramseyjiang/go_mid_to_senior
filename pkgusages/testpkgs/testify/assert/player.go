@@ -29,8 +29,8 @@ func hadAGoodGame(stats Stats) (bool, error) {
 	if stats.Assists >= 10 && stats.Rebounds >= 10 && stats.Points >= 10 {
 		return true, nil
 	} else if stats.Points < 10 && stats.Assists < 10 && stats.Minutes > 25.0 {
-		return false, nil
+		return false, fmt.Errorf("long time player lower effective")
 	}
 
-	return false, nil
+	return false, fmt.Errorf("not a good game")
 }
