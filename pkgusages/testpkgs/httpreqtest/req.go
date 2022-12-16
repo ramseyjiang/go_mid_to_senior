@@ -2,7 +2,6 @@ package httpreqtest
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -65,10 +64,8 @@ func multiply(handler AppHandler) func(c *fiber.Ctx) error {
 		// Try to parse request body to 'req' object
 		req := new(MultiplyRequest)
 		if err := c.BodyParser(req); err != nil {
-			log.Println(err)
-
 			// Return '400 Bad Request' with a text message
-			return c.Status(http.StatusBadRequest).SendString("Invalid payload")
+			return fmt.Errorf("unprocessable Entity")
 		}
 
 		// Use "Multiply" handler to calculate the multiplication of both values
@@ -82,6 +79,11 @@ func multiply(handler AppHandler) func(c *fiber.Ctx) error {
 // Example URL: "/sum?x=5&y=4"
 func sum(handler AppHandler) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
+		headers := c.GetReqHeaders()
+		if headers["Content-Type"] != "application/json" {
+			return fmt.Errorf("header error")
+		}
+
 		// Get values from query parameters
 		x, _ := strconv.Atoi(c.Query("x"))
 		y, _ := strconv.Atoi(c.Query("y"))
@@ -91,17 +93,5 @@ func sum(handler AppHandler) func(c *fiber.Ctx) error {
 
 		// Return '200 OK' with a 'Result' object containing the calculated value
 		return c.Status(http.StatusOK).JSON(r)
-	}
-}
-
-// Trigger is a Entry func. After changing the pkg name to main, the Trigger also need to change to main().
-func Trigger() {
-	// Create the App
-	app := CreateApp(&AppHandlerStruct{})
-
-	// Listen to Port 3000
-	err := app.Listen(":3000")
-	if err != nil {
-		fmt.Println(err)
 	}
 }

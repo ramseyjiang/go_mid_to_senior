@@ -77,12 +77,12 @@ var testTable = []struct {
 		name:       `POST endpoint to multiply, wrong header`,
 		method:     http.MethodPost,
 		path:       `/multiply`,
-		statusCode: http.StatusBadRequest,
+		statusCode: http.StatusInternalServerError,
 		requestBody: map[string]interface{}{
 			"x": 2,
 			"y": 3,
 		},
-		body:           `Invalid payload`,
+		body:           `unprocessable Entity`,
 		requestHeaders: map[string]string{`Content-Type`: `application/text`},
 		headers:        map[string]string{`Content-Type`: `text/plain; charset=utf-8`},
 	},
@@ -108,12 +108,11 @@ func TestApp(t *testing.T) {
 
 	for _, tc := range testTable {
 		t.Run(tc.name, func(t *testing.T) {
-
 			appHandler.Calls = map[string][][]interface{}{}
 
 			// Create and send request
-			reqbody, _ := json.Marshal(tc.requestBody)
-			request := httptest.NewRequest(tc.method, tc.path, bytes.NewReader(reqbody))
+			reqBody, _ := json.Marshal(tc.requestBody)
+			request := httptest.NewRequest(tc.method, tc.path, bytes.NewReader(reqBody))
 			request.Header.Add(`Content-Type`, `application/json`)
 
 			// Request Headers
@@ -122,18 +121,14 @@ func TestApp(t *testing.T) {
 			}
 
 			response, _ := app.Test(request)
-
-			// Status Code
-			statusCode := response.StatusCode
-			if statusCode != tc.statusCode {
-				t.Errorf("StatusCode was incorrect, got: %d, want: %d.", statusCode, tc.statusCode)
+			if response.StatusCode != tc.statusCode {
+				t.Errorf("StatusCode was incorrect, got: %d, want: %d.", response.StatusCode, tc.statusCode)
 			}
 
 			// Headers
 			for k, want := range tc.headers {
-				headerValue := response.Header.Get(k)
-				if headerValue != want {
-					t.Errorf("Response header '%s' was incorrect, got: '%s', want: '%s'", k, headerValue, want)
+				if response.Header.Get(k) != want {
+					t.Errorf("Response header '%s' was incorrect, got: '%s', want: '%s'", k, response.Header.Get(k), want)
 				}
 			}
 
