@@ -3,7 +3,7 @@ package httpreqtest
 import (
 	"bytes"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -57,7 +57,7 @@ func TestFakeCallSuccess(t *testing.T) {
 	   "full_name": "mock-repo"
 	  }]`
 	// create a new reader with that JSON
-	r := ioutil.NopCloser(bytes.NewReader([]byte(jsonResponse)))
+	r := io.NopCloser(bytes.NewReader([]byte(jsonResponse)))
 	Client = &MockClient{
 		MockDo: func(*http.Request) (*http.Response, error) {
 			return &http.Response{

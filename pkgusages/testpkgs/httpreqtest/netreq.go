@@ -22,7 +22,7 @@ func init() {
 // GetRepos takes a username and retreives
 func GetRepos(username string) ([]map[string]interface{}, error) {
 	url := fmt.Sprintf("https://api.github.com/users/%s/repos?sort=created&direction=desc", username)
-	request, err := http.NewRequest(http.MethodGet, url, nil)
+	request, err := http.NewRequest(http.MethodGet, url, http.NoBody)
 	if err != nil {
 		return nil, err
 	}
