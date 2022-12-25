@@ -15,8 +15,8 @@
    The flag -p is to define the port binding. Since the app inside the container is running on port 3000 then here bind
    it to the host port, this time also 3000.
 
-7. Access your docker, confirm it works. After you run the go-dock docker, open another terminal, run "
-   curl http://localhost:3000/ping"
-   You will see "{“message”:”pong”}" as your expect. You have a full working web server already.
+**7. Access your docker, confirm it works. After you run the go-dock docker,**
+% docker run -d -p 3000:3000 go-dock /main access 127.0.0.1:3000/ping access 127.0.0.1:3000/animal/cat You will see "
+{“message”:”pong”}" as your expect. You have a full working web server already.
 
 One of Docker’s best practice is keeping the image size small, by having only the binary file.
