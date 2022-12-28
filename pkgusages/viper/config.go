@@ -11,8 +11,28 @@ const CfgName = "env"
 const CfgType = "toml"
 const CfgJoint = "."
 
+type Config struct {
+	AppName   string
+	LogLevel  string
+	MysqlConf MysqlConf
+	RedisConf redisConf
+}
+
+type MysqlConf struct {
+	ip       string
+	user     string
+	password string
+	database string
+	port     int64
+}
+
+type redisConf struct {
+	ip   string
+	port int64
+}
+
 // Entry run this file should go this folder, after that "go run config.go"
-func Entry() {
+func Entry() (config *Config) {
 	viper.SetConfigName(CfgName) // load config from which file name.
 	viper.SetConfigType(CfgType) // load config from which file type
 	viper.AddConfigPath(CfgJoint)
@@ -22,15 +42,21 @@ func Entry() {
 		log.Fatalf("read config failed: %v", err)
 	}
 
-	fmt.Println(viper.Get("app_name"))
-	fmt.Println(viper.Get("log_level"))
+	// if you declare uses "var config map[string]string", it will make "panic: assignment to entry in nil map"
+	// so here you have to initialize the map using the make function (or a map literal) before you can add any elements.
+	config = &Config{}
+	// convert interface to string
+	config.AppName = fmt.Sprintf("%v", viper.Get("app_name"))
+	config.LogLevel = fmt.Sprintf("%v", viper.Get("log_level"))
 
-	fmt.Println("mysql ip: ", viper.Get("mysql.ip"))
-	fmt.Println("mysql port: ", viper.Get("mysql.port"))
-	fmt.Println("mysql user: ", viper.Get("mysql.user"))
-	fmt.Println("mysql password: ", viper.Get("mysql.password"))
-	fmt.Println("mysql database: ", viper.Get("mysql.database"))
+	config.MysqlConf.ip = fmt.Sprintf("%v", viper.Get("mysql.ip"))
+	config.MysqlConf.database = fmt.Sprintf("%v", viper.Get("mysql.database"))
+	config.MysqlConf.user = fmt.Sprintf("%v", viper.Get("mysql.user"))
+	config.MysqlConf.password = fmt.Sprintf("%v", viper.Get("mysql.password"))
+	config.MysqlConf.port = (viper.Get("mysql.port")).(int64) // convert interface to int64
 
-	fmt.Println("redis ip: ", viper.Get("redis.ip"))
-	fmt.Println("redis port: ", viper.Get("redis.port"))
+	config.RedisConf.ip = fmt.Sprintf("%v", viper.Get("redis.ip"))
+	config.RedisConf.port = (viper.Get("redis.port")).(int64)
+
+	return
 }

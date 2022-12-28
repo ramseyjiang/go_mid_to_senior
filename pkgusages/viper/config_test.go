@@ -1,19 +1,18 @@
 package viperpkg
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 // go test -v -run TestEntry
 func TestEntry(t *testing.T) {
-	tests := []struct {
-		name string
-	}{
-		{
-			name: "env.toml",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			Entry()
-		})
-	}
+	want := Entry()
+	var expected Config
+	expected.AppName = "awesome web"
+	expected.LogLevel = "DEBUG"
+
+	assert.Equal(t, want.AppName, "awesome web")
+	assert.Equal(t, want.LogLevel, "DEBUG")
 }
