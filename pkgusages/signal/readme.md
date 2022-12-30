@@ -16,3 +16,6 @@ check the first terminal, you will see the main.go has stopped, and it will show
    // "2022/12/30 23:02:43 hot reload"
 
 6. Kill the port-number processID forever % kill -9 processID
+
+If I was going to continue working on this I would load configuration values from a file or a datastore (or both!). You
+could then use any number of tools to send a SIGHUP to all of your processes to do a config reload.
