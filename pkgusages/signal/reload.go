@@ -8,18 +8,18 @@ import (
 	"syscall"
 )
 
-var conf = &Config{Message: "Hello, World!"}
-
 type Config struct {
 	Message string
 }
+
+var conf = &Config{Message: "Before hot reload"}
 
 func multiSignalHandler(signal os.Signal) {
 	switch signal {
 	case syscall.SIGHUP:
 		log.Println("Signal:", signal.String())
-		log.Println("hot reload")
-		conf.Message = "Go To Hell!"
+		log.Println("After hot reload")
+		conf.Message = "Hot reload has been finished."
 	case syscall.SIGINT:
 		log.Println("Signal:", signal.String())
 		log.Println("Interrupt by Ctrl+C")
@@ -33,9 +33,8 @@ func multiSignalHandler(signal os.Signal) {
 	}
 }
 
-func routerExample() {
+func router() {
 	log.Println("starting up....")
-	// Output is used to display hot reload result.
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte(conf.Message))
 	})
@@ -46,20 +45,19 @@ func routerExample() {
 }
 
 func main() {
-	routerExample()
-	// When a server shut down, it should stop receiving new requests while complete the ongoing requests,
-	// and return their responses, and then, shut down finally.
+	router()
+	// When a server shut down, it should stop receiving new requests while completing the ongoing requests,
+	// return their responses, and then shut down.
 	// create a channel for listening to OS signals, it needs to reserve to buffer size 1, so the notifier are not blocked
 	sigCh := make(chan os.Signal, 1)
 
 	// signal.Notify will send a signal to sigCh channel when program is interrupted.
-	// SIGINT is used shutdown gracefully on Ctrl+C, it equals to os.Interrupt also.
-	// syscall.SIGTERM is the usual signal for termination and the default one for docker containers, which is also used by kubernetes.
-	// syscall.SIGHUP is used for the signal to reload configuration.
+	// syscall.SIGINT is used shutdown gracefully on Ctrl+C, it equals os.Interrupt also.
+	// syscall.SIGTERM is the usual signal for termination and the default one for docker containers, which is also used by Kubernetes.
+	// syscall.SIGHUP is used for the hot reload configuration.
 	signal.Notify(sigCh, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
 
 	for {
-		s := <-sigCh
-		multiSignalHandler(s)
+		multiSignalHandler(<-sigCh)
 	}
 }
