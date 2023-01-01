@@ -13,4 +13,5 @@
    -p 9411:9411 \
    jaegertracing/all-in-one:latest
 
-2. check Jaeger works access the Jaeger UI: localhost:16686 The json return link: http://localhost:16686/api/traces
+2. check Jaeger works access the Jaeger UI: localhost:16686
+3. The json return link: http://localhost:16686/api/traces
