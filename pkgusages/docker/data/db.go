@@ -1,4 +1,4 @@
-package db
+package data
 
 import (
 	"encoding/json"
@@ -24,7 +24,7 @@ func init() {
 		log.Println(err.Error())
 	}
 
-	file, err := os.Open(fmt.Sprintf("%v/db/data.json", wd))
+	file, err := os.Open(fmt.Sprintf("%v/data/data.json", wd))
 	if err != nil {
 		log.Println(err.Error())
 	}

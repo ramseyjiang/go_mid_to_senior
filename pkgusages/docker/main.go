@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-dock/db"
+	"go-dock/data"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ func main() {
 	})
 
 	r.GET("/animal/:name", func(c *gin.Context) {
-		animal, err := db.GetAnimal(c.Param("name"))
+		animal, err := data.GetAnimal(c.Param("name"))
 		if err != nil {
 			c.String(http.StatusNotFound, err.Error())
 			return
