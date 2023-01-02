@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"runtime"
+	"strings"
 
 	jaegercfg "github.com/uber/jaeger-client-go/config"
 	"github.com/uber/jaeger-lib/metrics"
@@ -71,5 +72,7 @@ func StartSpan(ctx context.Context, funcName string) (span opentracing.Span) {
 
 func GetFuncName() string {
 	pc, _, _, _ := runtime.Caller(1)
-	return runtime.FuncForPC(pc).Name()
+	namePath := runtime.FuncForPC(pc).Name()
+	funcNameSlice := strings.Split(namePath, "/")
+	return funcNameSlice[len(funcNameSlice)-1]
 }
