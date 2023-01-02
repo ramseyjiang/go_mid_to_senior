@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"strings"
 
-	ginopentracing "github.com/Bose/go-gin-opentracing"
 	"github.com/opentracing/opentracing-go"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
 	"github.com/uber/jaeger-lib/metrics"
@@ -36,25 +35,6 @@ func ProviderTracer() io.Closer {
 	}
 	opentracing.SetGlobalTracer(tracer)
 	return closer
-}
-
-func StartTrace() {
-	// initialize the global singleton for tracing...
-	tracer, reporter, closer, err := ginopentracing.InitTracing(
-		"trace-test",
-		"localhost:6831",
-		ginopentracing.WithEnableInfoLog(false),
-	)
-	if err != nil {
-		panic("unable to init tracing")
-	}
-	defer func(closer io.Closer) {
-		_ = closer.Close()
-	}(closer)
-	defer reporter.Close()
-
-	opentracing.SetGlobalTracer(tracer)
-	opentracing.GlobalTracer()
 }
 
 func StartSpan(ctx context.Context, funcName string) (span opentracing.Span) {
