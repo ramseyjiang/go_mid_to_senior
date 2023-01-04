@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -165,17 +166,14 @@ func GetBookByID(w http.ResponseWriter, r *http.Request) {
  "first_name":"John",
  "last_name":"Doe",
  "email":"john.doe@gmail.com",
- "phone_number":"1234567890",
+ "mobile":"1234567890",
  }
 */
 // Output: JSON Encoded Address Book Book object if created else JSON Encoded Exception.
 func CreateBook(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open("mysql", connectionString)
 	defer func(db *sql.DB) {
-		err1 := db.Close()
-		if err1 != nil {
-			return
-		}
+		_ = db.Close()
 	}(db)
 
 	if err != nil {
@@ -187,11 +185,12 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	err = decoder.Decode(&book)
 	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
+		respondWithError(w, http.StatusInternalServerError, "Decode met some problem occurred.")
 		return
 	}
 
-	statement, err := db.Prepare("insert into users (first_name, last_name, email, mobile) values(?,?,?,?)")
+	statement, err := db.Prepare("insert into users (id, first_name, last_name, email, mobile) values(?,?,?,?,?)")
+	log.Println(err)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Some problem occurred.")
 		return
@@ -203,7 +202,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 		}
 	}(statement)
 
-	res, err := statement.Exec(book.FirstName, book.LastName, book.Email, book.Mobile)
+	res, err := statement.Exec(book.ID, book.FirstName, book.LastName, book.Email, book.Mobile)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "There was problem entering the book.")
 		return
@@ -211,7 +210,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 
 	if rowsAffected, _ := res.RowsAffected(); rowsAffected == 1 {
 		id, _ := res.LastInsertId()
-		book.ID = string(id)
+		book.ID = fmt.Sprint(id)
 		respondWithJSON(w, http.StatusOK, book)
 	}
 }
@@ -226,7 +225,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
  "first_name":"Krish",
  "last_name":"Bhanushali",
  "email":"krishsb2405@gmail.com",
- "phone_number":"7798775575"
+ "mobile":"7798775575"
  }
 */
 // Output: JSON Encoded Address Book Book object if updated else JSON Encoded Exception.
@@ -446,7 +445,7 @@ func DownloadEntriesToCSV(w http.ResponseWriter, r *http.Request) {
 	t := time.Now().Unix()
 	fileName := "address-book-" + strconv.Itoa(int(t)) + ".csv"
 	writer := csv.NewWriter(b)
-	heading := []string{"id", "first_name", "last_name", "email", "phone_number"}
+	heading := []string{"id", "first_name", "last_name", "email", "mobile"}
 	_ = writer.Write(heading)
 
 	for _, book := range books {

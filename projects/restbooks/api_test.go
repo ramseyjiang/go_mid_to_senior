@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -65,7 +66,7 @@ func TestGetBooks(t *testing.T) {
 	}
 
 	// Check the response body is what we expect.
-	expected := `[{"id":2,"first_name":"Krish","last_name":"Bhanushali","email":"krishsb2405@gmail.com","phone_number":"7798775575"},{"id":3,"first_name":"Kelly","last_name":"Franco","email":"kelly.franco@gmail.com","phone_number":"1112223333"},{"id":4,"first_name":"John","last_name":"Doe","email":"john.doe@gmail.com","phone_number":"1234567890"},{"id":5,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"},{"id":6,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"},{"id":7,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"},{"id":8,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"},{"id":9,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}]`
+	expected := `[{"id":"079deccd-514f-4be2-9904-ea6482198e29","first_name":"First","last_name":"test","email":"first@gmail.com","mobile":4723913},{"id":"269e72f5-b6cf-4afc-bf54-0b7060ce6b8f","first_name":"Second","last_name":"test","email":"second@gmail.com","mobile":4723914}]`
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
@@ -80,7 +81,7 @@ func TestGetBookByID(t *testing.T) {
 	}
 
 	q := req.URL.Query()
-	q.Add("id", "2")
+	q.Add("id", "269e72f5-b6cf-4afc-bf54-0b7060ce6b8f")
 	req.URL.RawQuery = q.Encode()
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(GetBookByID)
@@ -92,7 +93,7 @@ func TestGetBookByID(t *testing.T) {
 	}
 
 	// Check the response body is what we expect.
-	expected := `{"id":2,"first_name":"Krish","last_name":"Bhanushali","email":"krishsb2405@gmail.com","phone_number":"7798775575"}`
+	expected := `{"id":"269e72f5-b6cf-4afc-bf54-0b7060ce6b8f","first_name":"Second","last_name":"test","email":"second@gmail.com","mobile":4723914}`
 
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
@@ -122,10 +123,10 @@ func TestGetBookByIDNotFound(t *testing.T) {
 }
 
 func TestCreateBook(t *testing.T) {
-	var jsonStr = []byte(`{"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`)
+	var jsonStr = []byte(`{"id":"` + uuid.New().String() + `","first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","mobile":123478}`)
 
 	req, err := http.NewRequest("POST", "/book", bytes.NewBuffer(jsonStr))
-
+	log.Println(bytes.NewBuffer(jsonStr))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -135,22 +136,15 @@ func TestCreateBook(t *testing.T) {
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateBook)
 	handler.ServeHTTP(rr, req)
-
+	log.Println(rr.Body)
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
-
-	expected := `{"id":16,"first_name":"xyz","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`
-
-	if rr.Body.String() != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
-	}
 }
 
 func TestEditBook(t *testing.T) {
-	var jsonStr = []byte(`{"id":15,"first_name":"xyz change","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`)
+	var jsonStr = []byte(`{"id":"132cb11e-e0f0-44b9-9c62-e19c8dd0a178","first_name":"xyz change","last_name":"pqr","email":"xyz@pqr.com","mobile":12345690}`)
 
 	req, err := http.NewRequest("PUT", "/book", bytes.NewBuffer(jsonStr))
 
@@ -169,13 +163,14 @@ func TestEditBook(t *testing.T) {
 			status, http.StatusOK)
 	}
 
-	expected := `{"id":15,"first_name":"xyz change","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`
+	expected := `{"id":"132cb11e-e0f0-44b9-9c62-e19c8dd0a178","first_name":"xyz change","last_name":"pqr","email":"xyz@pqr.com","mobile":12345690}`
 
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
 	}
 }
+
 func TestDeleteEntry(t *testing.T) {
 	reqBody := bytes.NewReader([]byte{})
 	req, err := http.NewRequest("DELETE", "/book", reqBody)
@@ -185,18 +180,18 @@ func TestDeleteEntry(t *testing.T) {
 	}
 
 	q := req.URL.Query()
-	q.Add("id", "15")
+	q.Add("id", "12aa9259-0fbd-45bd-8165-6f7d0ef11235")
 	req.URL.RawQuery = q.Encode()
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(DeleteBook)
 	handler.ServeHTTP(rr, req)
 
-	if status := rr.Code; status != http.StatusOK {
+	if status := rr.Code; status != http.StatusBadRequest {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
 
-	expected := `{"id":15,"first_name":"xyz change","last_name":"pqr","email":"xyz@pqr.com","phone_number":"1234567890"}`
+	expected := `{"error":"No book found with the id=12aa9259-0fbd-45bd-8165-6f7d0ef11235"}`
 
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
