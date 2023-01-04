@@ -60,7 +60,7 @@ func getModels() []interface{} {
 	return []interface{}{&models.User{}}
 }
 
-// Setup db value
+// Setup data value
 func (t *SuiteTest) SetupSuite() {
 	config.ConnectGorm()
 	t.db = config.GetDB()
@@ -83,7 +83,7 @@ func (t *SuiteTest) TearDownSuite() {
 
 	// Drop Table, if open the comment, it will drop users table during tests run.
 	// for _, val := range getModels() {
-	// 	_ = t.db.Migrator().DropTable(val)
+	// 	_ = t.data.Migrator().DropTable(val)
 	// }
 }
 
