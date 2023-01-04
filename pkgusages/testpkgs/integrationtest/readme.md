@@ -2,7 +2,7 @@ Integration Testing:
 Applications consist of multiple modules, the interaction between those modules will give users outputs and results they
 want.
 
-an Integration test test means when a programmer wants to test this interaction and check if the data flow is working as
+an Integration test means when a programmer wants to test this interaction and check if the data flow is working as
 expected and giving the expected output, this is called.
 
 Integration test will cover the interaction of those dependencies so there will be no mocking and less fake data, and as
