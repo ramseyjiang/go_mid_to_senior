@@ -2,45 +2,13 @@ package redispkg
 
 import (
 	"context"
-	"fmt"
+	"log"
 
 	"github.com/go-redis/redis/v8"
 )
 
-var ctx = context.Background()
-
-func Trigger() {
-	// NewClient returns a client to the Redis Server specified by Options.
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // use default Addr
-		Password: "",               // no password set
-		DB:       0,                // use default DB
-	})
-
-	ExampleClient(ctx, rdb)
-
-	v, err := CustomCmd(ctx, rdb, "custom_cmd").Result()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%q\n", v)
-
-	v1, err := rdb.Do(ctx, "get", "custom_cmd").Text()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%q\n", v1)
-
-	val, err := rdb.Get(ctx, "custom_cmd").Result()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("key is custom_cmd, value is ", val)
-}
-
 /**
 For redis usual commands.
-$brew cleanup redis
 
 //Make redis works in the background
 $brew services restart redis
@@ -64,39 +32,44 @@ redis 127.0.0.1:6379> get mykey
 
 $redis-cli shutdown
 */
+var ctx = context.Background()
 
-func ExampleClient(ctx context.Context, rdb *redis.Client) {
-	err := rdb.Set(ctx, "key", "value", 0).Err()
+func getRedisValues() (string, string, string) {
+	// NewClient returns a client to the Redis Server specified by Options.
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379", // use default Addr
+		Password: "",               // no password set
+		DB:       0,                // use default DB
+	})
+
+	// Check the connection
+	_, err := client.Ping(ctx).Result()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Connected to Redis!")
+
+	err = client.Set(ctx, "customise-key", "customise-value", 0).Err()
 	if err != nil {
 		panic(err)
 	}
 
-	val, err := rdb.Get(ctx, "key").Result()
+	// the first way
+	val, err := client.Get(ctx, "customise-key").Result()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("key", val)
 
-	val2, err := rdb.Get(ctx, "key2").Result()
-	if err == redis.Nil {
-		fmt.Println("key2 does not exist")
-	} else if err != nil {
-		panic(err)
-	} else {
-		fmt.Println("key2", val2)
-	}
-	// Output: key value
-	// key2 does not exist
-}
-
-// In go redis, it has lots of similar commands as NewStringCmd can be used to create new commands.
-
-func CustomCmd(ctx context.Context, rdb *redis.Client, key string) *redis.StringCmd {
-	cmd := redis.NewStringCmd(ctx, "get", key)
-	err := rdb.Set(ctx, key, "custom command value", 0).Err()
+	// the second way
+	val1, err := client.Do(ctx, "get", "customise-key").Text()
 	if err != nil {
 		panic(err)
 	}
-	_ = rdb.Process(ctx, cmd)
-	return cmd
+
+	val2, err := client.Get(ctx, "key2").Result()
+	if err != nil && err != redis.Nil {
+		panic(err)
+	}
+
+	return val, val1, val2
 }
