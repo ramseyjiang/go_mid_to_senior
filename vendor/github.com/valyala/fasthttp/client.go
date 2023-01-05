@@ -297,6 +297,9 @@ type Client struct {
 	// By default will use isIdempotent function
 	RetryIf RetryIfFunc
 
+	// Connection pool strategy. Can be either LIFO or FIFO (default).
+	ConnPoolStrategy ConnPoolStrategyType
+
 	// ConfigureClient configures the fasthttp.HostClient.
 	ConfigureClient func(hc *HostClient) error
 
@@ -510,6 +513,7 @@ func (c *Client) Do(req *Request, resp *Response) error {
 			DisablePathNormalizing:        c.DisablePathNormalizing,
 			MaxConnWaitTimeout:            c.MaxConnWaitTimeout,
 			RetryIf:                       c.RetryIf,
+			ConnPoolStrategy:              c.ConnPoolStrategy,
 			clientReaderPool:              &c.readerPool,
 			clientWriterPool:              &c.writerPool,
 		}
@@ -1994,41 +1998,33 @@ func (c *HostClient) cachedTLSConfig(addr string) *tls.Config {
 // ErrTLSHandshakeTimeout indicates there is a timeout from tls handshake.
 var ErrTLSHandshakeTimeout = errors.New("tls handshake timed out")
 
-var timeoutErrorChPool sync.Pool
-
-func tlsClientHandshake(rawConn net.Conn, tlsConfig *tls.Config, timeout time.Duration) (net.Conn, error) {
-	tc := AcquireTimer(timeout)
-	defer ReleaseTimer(tc)
-
-	var ch chan error
-	chv := timeoutErrorChPool.Get()
-	if chv == nil {
-		chv = make(chan error)
-	}
-	ch = chv.(chan error)
-	defer timeoutErrorChPool.Put(chv)
-
-	conn := tls.Client(rawConn, tlsConfig)
-
-	go func() {
-		ch <- conn.Handshake()
-	}()
-
-	select {
-	case <-tc.C:
-		rawConn.Close()
-		<-ch
-		return nil, ErrTLSHandshakeTimeout
-	case err := <-ch:
-		if err != nil {
+func tlsClientHandshake(rawConn net.Conn, tlsConfig *tls.Config, deadline time.Time) (_ net.Conn, retErr error) {
+	defer func() {
+		if retErr != nil {
 			rawConn.Close()
-			return nil, err
 		}
-		return conn, nil
+	}()
+	conn := tls.Client(rawConn, tlsConfig)
+	err := conn.SetDeadline(deadline)
+	if err != nil {
+		return nil, err
 	}
+	err = conn.Handshake()
+	if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
+		return nil, ErrTLSHandshakeTimeout
+	}
+	if err != nil {
+		return nil, err
+	}
+	err = conn.SetDeadline(time.Time{})
+	if err != nil {
+		return nil, err
+	}
+	return conn, nil
 }
 
 func dialAddr(addr string, dial DialFunc, dialDualStack, isTLS bool, tlsConfig *tls.Config, timeout time.Duration) (net.Conn, error) {
+	deadline := time.Now().Add(timeout)
 	if dial == nil {
 		if dialDualStack {
 			dial = DialDualStack
@@ -2049,7 +2045,7 @@ func dialAddr(addr string, dial DialFunc, dialDualStack, isTLS bool, tlsConfig *
 		if timeout == 0 {
 			return tls.Client(conn, tlsConfig), nil
 		}
-		return tlsClientHandshake(conn, tlsConfig, timeout)
+		return tlsClientHandshake(conn, tlsConfig, deadline)
 	}
 	return conn, nil
 }

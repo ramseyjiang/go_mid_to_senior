@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/Bose/go-gin-opentracing v1.0.5
+	github.com/Joffref/opa-middleware v1.0.2
 	github.com/Shopify/sarama v1.36.0
 	github.com/boombuler/barcode v1.0.1
 	github.com/brianvoe/gofakeit/v6 v6.19.0
@@ -17,7 +18,7 @@ require (
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gocolly/colly v1.2.0
-	github.com/gofiber/fiber/v2 v2.32.0
+	github.com/gofiber/fiber/v2 v2.36.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/google/wire v0.5.0
@@ -49,7 +50,9 @@ require (
 
 require (
 	github.com/HdrHistogram/hdrhistogram-go v1.1.2 // indirect
+	github.com/OneOfOne/xxhash v1.2.8 // indirect
 	github.com/PuerkitoBio/goquery v1.8.0 // indirect
+	github.com/agnivade/levenshtein v1.0.1 // indirect
 	github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
@@ -64,11 +67,12 @@ require (
 	github.com/eapache/go-resiliency v1.3.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21 // indirect
 	github.com/eapache/queue v1.1.0 // indirect
-	github.com/felixge/httpsnoop v1.0.1 // indirect
-	github.com/fsnotify/fsnotify v1.5.1 // indirect
+	github.com/felixge/httpsnoop v1.0.2 // indirect
+	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect
+	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/go-logr/logr v1.2.2 // indirect
+	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
@@ -78,7 +82,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/hashicorp/errwrap v1.0.0 // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
@@ -102,19 +106,20 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/oklog/run v1.1.0 // indirect
+	github.com/open-policy-agent/opa v0.43.1 // indirect
 	github.com/openzipkin/zipkin-go v0.4.0 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pierrec/lz4/v4 v4.1.15 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/prometheus/client_golang v1.12.1 // indirect
+	github.com/prometheus/client_golang v1.12.2 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
-	github.com/sirupsen/logrus v1.8.1 // indirect
+	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
@@ -124,15 +129,19 @@ require (
 	github.com/temoto/robotstxt v1.1.2 // indirect
 	github.com/ugorji/go/codec v1.2.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.35.0 // indirect
+	github.com/valyala/fasthttp v1.38.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
-	go.opentelemetry.io/otel v1.3.0 // indirect
+	github.com/vektah/gqlparser/v2 v2.4.6 // indirect
+	github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb // indirect
+	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
+	github.com/yashtewari/glob-intersection v0.1.0 // indirect
+	go.opentelemetry.io/otel v1.7.0 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.3.0 // indirect
 	go.opentelemetry.io/otel/exporters/zipkin v1.3.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.3.0 // indirect
-	go.opentelemetry.io/otel/trace v1.3.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.7.0 // indirect
+	go.opentelemetry.io/otel/trace v1.7.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
-	go.uber.org/automaxprocs v1.4.0 // indirect
+	go.uber.org/automaxprocs v1.5.1 // indirect
 	golang.org/x/crypto v0.4.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/sys v0.3.0 // indirect

@@ -39,6 +39,7 @@ const (
 	queryTag     = "query"
 	reqHeaderTag = "reqHeader"
 	bodyTag      = "form"
+	paramsTag    = "params"
 )
 
 // userContextKey define the key name for storing context.Context in *fasthttp.RequestCtx
@@ -341,9 +342,19 @@ func (c *Ctx) BodyParser(out interface{}) error {
 	}
 	if strings.HasPrefix(ctype, MIMEApplicationForm) {
 		data := make(map[string][]string)
+		var err error
+
 		c.fasthttp.PostArgs().VisitAll(func(key, val []byte) {
+			if err != nil {
+				return
+			}
+
 			k := utils.UnsafeString(key)
 			v := utils.UnsafeString(val)
+
+			if strings.Contains(k, "[") {
+				k, err = parseParamSquareBrackets(k)
+			}
 
 			if strings.Contains(v, ",") && equalFieldType(out, reflect.Slice, k) {
 				values := strings.Split(v, ",")
@@ -844,11 +855,20 @@ func (c *Ctx) AllParams() map[string]string {
 	return params
 }
 
+// ParamsParser binds the param string to a struct.
+func (c *Ctx) ParamsParser(out interface{}) error {
+	params := make(map[string][]string, len(c.route.Params))
+	for _, param := range c.route.Params {
+		params[param] = append(params[param], c.Params(param))
+	}
+	return c.parseToStruct(paramsTag, out, params)
+}
+
 // ParamsInt is used to get an integer from the route parameters
 // it defaults to zero if the parameter is not found or if the
 // parameter cannot be converted to an integer
-// If a default value is given, it will returb that value in case the param
-// doesn't exist or cannot be converted to an integrer
+// If a default value is given, it will return that value in case the param
+// doesn't exist or cannot be converted to an integer
 func (c *Ctx) ParamsInt(key string, defaultValue ...int) (int, error) {
 	// Use Atoi to convert the param to an int or return zero and an error
 	value, err := strconv.Atoi(c.Params(key))
@@ -929,7 +949,7 @@ func (c *Ctx) QueryParser(out interface{}) error {
 		v := utils.UnsafeString(val)
 
 		if strings.Contains(k, "[") {
-			k, err = parseQuery(k)
+			k, err = parseParamSquareBrackets(k)
 		}
 
 		if strings.Contains(v, ",") && equalFieldType(out, reflect.Slice, k) {
@@ -950,7 +970,7 @@ func (c *Ctx) QueryParser(out interface{}) error {
 	return c.parseToStruct(queryTag, out, data)
 }
 
-func parseQuery(k string) (string, error) {
+func parseParamSquareBrackets(k string) (string, error) {
 	bb := bytebufferpool.Get()
 	defer bytebufferpool.Put(bb)
 
@@ -1134,16 +1154,15 @@ func (c *Ctx) Bind(vars Map) error {
 func (c *Ctx) getLocationFromRoute(route Route, params Map) (string, error) {
 	buf := bytebufferpool.Get()
 	for _, segment := range route.routeParser.segs {
-		if segment.IsParam {
-			for key, val := range params {
-				if key == segment.ParamName || segment.IsGreedy {
-					_, err := buf.WriteString(utils.ToString(val))
-					if err != nil {
-						return "", err
-					}
+		for key, val := range params {
+			if segment.IsParam && (key == segment.ParamName || (segment.IsGreedy && len(key) == 1 && isInCharset(key[0], greedyParameters))) {
+				_, err := buf.WriteString(utils.ToString(val))
+				if err != nil {
+					return "", err
 				}
 			}
-		} else {
+		}
+		if !segment.IsParam {
 			_, err := buf.WriteString(segment.Const)
 			if err != nil {
 				return "", err
@@ -1151,6 +1170,7 @@ func (c *Ctx) getLocationFromRoute(route Route, params Map) (string, error) {
 		}
 	}
 	location := buf.String()
+	// release buffer
 	bytebufferpool.Put(buf)
 	return location, nil
 }
@@ -1340,10 +1360,11 @@ func (c *Ctx) SendFile(file string, compress ...bool) error {
 	// Save the filename, we will need it in the error message if the file isn't found
 	filename := file
 
-	// https://github.com/valyala/fasthttp/blob/master/fs.go#L81
+	// https://github.com/valyala/fasthttp/blob/c7576cc10cabfc9c993317a2d3f8355497bea156/fs.go#L129-L134
 	sendFileOnce.Do(func() {
 		sendFileFS = &fasthttp.FS{
-			Root:                 "/",
+			Root:                 "",
+			AllowEmptyRoot:       true,
 			GenerateIndexPages:   false,
 			AcceptByteRange:      true,
 			Compress:             true,
@@ -1361,13 +1382,16 @@ func (c *Ctx) SendFile(file string, compress ...bool) error {
 	c.pathOriginal = utils.CopyString(c.pathOriginal)
 	// Disable compression
 	if len(compress) == 0 || !compress[0] {
-		// https://github.com/valyala/fasthttp/blob/master/fs.go#L46
+		// https://github.com/valyala/fasthttp/blob/7cc6f4c513f9e0d3686142e0a1a5aa2f76b3194a/fs.go#L55
 		c.fasthttp.Request.Header.Del(HeaderAcceptEncoding)
 	}
-	// https://github.com/valyala/fasthttp/blob/master/fs.go#L85
-	if len(file) == 0 || file[0] != '/' {
-		hasTrailingSlash := len(file) > 0 && file[len(file)-1] == '/'
+	// copy of https://github.com/valyala/fasthttp/blob/7cc6f4c513f9e0d3686142e0a1a5aa2f76b3194a/fs.go#L103-L121 with small adjustments
+	if len(file) == 0 || !filepath.IsAbs(file) {
+		// extend relative path to absolute path
+		hasTrailingSlash := len(file) > 0 && (file[len(file)-1] == '/' || file[len(file)-1] == '\\')
+
 		var err error
+		file = filepath.FromSlash(file)
 		if file, err = filepath.Abs(file); err != nil {
 			return err
 		}
@@ -1375,6 +1399,10 @@ func (c *Ctx) SendFile(file string, compress ...bool) error {
 			file += "/"
 		}
 	}
+	// convert the path to forward slashes regardless the OS in order to set the URI properly
+	// the handler will convert back to OS path separator before opening the file
+	file = filepath.ToSlash(file)
+
 	// Restore the original requested URL
 	originalURL := utils.CopyString(c.OriginalURL())
 	defer c.fasthttp.Request.SetRequestURI(originalURL)

@@ -3,6 +3,7 @@ package fiber
 import (
 	"bytes"
 	"crypto/tls"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -15,8 +16,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	"encoding/json"
 
 	"github.com/gofiber/fiber/v2/utils"
 	"github.com/valyala/fasthttp"
@@ -60,6 +59,7 @@ var defaultClient Client
 //
 // It is safe calling Client methods from concurrently running goroutines.
 type Client struct {
+	mutex sync.RWMutex
 	// UserAgent is used in User-Agent request header.
 	UserAgent string
 
@@ -133,10 +133,15 @@ func (c *Client) createAgent(method, url string) *Agent {
 	a.req.Header.SetMethod(method)
 	a.req.SetRequestURI(url)
 
+	c.mutex.RLock()
 	a.Name = c.UserAgent
 	a.NoDefaultUserAgentHeader = c.NoDefaultUserAgentHeader
 	a.jsonDecoder = c.JSONDecoder
 	a.jsonEncoder = c.JSONEncoder
+	if a.jsonDecoder == nil {
+		a.jsonDecoder = json.Unmarshal
+	}
+	c.mutex.RUnlock()
 
 	if err := a.Parse(); err != nil {
 		a.errs = append(a.errs, err)
@@ -733,14 +738,9 @@ func (a *Agent) RetryIf(retryIf RetryIfFunc) *Agent {
 }
 
 /************************** End Agent Setting **************************/
-var warnOnce sync.Once
 
 // Bytes returns the status code, bytes body and errors of url.
 func (a *Agent) Bytes() (code int, body []byte, errs []error) {
-	warnOnce.Do(func() {
-		fmt.Println("[Warning] client is still in beta, API might change in the future!")
-	})
-
 	defer a.release()
 
 	if errs = append(errs, a.errs...); len(errs) > 0 {
@@ -810,10 +810,6 @@ func (a *Agent) String() (int, string, []error) {
 // Struct returns the status code, bytes body and errors of url.
 // And bytes body will be unmarshalled to given v.
 func (a *Agent) Struct(v interface{}) (code int, body []byte, errs []error) {
-	if a.jsonDecoder == nil {
-		a.jsonDecoder = json.Unmarshal
-	}
-
 	if code, body, errs = a.Bytes(); len(errs) > 0 {
 		return
 	}
@@ -886,6 +882,8 @@ func AcquireClient() *Client {
 func ReleaseClient(c *Client) {
 	c.UserAgent = ""
 	c.NoDefaultUserAgentHeader = false
+	c.JSONEncoder = nil
+	c.JSONDecoder = nil
 
 	clientPool.Put(c)
 }
