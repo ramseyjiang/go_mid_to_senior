@@ -9,16 +9,23 @@ import (
 )
 
 type User struct {
-	ID    int    `db:"id"`
-	Name  string `db:"name"`
-	Email string `db:"email"`
+	ID        int    `data:"id"`
+	FirstName string `data:"first_name"`
+	LastName  string `data:"last_name"`
+	Email     string `data:"email"`
+	Mobile    string `data:"mobile"`
 }
 
 // It is used only when a table does not exist.
 // var schema = "CREATE TABLE `users` (" +
-// 	"`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY," +
-// 	"`name` varchar(255) NOT NULL," +
-// 	"`email` varchar(255) NOT NULL)"
+// 	"`id` varchar(100) NOT NULL," +
+// 	"`first_name` varchar(255) NOT NULL," +
+// 	"`last_name` varchar(255) NOT NULL," +
+// 	"`email` varchar(255) NOT NULL," +
+// 	"`mobile` varchar(255) NOT NULL," +
+// 	"PRIMARY KEY (`id`)," +
+// 	"UNIQUE KEY `email` (`email`)," +
+// 	"UNIQUE KEY `mobile` (`mobile`))"
 
 func Trigger() {
 	db, err := sqlx.Connect("mysql", "root:12345678@(localhost:3306)/go_web")
@@ -45,7 +52,7 @@ func Trigger() {
 }
 
 func insertUser(db *sqlx.DB) int64 {
-	res, err := db.Exec("INSERT INTO users (name, email) VALUES(\"Peter\", \"davy@gmail.com\")")
+	res, err := db.Exec("INSERT INTO users (id, first_name, last_name, email, mobile) VALUES(\"3153715d-35a1-4bb3-99ea-3f7d371dd911\", \"Peter\", \"DogFather\", \"davy@gmail.com\", 4732819)")
 	if err != nil {
 		panic(err)
 	}
