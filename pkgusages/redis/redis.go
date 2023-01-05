@@ -66,6 +66,7 @@ func getRedisValues() (string, string, string) {
 		panic(err)
 	}
 
+	// try to get a key does not exist
 	val2, err := client.Get(ctx, "key2").Result()
 	if err != nil && err != redis.Nil {
 		panic(err)
