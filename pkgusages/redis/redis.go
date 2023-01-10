@@ -32,9 +32,10 @@ redis 127.0.0.1:6379> get mykey
 
 $redis-cli shutdown
 */
-var ctx = context.Background()
-
 func getRedisValues() (string, string, string) {
+	// Every Redis command accepts a context that you can use to set timeouts or propagate some information
+	ctx := context.Background()
+
 	// NewClient returns a client to the Redis Server specified by Options.
 	client := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379", // use default Addr
