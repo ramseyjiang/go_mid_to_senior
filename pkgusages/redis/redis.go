@@ -36,7 +36,7 @@ func getRedisValues() (string, string, string) {
 	// Every Redis command accepts a context that you can use to set timeouts or propagate some information
 	ctx := context.Background()
 
-	// NewClient returns a client to the Redis Server specified by Options.
+	// NewClient returns a client to the Redis Server specified by Options. Password and DB can be removed, it is up to you.
 	client := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379", // use default Addr
 		Password: "",               // no password set
