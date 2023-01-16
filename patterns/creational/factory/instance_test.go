@@ -16,7 +16,7 @@ func TestEntry(t *testing.T) {
 	}
 }
 
-func Test_getFootWear(t *testing.T) {
+func TestGetFootWear(t *testing.T) {
 	type args struct {
 		category string
 		size     int64
@@ -43,7 +43,7 @@ func Test_getFootWear(t *testing.T) {
 	}
 }
 
-func Test_newShoe(t *testing.T) {
+func TestNewShoe(t *testing.T) {
 	type args struct {
 		size     int64
 		category string
@@ -65,7 +65,7 @@ func Test_newShoe(t *testing.T) {
 	}
 }
 
-func Test_shoe_getCategory(t *testing.T) {
+func TestShoeGetCategory(t *testing.T) {
 	type fields struct {
 		size     int64
 		price    float32
@@ -92,7 +92,7 @@ func Test_shoe_getCategory(t *testing.T) {
 	}
 }
 
-func Test_shoe_getGender(t *testing.T) {
+func TestShoeGetGender(t *testing.T) {
 	type fields struct {
 		size     int64
 		price    float32
@@ -119,7 +119,7 @@ func Test_shoe_getGender(t *testing.T) {
 	}
 }
 
-func Test_shoe_getPrice(t *testing.T) {
+func TestShoeGetPrice(t *testing.T) {
 	type fields struct {
 		size     int64
 		price    float32
@@ -146,7 +146,7 @@ func Test_shoe_getPrice(t *testing.T) {
 	}
 }
 
-func Test_shoe_setCategory(t *testing.T) {
+func TestShoeSetCategory(t *testing.T) {
 	type fields struct {
 		size     int64
 		price    float32
@@ -174,7 +174,7 @@ func Test_shoe_setCategory(t *testing.T) {
 	}
 }
 
-func Test_shoe_setGender(t *testing.T) {
+func TestShoeSetGender(t *testing.T) {
 	type fields struct {
 		size     int64
 		price    float32
@@ -202,7 +202,7 @@ func Test_shoe_setGender(t *testing.T) {
 	}
 }
 
-func Test_shoe_setPrice(t *testing.T) {
+func TestShoeSetPrice(t *testing.T) {
 	type fields struct {
 		size     int64
 		price    float32
