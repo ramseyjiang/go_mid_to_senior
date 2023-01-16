@@ -1,14 +1,13 @@
 //go:build wireinject
 // +build wireinject
 
-package main
+package wire
 
 import (
 	"github.com/google/wire"
-
-	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/foobarbaz"
-	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/greeter"
-	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/shapes"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/wire/foobarbaz"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/wire/greeter"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/wire/shapes"
 )
 
 // In Wire, initializers are known as "providers," functions which provide a particular type.
