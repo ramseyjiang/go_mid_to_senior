@@ -1,3 +1,49 @@
+# fyne.io/fyne/v2 v2.3.0
+## explicit; go 1.14
+fyne.io/fyne/v2
+fyne.io/fyne/v2/app
+fyne.io/fyne/v2/canvas
+fyne.io/fyne/v2/container
+fyne.io/fyne/v2/data/binding
+fyne.io/fyne/v2/driver/desktop
+fyne.io/fyne/v2/driver/mobile
+fyne.io/fyne/v2/internal
+fyne.io/fyne/v2/internal/animation
+fyne.io/fyne/v2/internal/app
+fyne.io/fyne/v2/internal/async
+fyne.io/fyne/v2/internal/cache
+fyne.io/fyne/v2/internal/color
+fyne.io/fyne/v2/internal/driver
+fyne.io/fyne/v2/internal/driver/common
+fyne.io/fyne/v2/internal/driver/glfw
+fyne.io/fyne/v2/internal/driver/mobile
+fyne.io/fyne/v2/internal/driver/mobile/app
+fyne.io/fyne/v2/internal/driver/mobile/app/callfn
+fyne.io/fyne/v2/internal/driver/mobile/event/key
+fyne.io/fyne/v2/internal/driver/mobile/event/lifecycle
+fyne.io/fyne/v2/internal/driver/mobile/event/paint
+fyne.io/fyne/v2/internal/driver/mobile/event/size
+fyne.io/fyne/v2/internal/driver/mobile/event/touch
+fyne.io/fyne/v2/internal/driver/mobile/gl
+fyne.io/fyne/v2/internal/driver/mobile/mobileinit
+fyne.io/fyne/v2/internal/painter
+fyne.io/fyne/v2/internal/painter/gl
+fyne.io/fyne/v2/internal/painter/software
+fyne.io/fyne/v2/internal/repository
+fyne.io/fyne/v2/internal/svg
+fyne.io/fyne/v2/internal/test
+fyne.io/fyne/v2/internal/widget
+fyne.io/fyne/v2/layout
+fyne.io/fyne/v2/storage
+fyne.io/fyne/v2/storage/repository
+fyne.io/fyne/v2/test
+fyne.io/fyne/v2/theme
+fyne.io/fyne/v2/widget
+# fyne.io/systray v1.10.1-0.20221115204952-d16a6177e6f1
+## explicit; go 1.13
+fyne.io/systray
+fyne.io/systray/internal/generated/menu
+fyne.io/systray/internal/generated/notifier
 # github.com/Bose/go-gin-opentracing v1.0.5
 ## explicit; go 1.14
 github.com/Bose/go-gin-opentracing
@@ -11,6 +57,9 @@ github.com/DATA-DOG/go-sqlmock
 github.com/Joffref/opa-middleware
 github.com/Joffref/opa-middleware/config
 github.com/Joffref/opa-middleware/internal
+# github.com/Knetic/govaluate v3.0.0+incompatible
+## explicit
+github.com/Knetic/govaluate
 # github.com/OneOfOne/xxhash v1.2.8
 ## explicit; go 1.11
 github.com/OneOfOne/xxhash
@@ -41,6 +90,19 @@ github.com/antchfx/xmlquery
 # github.com/antchfx/xpath v1.2.1
 ## explicit; go 1.14
 github.com/antchfx/xpath
+# github.com/benoitkugler/textlayout v0.3.0
+## explicit; go 1.17
+github.com/benoitkugler/textlayout/fonts
+github.com/benoitkugler/textlayout/fonts/binaryreader
+github.com/benoitkugler/textlayout/fonts/glyphsnames
+github.com/benoitkugler/textlayout/fonts/psinterpreter
+github.com/benoitkugler/textlayout/fonts/simpleencodings
+github.com/benoitkugler/textlayout/fonts/truetype
+github.com/benoitkugler/textlayout/fonts/type1C
+github.com/benoitkugler/textlayout/graphite
+github.com/benoitkugler/textlayout/harfbuzz
+github.com/benoitkugler/textlayout/language
+github.com/benoitkugler/textlayout/unicodedata
 # github.com/beorn7/perks v1.0.1
 ## explicit; go 1.11
 github.com/beorn7/perks/quantile
@@ -84,9 +146,21 @@ github.com/eapache/queue
 # github.com/felixge/httpsnoop v1.0.2
 ## explicit; go 1.13
 github.com/felixge/httpsnoop
+# github.com/fredbi/uri v0.1.0
+## explicit; go 1.11
+github.com/fredbi/uri
 # github.com/fsnotify/fsnotify v1.5.4
 ## explicit; go 1.16
 github.com/fsnotify/fsnotify
+# github.com/fyne-io/gl-js v0.0.0-20220119005834-d2da28d9ccfe
+## explicit; go 1.14
+github.com/fyne-io/gl-js
+# github.com/fyne-io/glfw-js v0.0.0-20220120001248-ee7290d23504
+## explicit; go 1.14
+github.com/fyne-io/glfw-js
+# github.com/fyne-io/image v0.0.0-20220602074514-4956b0afb3d2
+## explicit; go 1.14
+github.com/fyne-io/image/ico
 # github.com/gdamore/encoding v1.0.0
 ## explicit; go 1.9
 github.com/gdamore/encoding
@@ -147,6 +221,23 @@ github.com/gin-gonic/gin/binding
 github.com/gin-gonic/gin/internal/bytesconv
 github.com/gin-gonic/gin/internal/json
 github.com/gin-gonic/gin/render
+# github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6
+## explicit; go 1.12
+github.com/go-gl/gl/v2.1/gl
+github.com/go-gl/gl/v2.1/gl/KHR
+github.com/go-gl/gl/v3.1/gles2
+github.com/go-gl/gl/v3.1/gles2/KHR
+github.com/go-gl/gl/v3.2-core/gl
+github.com/go-gl/gl/v3.2-core/gl/KHR
+# github.com/go-gl/glfw/v3.3/glfw v0.0.0-20221017161538-93cebf72946b
+## explicit; go 1.10
+github.com/go-gl/glfw/v3.3/glfw
+github.com/go-gl/glfw/v3.3/glfw/glfw/deps
+github.com/go-gl/glfw/v3.3/glfw/glfw/deps/glad
+github.com/go-gl/glfw/v3.3/glfw/glfw/deps/mingw
+github.com/go-gl/glfw/v3.3/glfw/glfw/deps/vs2008
+github.com/go-gl/glfw/v3.3/glfw/glfw/include/GLFW
+github.com/go-gl/glfw/v3.3/glfw/glfw/src
 # github.com/go-logr/logr v1.2.3
 ## explicit; go 1.16
 github.com/go-logr/logr
@@ -186,6 +277,13 @@ github.com/go-resty/resty/v2
 # github.com/go-sql-driver/mysql v1.6.0
 ## explicit; go 1.10
 github.com/go-sql-driver/mysql
+# github.com/go-text/typesetting v0.0.0-20221212183139-1eb938670a1f
+## explicit; go 1.15
+github.com/go-text/typesetting/di
+github.com/go-text/typesetting/font
+github.com/go-text/typesetting/language
+github.com/go-text/typesetting/segmenter
+github.com/go-text/typesetting/shaping
 # github.com/gobwas/glob v0.2.3
 ## explicit
 github.com/gobwas/glob
@@ -212,6 +310,11 @@ github.com/goccy/go-json/internal/runtime
 github.com/gocolly/colly
 github.com/gocolly/colly/debug
 github.com/gocolly/colly/storage
+# github.com/godbus/dbus/v5 v5.1.0
+## explicit; go 1.12
+github.com/godbus/dbus/v5
+github.com/godbus/dbus/v5/introspect
+github.com/godbus/dbus/v5/prop
 # github.com/gofiber/fiber/v2 v2.36.0
 ## explicit; go 1.16
 github.com/gofiber/fiber/v2
@@ -224,6 +327,11 @@ github.com/gofiber/fiber/v2/internal/msgp
 github.com/gofiber/fiber/v2/internal/schema
 github.com/gofiber/fiber/v2/internal/uuid
 github.com/gofiber/fiber/v2/utils
+# github.com/goki/freetype v0.0.0-20220119013949-7a161fd3728c
+## explicit
+github.com/goki/freetype
+github.com/goki/freetype/raster
+github.com/goki/freetype/truetype
 # github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
 ## explicit
 github.com/golang/groupcache/lru
@@ -251,6 +359,9 @@ github.com/google/uuid
 # github.com/google/wire v0.5.0
 ## explicit; go 1.12
 github.com/google/wire
+# github.com/gopherjs/gopherjs v1.17.2
+## explicit; go 1.17
+github.com/gopherjs/gopherjs/js
 # github.com/gorilla/handlers v1.5.1
 ## explicit; go 1.14
 github.com/gorilla/handlers
@@ -352,6 +463,9 @@ github.com/joho/godotenv
 # github.com/json-iterator/go v1.1.12
 ## explicit; go 1.12
 github.com/json-iterator/go
+# github.com/jsummers/gobmp v0.0.0-20151104160322-e2ba15ffa76e
+## explicit
+github.com/jsummers/gobmp
 # github.com/kennygrant/sanitize v1.2.4
 ## explicit
 github.com/kennygrant/sanitize
@@ -616,6 +730,12 @@ github.com/spf13/viper/internal/encoding/javaproperties
 github.com/spf13/viper/internal/encoding/json
 github.com/spf13/viper/internal/encoding/toml
 github.com/spf13/viper/internal/encoding/yaml
+# github.com/srwiley/oksvg v0.0.0-20220731023508-a61f04f16b76
+## explicit; go 1.17
+github.com/srwiley/oksvg
+# github.com/srwiley/rasterx v0.0.0-20210519020934-456a8d69b780
+## explicit
+github.com/srwiley/rasterx
 # github.com/stretchr/testify v1.8.1
 ## explicit; go 1.13
 github.com/stretchr/testify/assert
@@ -627,6 +747,9 @@ github.com/subosito/gotenv
 # github.com/temoto/robotstxt v1.1.2
 ## explicit; go 1.11
 github.com/temoto/robotstxt
+# github.com/tevino/abool v1.2.0
+## explicit; go 1.14
+github.com/tevino/abool
 # github.com/uber/jaeger-client-go v2.30.0+incompatible
 ## explicit
 github.com/uber/jaeger-client-go
@@ -687,6 +810,15 @@ github.com/xeipuuv/gojsonreference
 # github.com/yashtewari/glob-intersection v0.1.0
 ## explicit; go 1.17
 github.com/yashtewari/glob-intersection
+# github.com/yuin/goldmark v1.4.1
+## explicit; go 1.15
+github.com/yuin/goldmark
+github.com/yuin/goldmark/ast
+github.com/yuin/goldmark/parser
+github.com/yuin/goldmark/renderer
+github.com/yuin/goldmark/renderer/html
+github.com/yuin/goldmark/text
+github.com/yuin/goldmark/util
 # github.com/zeromicro/go-zero v1.3.3
 ## explicit; go 1.15
 github.com/zeromicro/go-zero/core/collection
@@ -765,6 +897,20 @@ golang.org/x/crypto/acme/autocert
 golang.org/x/crypto/md4
 golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/sha3
+# golang.org/x/image v0.0.0-20220601225756-64ec528b34cd
+## explicit; go 1.12
+golang.org/x/image/ccitt
+golang.org/x/image/colornames
+golang.org/x/image/draw
+golang.org/x/image/font
+golang.org/x/image/math/f64
+golang.org/x/image/math/fixed
+golang.org/x/image/tiff
+golang.org/x/image/tiff/lzw
+golang.org/x/image/vector
+# golang.org/x/mobile v0.0.0-20211207041440-4e6c2922fdee
+## explicit; go 1.16
+golang.org/x/mobile/exp/f32
 # golang.org/x/net v0.4.0
 ## explicit; go 1.17
 golang.org/x/net/context
@@ -784,6 +930,7 @@ golang.org/x/net/trace
 # golang.org/x/sys v0.3.0
 ## explicit; go 1.17
 golang.org/x/sys/cpu
+golang.org/x/sys/execabs
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/plan9
 golang.org/x/sys/unix
@@ -940,3 +1087,6 @@ gorm.io/gorm/logger
 gorm.io/gorm/migrator
 gorm.io/gorm/schema
 gorm.io/gorm/utils
+# honnef.co/go/js/dom v0.0.0-20210725211120-f030747120f2
+## explicit
+honnef.co/go/js/dom
