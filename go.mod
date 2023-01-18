@@ -40,6 +40,7 @@ require (
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/segmentio/kafka-go v0.4.34
+	github.com/segmentio/ksuid v1.0.4
 	github.com/sony/gobreaker v0.5.0
 	github.com/spf13/viper v1.11.0
 	github.com/stretchr/testify v1.8.1
