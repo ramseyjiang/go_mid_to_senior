@@ -9,10 +9,11 @@ flow.
 
 In Golang that implements 3 basic rate limiting algorithms:
 
-1. Leaky bucket Algorithm The bucket is like a queue or buffer, requests are processed at a fixed rate. Requests will be
-   added to the bucket as long as the bucket is not full, any extra request spills over the bucket edge are discarded.
+1. Leaky bucket Algorithm. The bucket is like a queue or buffer, requests are processed at a fixed rate. Requests will
+   be added to the bucket as long as the bucket is not full, any extra request spills over the bucket edge are
+   discarded.
 
-   Leaky bucket Algorithm Limits based on a single request per specified time interval. A throttler is to handle burst
+   Leaky bucket Algorithm limits based on a single request per specified time interval. A throttler is to handle burst
    programs by only allowing a certain number of requests to be processed per time duration. For example, a public API
    may try to regulate the server load by only allowing 10 requests per second, per client.
 
@@ -20,19 +21,20 @@ In Golang that implements 3 basic rate limiting algorithms:
    will attempt to withdraw a token from the bucket, if there are no tokens in the bucket, the service has reached its
    limit, otherwise, the request goes through.
 
-   Max Concurrency Rate Limiter Limits the number of active concurrent requests at any given time. If a rate limit is
-   requested and the active count is less than the limit, the rate limit is immediately granted, otherwise the request
-   must wait until a previously granted rate limit is finished. This means that we need to add the ability to release a
-   rate limit token.
+   Token bucket limits the number of active concurrent requests at any given time before a token refresh. If a rate
+   limit is requested and the active count is less than the limit, the rate limit is immediately granted, otherwise the
+   request must wait until a token is refreshed. This means that a rate limit token is the throttle to control all
+   requests.
 
-3. Fixed window Algorithm Windows are split upfront and each window has a counter. Each request increases the counter by
+3. Fixed window Algorithm Windows are split upfront and each window has a counter, each request increases the counter by
    one. Once the counter reaches the threshold, new requests are dropped until a new time window starts. This algorithm
-   is easy to implement, but they are subject to spike at the edges of the window.
+   is easy to implement, but they are subject to spike at the edges of the window. The token expires time is the end
+   time of current fixed window interval
 
-   Fixed Window Rate Limiter Specifies a fixed number of requests that can be processed in a given time window. Once
-   that limit is reached no more requests can be processed until the next window. Each request that occurs within the
-   window time increments the counter until the limit is reached, then each subsequent request has to wait until the
-   next available window.
+   Fixed window Algorithm specifies a fixed number of requests that can be processed in a given time window. Once that
+   limit is reached no more requests can be processed until the next window. Each request that occurs within the window
+   time increments the counter until the limit is reached, then each subsequent request has to wait until the next
+   available window.
 
 Rate limit should follow these steps below:
 
@@ -49,3 +51,5 @@ Folder read guide
 2. Define a Manager struct that implements a Rate Limiter Interface. In channel and out channel fields are in the
    manager. In the manager, it also includes a field named makeToken, which is a factory function for creating tokens
    that will allow different rate limiter implementations to define their own custom logic for token creation.
+
+Run each algorithm should go into algorithm folder, then "go run main.go"

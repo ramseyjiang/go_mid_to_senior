@@ -5,7 +5,7 @@ import "github.com/pkg/errors"
 // NewTokenBucketRateLimiter returns a max concurrency rate limiter
 func NewTokenBucketRateLimiter(conf *Config) (RateLimiter, error) {
 	if conf.Limit <= 0 {
-		return nil, errors.New("ErrInvalidLimit")
+		return nil, errors.New("Limit must be greater than zero")
 	}
 
 	m := NewManager(conf)
