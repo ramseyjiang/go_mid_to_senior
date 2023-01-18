@@ -13,7 +13,12 @@ const MaxUint = ^uint(0)
 const MaxInt = int(MaxUint >> 1)
 
 // Manager implements a rate limiter interface.
-// The makeToken field is a factory function for creating tokens that will allow different rate limiter implementations
+// The releaseChan is used for synchronizing the release of tokens.
+// The limit specifies the max number of tokens that can be active and is used to determine whether a token can be generated or not.
+// Once that max time is reached, the token will be released and added back into the pool of available tokens.
+// The activeTokens is a map containing all the active tokens in circulation.
+// The needToken is a counter representing the number of pending or waiting token requests.
+// The makeToken is a factory function for creating tokens that will allow different rate limiter implementations
 // to define their own custom logic for token creation.
 // The makeToken type is tokenFactory, it is a factory function for NewToken.
 type Manager struct {
@@ -122,6 +127,7 @@ func (m *Manager) isLimitExceeded() bool {
 	return false
 }
 
+// ReleaseToken is used to removed from the activeMap, and then checks to see if there are any pending requests that can be processed.
 func (m *Manager) ReleaseToken(token *Token) {
 	if token == nil {
 		log.Print("unable to relase nil token")
@@ -160,7 +166,7 @@ func (m *Manager) releaseExpiredTokens() {
 }
 
 // reset task that runs once per provided duration and releases
-// and tokens that need to be reset
+// it will remove a token after a specified period of time
 func (m *Manager) runResetTokenTask(resetAfter time.Duration) {
 	go func() {
 		ticker := time.NewTicker(resetAfter)

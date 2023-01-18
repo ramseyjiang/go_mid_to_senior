@@ -21,7 +21,8 @@ type Config struct {
 	// Throttle is the min time between requests for a Throttle Rate Limiter
 	Throttle time.Duration
 
-	// TokenResetsAfter is the maximum amount of time a token can live before being
-	// forcefully released - if set to zero time then the token may live forever
+	// TokenResetsAfter is the maximum amount of time a token can live before being forcefully released,
+	// if set to zero time then the token may live forever.
+	// It is a token life span if the token is not released forcefully.
 	TokenResetsAfter time.Duration
 }

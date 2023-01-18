@@ -36,8 +36,7 @@ func (t *Token) IsExpired() bool {
 	return t.ExpiresAt.Before(now)
 }
 
-// NeedReset returns true if elapsed time since token was created
-// is greater than provided reset duration
+// NeedReset returns true if elapsed time since token was created is greater than provided reset duration
 func (t *Token) NeedReset(resetAfter time.Duration) bool {
 	if time.Since(t.CreatedAt) >= resetAfter {
 		return true
