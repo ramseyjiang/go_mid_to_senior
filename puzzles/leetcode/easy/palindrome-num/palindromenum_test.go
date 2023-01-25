@@ -1,4 +1,4 @@
-package palindromenum
+package palindrome_num
 
 import (
 	"log"
