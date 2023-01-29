@@ -7,7 +7,8 @@ The Singleton pattern will provide you with a single instance of an object, and 
 At first, call to use the instance, it's created and then reused between all the parts in the application that need to
 use the particular behavior.
 
-The Builder design pattern will reuse an algorithm to create many implementations of an interface.
+The Builder design pattern will reuse an algorithm to create many implementations of an interface. It means the builder
+pattern will allow you to produce different types and representations of an object using the same construction code.
 
 The Builder design pattern tries to:
 
