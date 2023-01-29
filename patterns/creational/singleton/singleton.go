@@ -15,7 +15,7 @@ var instance *singleton
 // If instance is nil, it means the instance has not new yet, so new it and return.
 func GetInstance() *singleton {
 	if instance == nil {
-		instance = new(singleton)
+		instance = new(singleton) // or instance = &singleton{}
 	}
 	return instance
 }
