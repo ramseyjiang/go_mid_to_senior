@@ -1,4 +1,9 @@
-Acceptance test criteria:
+Objectives When we consider using the Singleton pattern we should follow rules following:
+
+1. Create a single, shared value, of some particular type.
+2. Create a restrict object creation of some type to a single unit along the entire
+
+Requirements and acceptance test criteria:
 
 1. When no counter has been created before, a new one is created with the value 0.
 2. If a counter has already been created, return this instance that holds the actual count.
