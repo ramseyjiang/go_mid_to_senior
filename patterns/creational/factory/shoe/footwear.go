@@ -1,6 +1,6 @@
-package factory
+package shoe
 
-type iFootwear interface {
+type footwear interface {
 	setCategory(name string)
 	getCategory() string
 
@@ -42,7 +42,7 @@ func (s *shoe) getGender() string {
 	return s.gender
 }
 
-func newShoe(size int64, category string, price float32, gender string, discount float32) iFootwear {
+func newShoe(size int64, category string, price float32, gender string, discount float32) footwear {
 	return &shoe{
 		size:     size,
 		category: category,
