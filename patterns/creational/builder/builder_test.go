@@ -76,7 +76,7 @@ func TestShuttleBusBuilder(t *testing.T) {
 	}
 
 	if shuttleBus.Structure != "ShuttleBus" {
-		t.Errorf("Structure on a ShuttleBus must be 'shuttleBus' and was %s\n", shuttleBus.Structure)
+		t.Errorf("Structure on a ShuttleBus must be 'ShuttleBus' and was %s\n", shuttleBus.Structure)
 	} else {
 		assert.Equal(t, shuttleBus.Structure, "ShuttleBus")
 	}
