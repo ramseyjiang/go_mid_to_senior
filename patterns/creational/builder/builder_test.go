@@ -38,7 +38,7 @@ func TestBikeBuilder(t *testing.T) {
 	manufacturingComplex.Construct()
 	bike := bikeBuilder.GetVehicle()
 	// different vehicle has different seats, the default seats are 4, it is for a car.
-	// Here is an example to reset seats
+	// Here is an example to reset seats. You can use the same way to reset wheels also.
 	bike.Seats = 1
 
 	if bike.Wheels != 2 {
@@ -66,7 +66,7 @@ func TestShuttleBusBuilder(t *testing.T) {
 	manufacturingComplex.Construct()
 	shuttleBus := shuttleBusBuilder.GetVehicle()
 	// different vehicle has different seats, the default seats are 4, it is for a car.
-	// Here is an example to reset seats
+	// Here is an example to reset seats. You can use the same way to reset wheels also.
 	shuttleBus.Seats = 30
 
 	if shuttleBus.Wheels != 8 {
