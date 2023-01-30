@@ -13,8 +13,7 @@ will allow you to produce different types and representations of an object using
 pattern's instance will provide the opening and closing braces {} and leaving the instance with zero values, or as
 complex as an object that needs to make some API calls, check states, and create objects for its fields.
 
-The Builder design pattern tries to:
-
-1. Abstract complex creations so that object creation is separated from the object user.
-2. Create an object step by step by filling its fields and creating the embedded objects.
-3. Reuse the object creation algorithm between many objects.
+The Factory pattern is called Factory method pattern also. It is probably the second-best known and used design pattern
+in the industry. The Factory pattern provides an interface for creating objects, but allows subclasses to decide which
+class to instantiate. The interface also eases the process of downgrading or upgrading of the implementation of the
+underlying type if needed.
