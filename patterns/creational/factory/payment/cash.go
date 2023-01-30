@@ -2,8 +2,18 @@ package payment
 
 import "fmt"
 
-type CashPM struct{}
+type CashPay struct {
+	PayInfo
+}
 
-func (c *CashPM) Pay(amount float32) string {
+func newCash() PayWay {
+	return &CashPay{
+		PayInfo: PayInfo{
+			name: CashName,
+		},
+	}
+}
+
+func (c *CashPay) Pay(amount float32) string {
 	return fmt.Sprintf("%0.2f paid using cash", amount)
 }
