@@ -1,7 +1,5 @@
 Creational design patterns provide various object creation mechanisms, which increase flexibility and reuse of existing
-code.
-
-Creational Patterns includes Singleton, Builder, Factory, Prototype, and Abstract Factory Design Patterns.
+code. Creational Patterns includes Singleton, Builder, Factory, Prototype, and Abstract Factory Design Patterns.
 
 The Singleton pattern is one of the most used design patterns out there or one of the easiest to grasp. It will provide
 a single instance of an object, and guarantee that there are no duplicates. At first, call to use the instance, if it's

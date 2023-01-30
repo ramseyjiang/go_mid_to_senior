@@ -14,7 +14,6 @@ Pros
 
 
 Cons
-
 1. Violates the Single Responsibility Principle. The pattern solves two problems at the time.
 2. The Singleton pattern can mask bad design, for instance, when the components of the program know too much about each
    other.
