@@ -6,10 +6,6 @@ type UsualBuilder struct {
 	floor      int
 }
 
-func newUsualBuilder() *UsualBuilder {
-	return &UsualBuilder{}
-}
-
 func (b *UsualBuilder) setWindowType() {
 	b.windowType = "Wooden Window"
 }

@@ -7,8 +7,9 @@ import (
 )
 
 func TestUsualBuilder(t *testing.T) {
-	usualBuilder := getBuilder(usual)
-	director := newDirector(usualBuilder)
+	usualBuilder := &UsualBuilder{}
+	director := &Director{}
+	director.setBuilder(usualBuilder)
 	usualHouse := director.buildHouse()
 
 	if usualHouse.floor != 2 {
@@ -31,8 +32,9 @@ func TestUsualBuilder(t *testing.T) {
 }
 
 func TestIglooBuilder(t *testing.T) {
-	iglooBuilder := getBuilder(igloo)
-	director := newDirector(iglooBuilder)
+	iglooBuilder := &IglooBuilder{}
+	director := &Director{}
+	director.setBuilder(iglooBuilder)
 	iglooHouse := director.buildHouse()
 
 	iglooHouse.floor = 3

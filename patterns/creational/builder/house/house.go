@@ -1,13 +1,20 @@
 package house
 
-type Director struct {
-	builder Builder
+type Builder interface {
+	setWindowType()
+	setDoorType()
+	setNumFloor()
+	getHouse() House
 }
 
-func newDirector(b Builder) *Director {
-	return &Director{
-		builder: b,
-	}
+type House struct {
+	windowType string
+	doorType   string
+	floor      int
+}
+
+type Director struct {
+	builder Builder
 }
 
 func (d *Director) setBuilder(b Builder) {

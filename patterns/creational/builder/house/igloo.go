@@ -6,10 +6,6 @@ type IglooBuilder struct {
 	floor      int
 }
 
-func newIglooBuilder() *IglooBuilder {
-	return &IglooBuilder{}
-}
-
 func (b *IglooBuilder) setWindowType() {
 	b.windowType = "Snow Window"
 }
