@@ -7,17 +7,17 @@ type BuildProcess interface {
 	GetVehicle() VehicleProduct
 }
 
-type ManufacturingDirector struct {
+type ManufactureDirector struct {
 	builder BuildProcess
 }
 
 // SetBuilder allow to change the builder that is being used in the Manufacturing director
-func (f *ManufacturingDirector) SetBuilder(b BuildProcess) {
+func (f *ManufactureDirector) SetBuilder(b BuildProcess) {
 	f.builder = b
 }
 
 // Construct will use the builder that is stored in Manufacturing, and will reproduce the required steps
-func (f *ManufacturingDirector) Construct() {
+func (f *ManufactureDirector) Construct() {
 	f.builder.SetSeats().SetStructure().SetWheels()
 }
 
@@ -67,23 +67,23 @@ func (b *BikeBuilder) GetVehicle() VehicleProduct {
 	return b.v
 }
 
-// Add a new vehicle type is easy.
-// type BusBuilder struct {
-// 	v VehicleProduct
-// }
-//
-// func (b *BusBuilder) SetWheels() BuildProcess {
-// 	b.v.Wheels = 4*2
-// 	return b
-// }
-// func (b *BusBuilder) SetSeats() BuildProcess {
-// 	b.v.Seats = 30
-// 	return b
-// }
-// func (b *BusBuilder) SetStructure() BuildProcess {
-// 	b.v.Structure = "Bus"
-// 	return b
-// }
-// func (b *BusBuilder) GetVehicle() VehicleProduct {
-// 	return b.v
-// }
+// ShuttleBusBuilder is a new vehicle type added is easy.
+type ShuttleBusBuilder struct {
+	v VehicleProduct
+}
+
+func (s *ShuttleBusBuilder) SetWheels() BuildProcess {
+	s.v.Wheels = 4 * 2
+	return s
+}
+func (s *ShuttleBusBuilder) SetSeats() BuildProcess {
+	s.v.Seats = 30
+	return s
+}
+func (s *ShuttleBusBuilder) SetStructure() BuildProcess {
+	s.v.Structure = "ShuttleBus"
+	return s
+}
+func (s *ShuttleBusBuilder) GetVehicle() VehicleProduct {
+	return s.v
+}

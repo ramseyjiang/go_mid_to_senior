@@ -4,6 +4,12 @@ will allow you to produce different types and representations of an object using
 pattern's instance will provide the opening and closing braces {} and leaving the instance with zero values, or as
 complex as an object that needs to make some API calls, check states, and create objects for its fields.
 
+Objectives
+
+1. Abstract complex creations so that object creation is separated from the object user
+2. Create an object step by step by filling its fields and creating the embedded objects
+3. Reuse the object creation algorithm between many objects
+
 Requirements and acceptance criteria:
 
 1. Must have a manufacturing type that constructs everything that a vehicle needs.
