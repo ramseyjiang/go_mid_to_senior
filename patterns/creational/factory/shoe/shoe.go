@@ -24,17 +24,3 @@ func getShoe(category string, size int64, gender string, price float32) (footwea
 		return nil, fmt.Errorf("invalid footwear type")
 	}
 }
-
-func Entry() {
-	footwear1, _ := getShoe("Slipper", 41, "Male", 200)
-	fmt.Println(footwear1.getPrice(), footwear1.getCategory(), footwear1.getGender())
-
-	footwear2, _ := getShoe("Sandal", 42, "Male", 1000)
-	fmt.Println(footwear2.getPrice(), footwear2.getCategory(), footwear2.getGender())
-
-	footwear3, _ := getShoe("Bucks", 38, "Female", 100)
-	fmt.Println(footwear3.getPrice(), footwear3.getCategory(), footwear3.getGender())
-
-	footwear4, err := getShoe("test", 38, "Female", 100)
-	fmt.Println(footwear4, err)
-}
