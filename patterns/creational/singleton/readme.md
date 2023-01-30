@@ -1,3 +1,7 @@
+The Singleton pattern is one of the most used design patterns out there or one of the easiest to grasp. It will provide
+a single instance of an object, and guarantee that there are no duplicates. At first, call to use the instance, if it's
+created, and then reused between all the parts in the application that need to use the particular behavior.
+
 Objectives When we consider using the Singleton pattern we should follow rules following:
 
 1. Create a single, shared value, of some particular type.
