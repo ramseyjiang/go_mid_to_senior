@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  protoc-all:
+    image: grpc_gateway:latest
+    command:
+      -d proto
+      -o pkg/pb
+      -i proto/google
+      -l go
+      --with-gateway
+    volumes:
+      - ./:/defs
