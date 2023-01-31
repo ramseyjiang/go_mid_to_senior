@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Motorbike is Concrete factory
 type Motorbike interface {
 	GetMotorbikeType() int
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Car is Concrete factory
 type Car interface {
 	NumDoors() int
 }

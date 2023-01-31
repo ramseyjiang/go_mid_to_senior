@@ -1,5 +1,6 @@
 package transportation
 
+// CruiseMotorbike is Concrete product
 type CruiseMotorbike struct{}
 
 func (c *CruiseMotorbike) NumWheels() int {

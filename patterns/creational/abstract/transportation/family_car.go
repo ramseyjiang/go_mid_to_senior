@@ -1,5 +1,6 @@
 package transportation
 
+// FamilyCar is Concrete product
 type FamilyCar struct{}
 
 func (*FamilyCar) NumDoors() int {

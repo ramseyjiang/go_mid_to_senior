@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// VehicleFactory is Abstract factory interface
 type VehicleFactory interface {
 	Build(v int) (Vehicle, error)
 }

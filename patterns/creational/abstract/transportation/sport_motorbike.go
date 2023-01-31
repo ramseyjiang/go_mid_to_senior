@@ -1,5 +1,6 @@
 package transportation
 
+// SportMotorbike is Concrete product
 type SportMotorbike struct{}
 
 func (s *SportMotorbike) NumWheels() int {
