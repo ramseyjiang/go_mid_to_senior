@@ -8,25 +8,25 @@ func TestMotorbikeFactory(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	motorbikeVehicle, err := motorbikeF.Build(SportMotorbikeType)
+	sportMotorbike, err := motorbikeF.Build(SportMotorbikeType)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("Motorbike vehicle has %d wheels\n", motorbikeVehicle.NumWheels())
+	t.Logf("Motorbike vehicle has %d wheels\n", sportMotorbike.NumWheels())
 
-	sportBike, ok := motorbikeVehicle.(Motorbike)
+	sportBike, ok := sportMotorbike.(Motorbike)
 	if !ok {
 		t.Fatal("Struct assertion has failed")
 	}
 	t.Logf("Sport motorbike has type %d\n", sportBike.GetMotorbikeType())
 
-	cruiseMotorbikeVehicle, err := motorbikeF.Build(CruiseMotorbikeType)
+	cruiseMotorbike, err := motorbikeF.Build(CruiseMotorbikeType)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("CruiseMotorbikeVehicle vehicle has %d wheels\n", cruiseMotorbikeVehicle.NumWheels())
+	t.Logf("CruiseMotorbike vehicle has %d wheels\n", cruiseMotorbike.NumWheels())
 
-	cruiseBike, ok := cruiseMotorbikeVehicle.(Motorbike)
+	cruiseBike, ok := cruiseMotorbike.(Motorbike)
 	if !ok {
 		t.Fatal("Struct assertion has failed")
 	}
