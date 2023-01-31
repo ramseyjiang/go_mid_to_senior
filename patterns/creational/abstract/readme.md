@@ -17,11 +17,24 @@ Pros
 
 Cons The code may become more complicated than it should be, since a lot of new interfaces and classes are introduced along with the pattern.
 
+--------------------------------------------------------------------------------------------------------------------------------
+
 VehicleFactory is Abstract factory interface. It defines Build() method, but not implement it. Car is Concrete factory. Because they
 implement Build(), and it defines NumDoors() also. Motorbike is Concrete factory. Because they implement Build(), and it defines
 GetMotorbikeType() also. Vehicle is Abstract product, it defines NumWheels() and NumSeats(). FamilyCar and LuxuryCar are concrete products.
 They implement NumWheels(), NumSeats() and NumDoors(). SportMotorbike and CruiseMotorbike are concrete products. They implement NumWheels(),
 NumSeats() and GetMotorbikeType().
+
+Vehicle: The interface that all objects in our factories must implement:
+
+1. Motorbike: An interface for motorbikes of the types sport (one seat) and cruise (two seats).
+2. Car: An interface for cars of types luxury (with four doors) and family (with five doors).
+
+VehicleFactory: An interface (the Abstract Factory) to retrieve factories that implement the VehicleFactory method:
+
+1. Motorbike Factory: A factory that implements the VehicleFactory interface to return vehicle that implements the Vehicle and Motorbike
+   interfaces.
+2. Car Factory: A factory that implements the VehicleFactory interface to return vehicles that implement the Vehicle and Car interfaces.
 
 When you try to use abstract pattern, please check the below two points whether you have done.
 
