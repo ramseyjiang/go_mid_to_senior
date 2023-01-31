@@ -1,7 +1,6 @@
 package clothes
 
-// Concrete factory
-
+// Nike is Concrete factory
 type Nike struct {
 }
 
