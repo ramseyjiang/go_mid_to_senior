@@ -22,3 +22,8 @@ implement Build(), and it defines NumDoors() also. Motorbike is Concrete factory
 GetMotorbikeType() also. Vehicle is Abstract product, it defines NumWheels() and NumSeats(). FamilyCar and LuxuryCar are concrete products.
 They implement NumWheels(), NumSeats() and NumDoors(). SportMotorbike and CruiseMotorbike are concrete products. They implement NumWheels(),
 NumSeats() and GetMotorbikeType().
+
+When you try to use abstract pattern, please check the below two points whether you have done.
+
+1. The most essential thing is an abstract factory interface matches with at least one concrete factory.
+2. The last thing is an abstract product matches with at least one concrete product.
