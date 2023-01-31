@@ -15,3 +15,8 @@ The Factory pattern is called Factory method pattern also. It is probably the se
 in the industry. The Factory pattern provides an interface for creating objects, but allows subclasses to decide which
 class to instantiate. The interface also eases the process of downgrading or upgrading of the implementation of the
 underlying type if needed.
+
+The Abstract pattern is called Abstract Factory pattern also. Abstract pattern is used to solve the problem of creating
+entire product families without specifying their concrete classes. It provides an interface for creating all distinct
+products but leaves the actual product creation to concrete factory classes. Each factory type corresponds to a certain
+product variety.
