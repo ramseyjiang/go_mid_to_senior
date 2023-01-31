@@ -16,3 +16,9 @@ Pros
 4. Open/Closed Principle. You can introduce new variants of products without breaking existing client code.
 
 Cons The code may become more complicated than it should be, since a lot of new interfaces and classes are introduced along with the pattern.
+
+VehicleFactory is Abstract factory interface. It defines Build() method, but not implement it. Car is Concrete factory. Because they
+implement Build(), and it defines NumDoors() also. Motorbike is Concrete factory. Because they implement Build(), and it defines
+GetMotorbikeType() also. Vehicle is Abstract product, it defines NumWheels() and NumSeats(). FamilyCar and LuxuryCar are concrete products.
+They implement NumWheels(), NumSeats() and NumDoors(). SportMotorbike and CruiseMotorbike are concrete products. They implement NumWheels(),
+NumSeats() and GetMotorbikeType().
