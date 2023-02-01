@@ -7,9 +7,9 @@
 package wire
 
 import (
-	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/wire/foobarbaz"
-	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/wire/greeter"
-	"github.com/ramseyjiang/go_mid_to_senior/patterns/dependencyinjection/wire/shapes"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/others/dependencyinjection/wire/foobarbaz"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/others/dependencyinjection/wire/greeter"
+	"github.com/ramseyjiang/go_mid_to_senior/patterns/others/dependencyinjection/wire/shapes"
 )
 
 // Injectors from wire.go:
