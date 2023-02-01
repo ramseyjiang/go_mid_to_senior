@@ -19,6 +19,13 @@ The Abstract pattern is called Abstract Factory pattern also. Abstract pattern i
 families without specifying their concrete classes. It provides an interface for creating all distinct products but leaves the actual product
 creation to concrete factory classes. Each factory type corresponds to a certain product variety.
 
+The Prototype pattern provides the client code with a general interface for working with all objects that support cloning. This interface
+makes the client code independent of the concrete classes of objects that it clones. The aim of the Prototype pattern is to have an object or
+a set of objects that is already created at compilation time, but you can clone as many times as you want at runtime.An object that supports
+cloning is called a prototype. Here’s how it works: you create a set of objects, configured in various ways. When you need an object like the
+one you’ve configured, you just clone a prototype instead of constructing a new object from scratch.
+
+It's worth mentioning that these patterns are not thread-free.
 
 ----------------------------------------------------------------------------------------------------------------------------------
 we have seen the differences when approaching the same problem with two different solutions–the Abstract factory and the Builder pattern. As
