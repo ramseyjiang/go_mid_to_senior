@@ -12,6 +12,8 @@ How to implement
    the methods of the component interface, remember that a container is supposed to be delegating most of the work to sub-elements.
 5. Finally, define the methods for adding and removal of child elements in the container.
 
+Keep in mind these steps during you implement the component interface.
+
 Pros
 
 1. You can work with complex tree structures more conveniently: use polymorphism and recursion to your advantage.
