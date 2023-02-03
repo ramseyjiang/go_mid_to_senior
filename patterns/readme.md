@@ -1,3 +1,35 @@
+Design patterns are typical solutions to commonly occurring problems in software design. They are like pre-made blueprints that you can
+customize to solve a recurring design problem in your code.
+
+Creational design patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code. Creational
+Patterns includes Singleton, Builder, Factory, Prototype, and Abstract Factory Design Patterns.
+
+The Singleton pattern is one of the most used design patterns out there or one of the easiest to grasp. It will provide a single instance of
+an object, and guarantee that there are no duplicates. At first, call to use the instance, if it's created, and then reused between all the
+parts in the application that need to use the particular behavior.
+
+The Builder pattern helps us construct complex objects without directly instantiating their struct, or writing the logic they require. It
+will reuse an algorithm to create many implementations of an interface. It means the builder pattern will allow you to produce different
+types and representations of an object using the same construction code. The builder pattern's instance will provide the opening and closing
+braces {} and leaving the instance with zero values, or as complex as an object that needs to make some API calls, check states, and create
+objects for its fields.
+
+The Factory pattern is called Factory method pattern also. It is probably the second-best known and used design pattern in the industry. The
+Factory pattern provides an interface for creating objects, but allows subclasses to decide which class to instantiate. The interface also
+eases the process of downgrading or upgrading of the implementation of the underlying type if needed.
+
+The Abstract pattern is called Abstract Factory pattern also. Abstract pattern is used to solve the problem of creating entire product
+families without specifying their concrete classes. It provides an interface for creating all distinct products but leaves the actual product
+creation to concrete factory classes. Each factory type corresponds to a certain product variety.
+
+The Prototype pattern provides the client code with a general interface for working with all objects that support cloning. This interface
+makes the client code independent of the concrete classes of objects that it clones. The aim of the Prototype pattern is to have an object or
+a set of objects that is already created at compilation time, but you can clone as many times as you want at runtime.An object that supports
+cloning is called a prototype. Here’s how it works: you create a set of objects, configured in various ways. When you need an object like the
+one you’ve configured, you just clone a prototype instead of constructing a new object from scratch.
+
+It's worth mentioning that these patterns are not thread-free.
+
 Patterns list:
 
 1. Dependency Injection Pattern
@@ -6,25 +38,6 @@ Patterns list:
 4. Retry Pattern
 5. Command Pattern
 6. Semaphore Pattern
-
-Creation patterns These patterns provide various object creation mechanisms, which increase flexibility and reuse of
-existing code.
-
-1. Singleton Pattern
-2. Factory Pattern
-
-Singleton Pattern is a class / type has only one instance and provides a global access point to it. Ensures that there
-is a single instance of an object. This is useful for accessing a shared resource, such as a database.
-
-Factory pattern is a creation design pattern that provides an interface for creating objects in a superclass, but allows
-subclasses to alter the type of objects that will be created.
-
-Builder pattern is a design pattern that provides a flexible solution to various object creation problems in
-object-oriented programming. When you need to build multiple representations of a same object, or use the constructor
-with a long parameter list or multiple constructors with different parameters, you should consider using it.
-
-Struct patterns These patterns explain how to assemble objects and classes into larger structures while keeping these
-structures flexible and efficient.
 
 Behaviour patterns These patterns are concerned with algorithms and the assignment of responsibilities between objects.
 

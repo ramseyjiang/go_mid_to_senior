@@ -1,6 +1,11 @@
 Composite pattern that lets you compose objects into tree structures and then work with these structures as if they were individual objects.
 In this pattern, you can treat all objects as the same via the common interface.
 
+Objective
+
+The objective of the composition is to avoid this type of hierarchy hell where the complexity of an application could grow too much, and the
+clarity of the code is affected.
+
 How to implement
 
 1. Make sure that the core model of your app can be represented as a tree structure. Try to break it down into simple elements and
