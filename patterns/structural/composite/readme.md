@@ -19,6 +19,8 @@ How to implement
 
 Keep in mind these steps during you implement the component interface.
 
+When using the Composite design pattern in Go, you must be very careful not to confuse it with inheritance.
+
 Pros
 
 1. You can work with complex tree structures more conveniently: use polymorphism and recursion to your advantage.
