@@ -25,6 +25,8 @@ func TestSwimmerASwim(t *testing.T) {
 }
 
 func TestAnimalSwim(t *testing.T) {
+	// Notice the Swim here can use it directly, because SwimmerA of CompositeSwimmerA is defined with a pointer function type.
+	// the Swim of Shark is defined only the function type. So it does not need to covert to an address first.
 	fish := Shark{
 		Swim: Swim,
 	}
