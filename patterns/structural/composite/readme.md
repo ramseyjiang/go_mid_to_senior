@@ -19,7 +19,9 @@ How to implement
 
 Keep in mind these steps during you implement the component interface.
 
-When using the Composite design pattern in Go, you must be very careful not to confuse it with inheritance.
+When using the Composite design pattern in Go, you must be very careful not to confuse it with inheritance. The inheritance problem is that
+every time we want to add a new attribute, we would have to append it to the already defined classes. This is where composition comes in. The
+composition is always easier to extend a new attribute.
 
 Pros
 
