@@ -9,9 +9,9 @@ import (
 func TestAdapter(t *testing.T) {
 	msg := "Hello World!"
 
-	adapter := PrinterAdapter{OldPrinter: &MyPastPrinter{}, Msg: msg}
-	assert.Equal(t, "Past Printer: Adapter: Hello World!", adapter.PrintStored())
+	adapter := OutputAdapter{OldSystem: &InfoLegacySystem{}, Msg: msg}
+	assert.Equal(t, "Legacy System: Adapter: Hello World!", adapter.OutputStored())
 
-	adapter = PrinterAdapter{OldPrinter: nil, Msg: msg}
-	assert.Equal(t, "Hello World!", adapter.PrintStored())
+	adapter = OutputAdapter{OldSystem: nil, Msg: msg}
+	assert.Equal(t, "Hello World!", adapter.OutputStored())
 }

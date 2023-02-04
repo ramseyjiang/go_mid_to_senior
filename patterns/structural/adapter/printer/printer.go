@@ -2,33 +2,33 @@ package print
 
 import "fmt"
 
-type PastPrinter interface {
-	Print(s string) string
+type LegacySystem interface {
+	Output(s string) string
 }
 
-type MyPastPrinter struct{}
+type InfoLegacySystem struct{}
 
-func (l *MyPastPrinter) Print(s string) (newMsg string) {
-	newMsg = fmt.Sprintf("Past Printer: %s", s)
+func (l *InfoLegacySystem) Output(s string) (newMsg string) {
+	newMsg = fmt.Sprintf("Legacy System: %s", s)
 	println(newMsg)
 	return
 }
 
-type ModernPrinter interface {
-	PrintStored() string
+type NewSystem interface {
+	OutputStored() string
 }
 
-type PrinterAdapter struct {
-	OldPrinter PastPrinter
-	Msg        string
+type OutputAdapter struct {
+	OldSystem LegacySystem
+	Msg       string
 }
 
-// PrintStored method of the ModernPrinter interface; this method doesn't accept any argument and must return the modified string.
-// It is an adapter between pastPrinter and modernPrinter.
-func (p *PrinterAdapter) PrintStored() (newMsg string) {
-	if p.OldPrinter != nil {
+// OutputStored method of the NewSystem interface; this method doesn't accept any argument and must return the modified string.
+// It is an adapter between LegacySystem and NewSystem.
+func (p *OutputAdapter) OutputStored() (newMsg string) {
+	if p.OldSystem != nil {
 		newMsg = fmt.Sprintf("Adapter: %s", p.Msg)
-		newMsg = p.OldPrinter.Print(newMsg)
+		newMsg = p.OldSystem.Output(newMsg)
 	} else {
 		newMsg = p.Msg
 	}
