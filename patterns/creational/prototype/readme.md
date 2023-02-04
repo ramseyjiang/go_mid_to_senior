@@ -31,3 +31,20 @@ Pros
 4. You get an alternative to inheritance when dealing with configuration presets for complex objects.
 
 Cons Cloning complex objects that have circular references might be very tricky.
+
+The Prototype pattern is used in scenarios where creating an object directly is either too complex, time-consuming, or otherwise inefficient. Some
+common scenarios where the Prototype pattern is useful include:
+
+1. Complex object creation: When the process of creating an object is complex and involves a lot of steps, such as initializing variables, allocating
+   memory, or reading data from a file, the Prototype pattern can be used to create a clone of a pre-existing object.
+2. Performance optimization: When creating an object is computationally expensive, cloning an existing object can be a more efficient way to create a
+   new object.
+3. Dynamic object creation: When the type of object to be created is not known beforehand, the Prototype pattern can be used to dynamically create
+   objects based on a prototype.
+4. Large number of similar objects: When there is a need to create a large number of similar objects, the Prototype pattern can be used to create a
+   single prototype and then clone it multiple times, rather than creating each object from scratch.
+5. Circumventing class constraints: When the implementation of a class prohibits the creation of an object, the Prototype pattern can be used to
+   create a new object by cloning an existing object.
+
+Overall, the Prototype pattern provides a flexible way to create new objects by cloning existing ones, which can simplify the creation process and
+improve performance.
