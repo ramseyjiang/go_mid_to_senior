@@ -8,6 +8,7 @@ type LegacySystem interface {
 
 type InfoLegacySystem struct{}
 
+// Output is a method that implements the LegacySystem interface and modifies the passed string by prefixing the text "Legacy System:"
 func (l *InfoLegacySystem) Output(s string) (newMsg string) {
 	newMsg = fmt.Sprintf("Legacy System: %s", s)
 	println(newMsg)
