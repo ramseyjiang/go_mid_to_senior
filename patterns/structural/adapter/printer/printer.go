@@ -23,6 +23,8 @@ type PrinterAdapter struct {
 	Msg        string
 }
 
+// PrintStored method of the ModernPrinter interface; this method doesn't accept any argument and must return the modified string.
+// It is an adapter between pastPrinter and modernPrinter.
 func (p *PrinterAdapter) PrintStored() (newMsg string) {
 	if p.OldPrinter != nil {
 		newMsg = fmt.Sprintf("Adapter: %s", p.Msg)
