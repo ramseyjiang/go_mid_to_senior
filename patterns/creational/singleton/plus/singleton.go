@@ -1,4 +1,4 @@
-package singleton
+package plus
 
 import (
 	"fmt"
