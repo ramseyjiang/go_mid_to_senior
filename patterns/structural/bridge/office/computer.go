@@ -1,10 +1,12 @@
 package office
 
+// Computer is Abstraction interface.
 type Computer interface {
 	Print() string
 	SetPrinter(Printer)
 }
 
+// Mac and all method within mac are Refined abstraction
 type Mac struct {
 	printer Printer
 }
@@ -17,6 +19,7 @@ func (m *Mac) SetPrinter(p Printer) {
 	m.printer = p
 }
 
+// Windows and all method within Windows are Refined abstraction
 type Windows struct {
 	printer Printer
 }

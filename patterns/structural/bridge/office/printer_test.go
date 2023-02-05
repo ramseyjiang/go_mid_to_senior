@@ -7,6 +7,7 @@ import (
 )
 
 func TestPrint(t *testing.T) {
+	// all client code are below, except to assert parts.
 	hpPrinter := &Hp{}
 	assert.Equal(t, "Printing by a HP Printer", hpPrinter.PrintFile())
 
