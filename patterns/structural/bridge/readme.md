@@ -1,8 +1,6 @@
 Bridge pattern that lets you divides business logic or huge class into separate class hierarchies that can be developed independently. The Bridge
-pattern lets you replace the implementation object inside the abstraction. It’s as easy as assigning a new value to a field. One of these hierarchies (
-often called the Abstraction) will get a reference to an object of the second hierarchy (Implementation). The abstraction will be able to delegate
-some (sometimes, most) of its calls to the implementations object. Since all implementations will have a common interface, they’d be interchangeable
-inside the abstraction.
+pattern lets you replace the implementation object inside the abstraction. The Bridge pattern tries to decouple things as usual with design patterns. It
+decouples abstraction an object from its implementation the thing that the object does.
 
 How to Implement
 

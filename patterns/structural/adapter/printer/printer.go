@@ -2,7 +2,7 @@ package print
 
 import "fmt"
 
-// NewSystem is the interface that Client uses
+// NewSystem is the interface that Client uses, the NewSystem is the target.
 type NewSystem interface {
 	OutputStored() string
 }
@@ -12,7 +12,7 @@ type LegacySystem interface {
 	Output(s string) string
 }
 
-// InfoLegacySystem is an existing struct with the LegacySystem interface
+// InfoLegacySystem is an existing struct with the LegacySystem interface, the InfoLegacySystem is the Adaptee.
 type InfoLegacySystem struct{}
 
 // Output is a method that implements the LegacySystem interface and modifies the passed string by prefixing the text "Legacy System:"
@@ -29,7 +29,7 @@ type OutputAdapter struct {
 }
 
 // OutputStored method of the NewSystem interface; this method doesn't accept any argument and must return the modified string.
-// It is an adapter between LegacySystem and NewSystem.
+// The Adapter class implements the above target interface. It is an adapter between LegacySystem and NewSystem.
 func (p *OutputAdapter) OutputStored() (newMsg string) {
 	if p.OldSystem != nil {
 		newMsg = fmt.Sprintf("Adapter: %s", p.Msg)
