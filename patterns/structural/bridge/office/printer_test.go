@@ -8,7 +8,10 @@ import (
 
 func TestPrint(t *testing.T) {
 	hpPrinter := &Hp{}
+	assert.Equal(t, "Printing by a HP Printer", hpPrinter.PrintFile())
+
 	epsonPrinter := &Epson{}
+	assert.Equal(t, "Printing by a EPSON Printer", epsonPrinter.PrintFile())
 
 	macComputer := &Mac{}
 	macComputer.SetPrinter(hpPrinter)
