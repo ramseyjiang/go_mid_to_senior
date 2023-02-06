@@ -4,7 +4,7 @@ created, and then reused between all the parts in the application that need to u
 
 Objectives:
 1. Create a single, shared value, of some particular type.
-2. Create a restrict object creation of some type to a single unit along the entire
+2. Create a restricted object creation of some type to a single unit along the entire
 
 
 Pros
