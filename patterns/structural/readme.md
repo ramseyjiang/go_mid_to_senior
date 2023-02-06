@@ -12,3 +12,7 @@ collaborate.
 Bridge pattern that lets you divides business logic or huge class into separate class hierarchies that can be developed independently. The Bridge
 pattern lets you replace the implementation object inside the abstraction. The Bridge pattern tries to decouple things as usual with design patterns. It
 decouples abstraction an object from its implementation the thing that the object does.
+
+Proxy is a structural design pattern that provides an object that acts as a substitute or placeholder for a real service object used by a client. A
+proxy receives client requests, does some work (access control, caching, etc.) and then passes the request to a service object. That means a proxy
+controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.

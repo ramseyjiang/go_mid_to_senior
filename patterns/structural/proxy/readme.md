@@ -46,3 +46,5 @@ Cons
 
 1. The code may become more complicated since you need to introduce a lot of new classes.
 2. The response from the service might get delayed.
+
+The Proxy must implement the same interfaces as the features of the type it tries to wrap
