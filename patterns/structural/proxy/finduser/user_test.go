@@ -19,8 +19,8 @@ func Test_UserListProxy(t *testing.T) {
 	// a proxy object composed of a mock database with 1 million users, and a cache implemented as a FIFO stack with a size of 2.
 	proxy := UserListProxy{
 		MockedDatabase: &mockedDatabase,
-		StackSize:      2,
 		StackCache:     UserList{},
+		StackSize:      2,
 	}
 
 	// took the fourth, fifth, and sixth IDs from the slice

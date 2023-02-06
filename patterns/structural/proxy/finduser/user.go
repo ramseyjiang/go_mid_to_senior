@@ -38,6 +38,7 @@ func (t *UserList) addUser(newUser User) {
 // The StackCache members which will also be of UserList type for simplicity,
 // The StackSize to give our stack the size we want, it will cache a maximum of StackSize users and rotate the cache if it reaches this limit.
 // The LastSearchUsedCache will hold if the last performed search has used the cache, or has accessed the database
+// The MockedDatabase is a pointer, because it will be used to store 1 million users. So it uses a pointer to reference is better than value.
 type UserListProxy struct {
 	MockedDatabase      *UserList
 	StackCache          UserList
@@ -55,9 +56,9 @@ func (u *UserListProxy) addUserToStack(user User) {
 	}
 }
 
-// FindUser will search for the specified ID in the parameter in the cache list.
-// If it finds it, it will return it. If not, it will search in the heavy list.
-// Finally, if it's not in the heavy list, it will return an error (generated from the heavy list)
+// FindUser will search for the specified ID in the cache list.
+// If it finds it, it will return the ID. If not, it will search in the mock database.
+// Finally, if it's not in the mock database., it will return an error (generated from the mock database)
 func (u *UserListProxy) FindUser(id int32) (User, error) {
 	// Search for the object in the cache list first
 	user, err := u.StackCache.FindUser(id)
