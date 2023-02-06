@@ -2,7 +2,7 @@ Proxy is a structural design pattern that provides an object that acts as a subs
 proxy receives client requests, does some work (access control, caching, etc.) and then passes the request to a service object. That means a proxy
 controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
 
-Scenarios use the proxy pattern
+The Proxy pattern usually wraps an object to hide some of its characteristics.
 
 1. Lazy initialization (virtual proxy). This is when you have a heavyweight service object that wastes system resources by being always up, even though
    you only need it from time to time. Instead of creating the object when the app launches, you can delay the object’s initialization to a time when
@@ -17,6 +17,11 @@ Scenarios use the proxy pattern
 5. Caching proxy. It is used to cache request results. This is when you need to cache results of client requests and manage the life cycle of this
    cache, especially if results are quite large. The proxy can implement caching for recurring requests that always yield the same results. The proxy
    may use the parameters of requests as the cache keys.
+
+Objectives
+
+1. Hide an object behind the proxy so the features can be hidden, restricted, and so on.
+2. Provide a new abstraction layer that is easy to work with, and can be changed easily.
 
 How to Implement
 
