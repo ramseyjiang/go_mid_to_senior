@@ -20,3 +20,7 @@ controls access to the original object, allowing you to perform something either
 Decorator is a structural pattern that allows adding new behaviors to objects dynamically by placing them inside special wrapper objects, called
 decorators. It allows you to decorate an already existing type with more functional features without actually touching it. When you think about
 extending legacy code without the risk of breaking something, you should think of the Decorator pattern first.
+
+Facade is a structural design pattern that provides a simplified(but limited) interface to a library, a framework, or any other complex set of classes
+which contains lots of moving parts. A facade might provide limited functionality in comparison to working with the subsystem directly However, it
+includes only those features that clients really care about.
