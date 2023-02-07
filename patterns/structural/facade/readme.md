@@ -4,9 +4,11 @@ includes only those features that clients really care about.
 
 Facade scenarios
 
-1. Use the Facade pattern when you need to have a limited but straightforward interface to a complex subsystem.
-2. Use the Facade when you want to structure a subsystem into layers. For example, Check account, Check security PIN, Credit/debit balance, Send
-   notification, and so on.
+1. When you want to decrease the complexity of some parts of our code, using the facade by providing a more easy-to-use method.
+2. When you want to group actions in a single place.
+3. When you want to build a library so that others can use your products without worrying about how it all works.
+
+For example, Check account, Check security PIN, Credit/debit balance, Send notification, and so on.
 
 How to Implement
 
