@@ -16,3 +16,6 @@ decouples abstraction an object from its implementation the thing that the objec
 Proxy is a structural design pattern that provides an object that acts as a substitute or placeholder for a real service object used by a client. A
 proxy receives client requests, does some work (access control, caching, etc.) and then passes the request to a service object. That means a proxy
 controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
+
+Decorator is a structural pattern that allows adding new behaviors to objects dynamically by placing them inside special wrapper objects, called
+decorators. It allows you to decorate an already existing type with more functional features without actually touching it.
