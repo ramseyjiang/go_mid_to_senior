@@ -34,3 +34,15 @@ Cons
 1. It’s hard to remove a specific wrapper from the wrappers stack.
 2. It’s hard to implement a decorator in such a way that its behavior doesn’t depend on the order in the decorators stack.
 3. The initial configuration code of layers might look pretty ugly.
+
+Difference between decorator pattern and proxy pattern. The Decorator pattern is used to add additional responsibilities to an object dynamically. It
+provides a flexible alternative to subclassing for extending functionality. The decorator objects are wrapped around the original object and the
+original object is not modified. The decorator pattern is often used for implementing cross-cutting concerns, such as logging or security, in a clean
+and reusable way.
+
+The Proxy pattern, on the other hand, provides a placeholder for another object to control access to it. The proxy object acts as an intermediary
+between the client and the real subject. This pattern is often used for creating objects on demand, for remote communication, or for performance
+optimization.
+
+In summary, the Decorator pattern is focused on adding functionality to an object, while the Proxy pattern is focused on controlling access to an
+object.
