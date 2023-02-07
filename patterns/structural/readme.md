@@ -18,4 +18,5 @@ proxy receives client requests, does some work (access control, caching, etc.) a
 controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
 
 Decorator is a structural pattern that allows adding new behaviors to objects dynamically by placing them inside special wrapper objects, called
-decorators. It allows you to decorate an already existing type with more functional features without actually touching it.
+decorators. It allows you to decorate an already existing type with more functional features without actually touching it. When you think about
+extending legacy code without the risk of breaking something, you should think of the Decorator pattern first.

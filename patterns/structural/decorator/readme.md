@@ -1,5 +1,6 @@
 Decorator is a structural pattern that allows adding new behaviors to objects dynamically by placing them inside special wrapper objects, called
-decorators. It allows you to decorate an already existing type with more functional features without actually touching it.
+decorators. It allows you to decorate an already existing type with more functional features without actually touching it. When you think about
+extending legacy code without the risk of breaking something, you should think of the Decorator pattern first.
 
 “Wrapper” is the alternative nickname for the Decorator pattern that clearly expresses the main idea of the pattern. A wrapper is an object that can be
 linked with some targets object. The wrapper contains the same set of methods as the target and delegates to it all requests it receives. However, the

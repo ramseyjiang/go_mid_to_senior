@@ -9,15 +9,15 @@ import (
 func TestNoodle(t *testing.T) {
 	noodle := &VegetableMania{}
 
-	// Add fried Noodle
 	noodleWithCheese := &CheeseTopping{
 		noodle: noodle,
 	}
 
-	// Add tomato topping
 	pizzaWithCheeseAndTomato := &TomatoTopping{
 		noodle: noodleWithCheese,
 	}
 
+	assert.Equal(t, 15, noodle.getPrice())
+	assert.Equal(t, 22, noodleWithCheese.getPrice())
 	assert.Equal(t, 32, pizzaWithCheeseAndTomato.getPrice())
 }
