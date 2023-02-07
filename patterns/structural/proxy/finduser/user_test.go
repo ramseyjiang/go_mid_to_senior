@@ -7,7 +7,7 @@ import (
 	"github.com/go-playground/assert/v2"
 )
 
-func Test_UserListProxy(t *testing.T) {
+func TestUserListProxy(t *testing.T) {
 	mockedDatabase := UserList{}
 
 	rand.Seed(2342342) // The preceding test creates a user list of 1 million users with random IDs.
