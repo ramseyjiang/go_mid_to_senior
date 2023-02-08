@@ -72,13 +72,13 @@ Five explicit GRPC good points.
 What’s a Unary API?
 a. Unary RPC calls are the basic Request / Response that everyone is familiar with
 b. The client will send a message to the server and will receive one response from the server
-c. Unary RPC calls will be the most common for your APIs.
-d. Unary calls are very well suited when your data is small
-e. Start with Unary when writing APIs and use streaming API if performance is an issue
-f. In gRPC Unary Calls are defined using Protocol Buffers
-g. For each RPC call, we have to define a Request message and a Response message
+c. Unary RPC calls will be the most common for your APIs. d. Unary calls are very well suited when your data is small e. Start with Unary when writing
+APIs and use streaming API if performance is an issue f. In gRPC Unary Calls are defined using Protocol Buffers g. For each RPC call, we have to define
+a Request message and a Response message
 
+Size: JSON will produce an object that is larger than binary object. JSON supports only a limited number of data types:string, number, boolean, null,
+object, array. Binary supports more.
 
-Size: JSON will produce an object that is larger than binary object.
-JSON supports only a limited number of data types:string, number, boolean, null, object, array.
-Binary supports more.
+It really depends on your use case. If you need a simple, flexible and lightweight API that can be accessed by any client and doesn’t require a lot of
+overhead, then REST API might be the way to go. On the other hand, if you need a high-performance API that can handle a lot of concurrent connections
+and support streaming, then gRPC might be a better fit.
