@@ -24,3 +24,6 @@ extending legacy code without the risk of breaking something, you should think o
 Facade is a structural design pattern that provides a simplified(but limited) interface to a library, a framework, or any other complex set of classes
 which contains lots of moving parts. A facade might provide limited functionality in comparison to working with the subsystem directly However, it
 includes only those features that clients really care about.
+
+Flyweight is a structural design pattern that allows programs to support huge quantities of objects by keeping their memory consumption low. The
+Flyweight pattern takes out the common parts and creates flyweight objects.
