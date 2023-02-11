@@ -5,8 +5,6 @@ import (
 	"sync"
 )
 
-// In this example, we have a database configuration manager represented by the ConfigManager struct. The manager holds a map of database configurations, with each configuration identified by a unique key. The sync.Once type is used to ensure that the map of configurations is only created once, even if multiple goroutines attempt to access the map concurrently. The Instance variable is a singleton instance of ConfigManager, and the GetConfig and SetConfig methods allow for retrieving and setting database configurations in the map, respectively.
-
 // DBConfig represents a database configuration
 type DBConfig struct {
 	Username string
