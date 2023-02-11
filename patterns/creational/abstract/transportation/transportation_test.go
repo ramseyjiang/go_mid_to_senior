@@ -1,6 +1,10 @@
 package transportation
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/go-playground/assert/v2"
+)
 
 func TestMotorbikeFactory(t *testing.T) {
 	motorbikeF, err := BuildFactory(MotorbikeFactoryType)
@@ -12,25 +16,25 @@ func TestMotorbikeFactory(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("Motorbike vehicle has %d wheels\n", sportMotorbike.NumWheels())
+	assert.Equal(t, 2, sportMotorbike.NumWheels())
 
 	sportBike, ok := sportMotorbike.(Motorbike)
 	if !ok {
 		t.Fatal("Struct assertion has failed")
 	}
-	t.Logf("Sport motorbike has type %d\n", sportBike.GetMotorbikeType())
+	assert.Equal(t, 1, sportBike.GetMotorbikeType())
 
 	cruiseMotorbike, err := motorbikeF.Build(CruiseMotorbikeType)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("CruiseMotorbike vehicle has %d wheels\n", cruiseMotorbike.NumWheels())
+	assert.Equal(t, 2, cruiseMotorbike.NumWheels())
 
 	cruiseBike, ok := cruiseMotorbike.(Motorbike)
 	if !ok {
 		t.Fatal("Struct assertion has failed")
 	}
-	t.Logf("Cruise motorbike has type %d\n", cruiseBike.GetMotorbikeType())
+	assert.Equal(t, 2, cruiseBike.GetMotorbikeType())
 }
 
 func TestCarFactory(t *testing.T) {
@@ -43,23 +47,23 @@ func TestCarFactory(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("Car vehicle has %d seats\n", luxuryCarVehicle.NumWheels())
+	assert.Equal(t, 5, luxuryCarVehicle.NumSeats())
 
 	luxuryCar, ok := luxuryCarVehicle.(Car)
 	if !ok {
 		t.Fatal("Struct assertion has failed")
 	}
-	t.Logf("Luxury car has %d doors.\n", luxuryCar.NumDoors())
+	assert.Equal(t, 4, luxuryCar.NumDoors())
 
 	familyCarVehicle, err := carF.Build(FamilyCarType)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("Car vehicle has %d seats\n", familyCarVehicle.NumWheels())
+	assert.Equal(t, 5, familyCarVehicle.NumSeats())
 
 	familyCar, ok := familyCarVehicle.(Car)
 	if !ok {
 		t.Fatal("Struct assertion has failed")
 	}
-	t.Logf("Family car has %d doors.\n", familyCar.NumDoors())
+	assert.Equal(t, 5, familyCar.NumDoors())
 }

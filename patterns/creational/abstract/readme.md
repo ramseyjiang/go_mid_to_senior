@@ -1,7 +1,6 @@
-Abstract pattern is used to solve the problem of creating entire product families without specifying their concrete classes. It provides an
-interface for creating all distinct products but leaves the actual product creation to concrete factory classes. Each factory type
-corresponds to a certain product variety. Abstract pattern a new layer of grouping to achieve a bigger and more complex composite object,
-which is used through its interfaces.
+Abstract pattern is also called abstract factory pattern. The abstract design pattern is a type of design pattern that provides a way to define a common
+interface for a group of related objects and encapsulates the behaviour of individual objects to simplify the design of complex systems. Abstract
+pattern is a new layer of grouping to achieve a bigger and more complex composite object, which is used through its interfaces.
 
 Objectives
 
