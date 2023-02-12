@@ -13,12 +13,12 @@ type ShirtCloner interface {
 }
 
 func GetShirtsCloner() ShirtCloner {
-	return new(ShirtsCache)
+	return new(ShirtsColors)
 }
 
-type ShirtsCache struct{}
+type ShirtsColors struct{}
 
-func (sc *ShirtsCache) GetClone(s int) (ItemInfoGetter, error) {
+func (sc *ShirtsColors) GetClone(s int) (ItemInfoGetter, error) {
 	switch s {
 	case White:
 		newItem := *whitePrototype
