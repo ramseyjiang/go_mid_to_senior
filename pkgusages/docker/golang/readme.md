@@ -31,8 +31,10 @@ One of Docker’s best practice is keeping the image size small, by having only 
 
 Get docker current run container id
 
-% docker ps                               
-CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 894b99118767 go-dock   "/main /main"   22 seconds ago Up 21 seconds 0.0.0.0:3001->3000/tcp
-pensive_ptolemy
+% docker ps
+
+CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
+
+894b99118767 go-dock   "/main /main"   22 seconds ago Up 21 seconds 0.0.0.0:3001->3000/tcp pensive_ptolemy
 
 % docker stop container-id
