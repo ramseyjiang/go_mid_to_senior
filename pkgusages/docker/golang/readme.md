@@ -37,4 +37,6 @@ CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
 
 894b99118767 go-dock   "/main /main"   22 seconds ago Up 21 seconds 0.0.0.0:3001->3000/tcp pensive_ptolemy
 
-% docker stop container-id
+<docker stop container-id>
+
+% docker stop 894b99118767
