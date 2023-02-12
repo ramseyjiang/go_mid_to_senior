@@ -3,9 +3,9 @@ package shop
 import (
 	"testing"
 
-	"github.com/go-playground/assert/v2"
-
 	"github.com/google/uuid"
+
+	"github.com/go-playground/assert/v2"
 )
 
 func TestClone(t *testing.T) {
