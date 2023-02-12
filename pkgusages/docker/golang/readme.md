@@ -1,5 +1,5 @@
-1. From Creating our image using the base image golang:alpine. This image runs the alpine Linux distribution which is
-   small in size and has Golang already installed which is perfect for our use case.
+1. From Creating our image using the base image golang:alpine. This image runs the alpine Linux distribution which is small and has Golang already
+   installed which is perfect for our use case.
 
 2. Env Set necessary environment variables needed for our image
 
@@ -25,7 +25,14 @@ access 127.0.0.1:3001/animal/cat You will see "
 
 {“message”:”pong”}" as your expect. You have a full working web server already.
 
-Using 3001:3000, it won't occupy the local 3000 port, it occupies 3001. The port 3000 is used which belong to docker,
-not the local.
+Using 3001:3000, it won't occupy the local 3000 port, it occupies 3001. The port 3000 is used which belong to docker, not the local.
 
 One of Docker’s best practice is keeping the image size small, by having only the binary file.
+
+Get docker current run container id
+
+% docker ps                               
+CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 894b99118767 go-dock   "/main /main"   22 seconds ago Up 21 seconds 0.0.0.0:3001->3000/tcp
+pensive_ptolemy
+
+% docker stop container-id
