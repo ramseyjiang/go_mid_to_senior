@@ -1,0 +1,25 @@
+version: '1.0'
+
+services:
+  db:
+    image: postgres:14.3
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: test
+    ports:
+      - 5433:5433 #On the left side is the port that is available to the outside. The port on the right side specifies the port within the Docker container.
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 1GB
+        reservations:
+          cpus: "2"
+          memory: 1GB
+  adminer:
+    image: adminer:4.8.1
+    container_name: adminer
+    restart: always
+    ports:
+      - 8087:8080
