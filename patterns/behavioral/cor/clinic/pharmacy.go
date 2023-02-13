@@ -5,6 +5,10 @@ type Pharmacy struct {
 }
 
 func (ph *Pharmacy) execute(p *Patient) (resp string) {
+	if ph.next != nil {
+		p.record = ph.next.execute(p)
+	}
+
 	if p.pharmacyDone {
 		return "Pharmacy already given to patient, "
 	}

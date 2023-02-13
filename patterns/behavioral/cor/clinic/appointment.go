@@ -5,13 +5,15 @@ type Appointment struct {
 }
 
 func (a *Appointment) execute(p *Patient) (resp string) {
-	if p.bookDone {
+	if a.next != nil {
 		p.record = a.next.execute(p)
+	}
+
+	if p.bookDone {
 		return p.record + "Patient appointment already done"
 	}
 
 	p.bookDone = true
-	p.record = a.next.execute(p)
 	return p.record + "Reception appointment patient"
 }
 

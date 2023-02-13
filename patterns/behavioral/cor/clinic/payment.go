@@ -5,13 +5,15 @@ type Payment struct {
 }
 
 func (pa *Payment) execute(p *Patient) (resp string) {
-	if p.paymentDone {
+	if pa.next != nil {
 		p.record = pa.next.execute(p)
+	}
+
+	if p.paymentDone {
 		return p.record + "Payment Done, "
 	}
 
 	p.paymentDone = true
-	p.record = pa.next.execute(p)
 	return p.record + "Reception getting money from patient, "
 }
 
