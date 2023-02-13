@@ -24,11 +24,11 @@ func (h *ConcreteHandlerA) SetNext(next Handler) {
 // The Handle method of each handler checks whether it can handle the request
 // and if not, passes the request to the next handler in the chain using the SetNext method.
 func (h *ConcreteHandlerA) Handle(req *Request) (resp string) {
-	if req.Type == "A" {
+	if req.Value >= 0 && req.Value < 10 {
 		return "ConcreteHandlerA handled the request"
 	}
 	if h.Next != nil {
-		h.Next.Handle(req)
+		return h.Next.Handle(req)
 	}
 	return
 }
@@ -42,11 +42,11 @@ func (h *ConcreteHandlerB) SetNext(next Handler) {
 }
 
 func (h *ConcreteHandlerB) Handle(req *Request) (resp string) {
-	if req.Type == "B" {
+	if req.Value >= 10 && req.Value < 20 {
 		return "ConcreteHandlerB handled the request"
 	}
 	if h.Next != nil {
-		h.Next.Handle(req)
+		return h.Next.Handle(req)
 	}
 	return
 }
