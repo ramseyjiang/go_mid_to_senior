@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-dock/golang/data"
+	"go-dock/data"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
