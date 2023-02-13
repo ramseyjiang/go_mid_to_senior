@@ -4,17 +4,17 @@ type Payment struct {
 	next Step
 }
 
-func (pa *Payment) execute(p *Patient) (resp string) {
+func (pa *Payment) execute(p *Patient) (resp []string) {
 	if pa.next != nil {
 		p.record = pa.next.execute(p)
 	}
 
 	if p.paymentDone {
-		return p.record + "Payment Done, "
+		return append(p.record, "Payment Done")
 	}
 
 	p.paymentDone = true
-	return p.record + "Reception getting money from patient, "
+	return append(p.record, "Reception getting money from patient")
 }
 
 func (pa *Payment) setNext(next Step) {

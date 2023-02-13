@@ -1,7 +1,7 @@
 package clinic
 
 type Step interface {
-	execute(*Patient) string
+	execute(*Patient) []string
 	setNext(Step)
 }
 
@@ -11,5 +11,5 @@ type Patient struct {
 	doctorCheckUpDone bool
 	paymentDone       bool
 	pharmacyDone      bool
-	record            string
+	record            []string
 }

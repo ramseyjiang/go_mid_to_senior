@@ -4,17 +4,17 @@ type Pharmacy struct {
 	next Step
 }
 
-func (ph *Pharmacy) execute(p *Patient) (resp string) {
+func (ph *Pharmacy) execute(p *Patient) (resp []string) {
 	if ph.next != nil {
 		p.record = ph.next.execute(p)
 	}
 
 	if p.pharmacyDone {
-		return "Pharmacy already given to patient, "
+		return append(p.record, "Pharmacy already given to patient")
 	}
 
 	p.pharmacyDone = true
-	return "Pharmacy giving medicine to patient, "
+	return append(p.record, "Pharmacy giving medicine to patient")
 }
 
 func (ph *Pharmacy) setNext(next Step) {
