@@ -31,3 +31,9 @@ How to implement in Golang:
 5. Create an Invoker struct that has a method to execute the command.
 6. Instantiate the Invoker, Command, and Receiver objects, and set the receiver as the target of the command.
 7. Invoke the command using the Invoker, which will call the command's execute method, which will delegate the call to the Receiver.
+
+It's similar to the Strategy pattern but,
+
+1. in fact, a Command could trigger a preconfigured Strategy somewhere else, so they are not the same.
+2. remember that Strategy is about having many algorithms to achieve some specific task, but all of them achieve the same task. In the Command pattern,
+   you have many tasks to execute, and not all of them need to be equal.

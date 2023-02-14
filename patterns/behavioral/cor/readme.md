@@ -29,5 +29,9 @@ How to implement
 2. Create concrete objects that implement the interface.
 3. Each object would have a reference to the next object in the chain, and would use that reference to pass along requests that it could not handle.
 
+The Chain of Responsibility pattern opens the door of middleware of any type and plugin like libraries to improve the functionality of some part. Many
+open source projects uses a Chain of Responsibility to handler HTTP requests and responses to extract information to the end user (such as cookies info)
+or check authentication details (I'll let you pass to the next link only if I have you on my database).
+
 In summary, the Chain of Responsibility pattern is a powerful tool for processing requests in an object-oriented programming environment, but it should
 be used with care to ensure that its benefits are maximized and its drawbacks are minimized.
