@@ -5,3 +5,8 @@ algorithm vary independently of clients that use it. The Strategy pattern is pro
 
 Chain of Responsibility is a behavioral design pattern that lets you pass requests along a chain of handlers. Upon receiving a request, each handler
 decides either to process the request or to pass it to the next handler in the chain
+
+Command is a behavioral design pattern that allows encapsulating a request or operation as an object. It converts requests or simple operations into a
+stand-alone object that can be stored, passed, and executed independently of the original requester. The pattern separates the requester (client) from
+the object that performs the action (receiver). This transformation lets you pass requests as a method arguments, delay or queue a request’s execution,
+and support undoable operations.
