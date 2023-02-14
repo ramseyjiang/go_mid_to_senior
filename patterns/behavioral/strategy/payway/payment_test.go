@@ -7,6 +7,7 @@ import (
 )
 
 func TestPayment(t *testing.T) {
+	// Use the context class and the strategies
 	shoppingCart := &ShoppingCart{Amount: 100}
 
 	// Set the payment strategy to PayPal

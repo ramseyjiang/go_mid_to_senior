@@ -3,21 +3,23 @@ algorithm vary independently of clients that use it. The Strategy pattern is pro
 
 Objectives
 
-1. Provide a few algorithms to achieve some specific functionality.
+1. Encapsulate algorithms in separate objects to allow for dynamic and interchangeable behavior
 2. All types achieve the same functionality in a different way but the client of the strategy isn't affected.
 
 Pros:
 
-1. The main advantage of using the Strategy pattern is that it allows for the separation of concerns. The logic for a specific behavior can be
-   encapsulated within a separate strategy class, making it easier to maintain and understand.
-2. Another benefit of using the Strategy pattern is that it makes it easy to change the behavior of a class at runtime. This can be useful in cases
-   where the behavior of a class needs to be dynamic and can change based on user input or some other condition.
-3. The Strategy pattern also allows for the reuse of code. By encapsulating the logic for a specific behavior in a separate class, that class can be
-   used in multiple places throughout the application.
+1. Promotes clean, modular, and reusable code by encapsulating algorithms in separate objects
+2. Increases flexibility by allowing the algorithm to be changed at runtime
+3. Enables better separation of concerns by isolating algorithms from the context in which they are used
 
 Cons:
 
-1. One potential drawback of using the Strategy pattern is that it can result in an increase in the number of classes in the application. This can make
-   it more difficult to understand the relationships between classes and how they interact with each other.
-2. Another potential disadvantage of the Strategy pattern is that it can make the code more complex if not used correctly. It's important to carefully
-   consider the design of the strategies and how they will interact with the context class.
+1. Increase the number of classes and make the code more complex
+2. Make the code harder to understand if too many strategies are used
+
+How to implement
+
+1. Define an interface that represents the algorithm you want to encapsulate.
+2. Define the methods that are needed to perform the algorithm in the above interface.
+3. Create separate structs that implement the interface, each defining a specific algorithm.
+4. The context class would then have a reference to an instance of the interface, and use it to perform the algorithm.
