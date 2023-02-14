@@ -1,7 +1,7 @@
 Behavioral design patterns are concerned with algorithms and the assignment of responsibilities between objects.
 
-Strategy is a behavioral design pattern that defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the
-algorithm vary independently of clients that use it. The Strategy pattern is probably the easiest to understand of the Behavioral patterns.
+Strategy is a behavioral design pattern that allows you to define a family of algorithms and dynamically switch between them at runtime. Strategy lets
+the algorithm vary independently of clients that use it. The Strategy pattern is probably the easiest to understand of the Behavioral patterns.
 
 Chain of Responsibility is a behavioral design pattern that allows multiple objects to handle a request, with each object having the opportunity to
 either handle the request or pass it along to the next object in the chain. The objects in the chain are not aware of each other, but instead

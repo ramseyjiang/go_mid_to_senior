@@ -1,5 +1,5 @@
-Strategy is a behavioral design pattern that defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the
-algorithm vary independently of clients that use it. The Strategy pattern is probably the easiest to understand of the Behavioral patterns.
+Strategy is a behavioral design pattern that allows you to define a family of algorithms and dynamically switch between them at runtime. Strategy lets
+the algorithm vary independently of clients that use it. The Strategy pattern is probably the easiest to understand of the Behavioral patterns.
 
 Objectives
 
