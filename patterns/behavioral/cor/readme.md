@@ -1,12 +1,13 @@
-The Chain of Responsibility pattern is a behavioral design pattern that provides a way to process a sequence of requests, where each request is passed
-through a chain of objects until it is handled by one of them. The objects in the chain do not know each other, but instead, they communicate through a
-common interface.
+The Chain of Responsibility pattern is a design pattern that allows multiple objects to handle a request, with each object having the opportunity to
+either handle the request or pass it along to the next object in the chain. The objects in the chain are not aware of each other, but instead
+communicate through a common interface, allowing new objects to be added or removed from the chain easily.
 
 Objectives
 
 1. To decouple the sender of a request from its receiver.
 2. To allow for the dynamic modification of the chain of objects that handle requests.
-3. To promote the single responsibility principle by allowing objects to handle only the requests they are responsible for.
+3. To allow multiple objects to handle a request, with each object having the opportunity to either handle the request or pass it along to the next
+   object in the chain.
 
 Pros
 
@@ -19,7 +20,14 @@ Cons
 
 1. Performance overhead: If there are many objects in the chain, passing requests through them can become slow and resource-intensive.
 2. Increased complexity: Maintaining the chain can become complex as the number of objects in the chain increases.
-3. Debugging difficulties: Debugging the chain can be difficult because of its dynamic nature.
+3. Debugging difficulties: Lead to result in a long chain of objects, making it difficult to understand how a request is being handled and making it
+   harder to debug problems.
+
+How to implement
+
+1. Define an interface that defines the methods for handling requests.
+2. Create concrete objects that implement the interface.
+3. Each object would have a reference to the next object in the chain, and would use that reference to pass along requests that it could not handle.
 
 In summary, the Chain of Responsibility pattern is a powerful tool for processing requests in an object-oriented programming environment, but it should
 be used with care to ensure that its benefits are maximized and its drawbacks are minimized.
