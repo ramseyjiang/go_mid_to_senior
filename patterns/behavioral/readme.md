@@ -11,3 +11,7 @@ Command is a behavioral design pattern that allows encapsulating a request or op
 stand-alone object that can be stored, passed, and executed independently of the original requester. The pattern separates the requester (client) from
 the object that performs the action (receiver). This transformation lets you pass requests as a method arguments, delay or queue a request’s execution,
 and support undoable operations.
+
+The Template pattern is a behavioral design pattern that defines the skeleton of an algorithm in a base class and allows subclasses to override some
+steps of the algorithm without changing its structure. In other words, it provides a way to define the steps of an algorithm, while allowing subclasses
+to implement specific behaviors that can vary.
