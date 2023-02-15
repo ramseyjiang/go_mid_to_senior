@@ -36,4 +36,6 @@ func TestMemento(t *testing.T) {
 	originator.restoreMemento(caretaker.getMemento(0))
 	assert.Equal(t, "Initial state", originator.getState())
 	assert.Equal(t, 3, len(caretaker.mementos))
+
+	assert.Equal(t, &Memento{}, caretaker.getMemento(-1))
 }

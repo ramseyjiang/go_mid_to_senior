@@ -40,5 +40,8 @@ func (c *CareTaker) addMemento(m *Memento) {
 }
 
 func (c *CareTaker) getMemento(index int) *Memento {
+	if len(c.mementos) < index || index < 0 {
+		return &Memento{}
+	}
 	return c.mementos[index]
 }
