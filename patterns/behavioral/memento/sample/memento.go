@@ -6,6 +6,8 @@ type Memento struct {
 }
 
 // The Originator struct is the object whose state we want to save and restore
+// If the Memento contains a specific state, the originator type contains the state that is currently loaded.
+// Also, to save the state of something could be as simple as to take some value or as complex as to maintain the state of some distributed application.
 type Originator struct {
 	state string
 }
