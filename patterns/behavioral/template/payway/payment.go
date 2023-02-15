@@ -9,23 +9,25 @@ import "fmt"
 // A concrete class OnlineOrder is defined and implements the ProcessOrder() function with a reference to a PaymentProcessor object
 // that is used to process the payment.
 
-// PaymentProcessor Abstract class
+// PaymentProcessor is the Abstract class
 type PaymentProcessor interface {
 	ProcessPayment(float64) bool
 }
 
-// CreditCardProcessor Concrete class 1
+// CreditCardProcessor is the Concrete class 1
 type CreditCardProcessor struct{}
 
+// ProcessPayment is an implement for the method of PaymentProcessor.
 func (c *CreditCardProcessor) ProcessPayment(amount float64) bool {
 	fmt.Println("Processing credit card payment...")
 	// code to process credit card payment goes here
 	return true
 }
 
-// PayPalProcessor Concrete class 2
+// PayPalProcessor is the Concrete class 2
 type PayPalProcessor struct{}
 
+// ProcessPayment is an implement for the method of PaymentProcessor.
 func (p *PayPalProcessor) ProcessPayment(amount float64) bool {
 	fmt.Println("Processing PayPal payment...")
 	// code to process PayPal payment goes here

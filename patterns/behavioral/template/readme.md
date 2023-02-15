@@ -15,8 +15,8 @@ Cons:
 
 How to implement
 
-1. To define the steps of an algorithm in a base class.
-2. To allow subclasses to implement specific behaviors that can vary.
+1. To define the steps of an algorithm in the abstract class.
+2. To allow concrete classes to implement specific behaviors that can vary.
 3. To avoid code duplication by providing a common code structure.
 
 The template pattern is similar with strategy pattern, but they are different. The Template Pattern is used to define a common structure for a family of
