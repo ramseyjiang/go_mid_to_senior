@@ -10,6 +10,8 @@ package sortimpl
 
 type intList []int
 
+// The following methods are used to implement the template interface methods.
+
 func (m intList) Len() int {
 	return len(m)
 }
