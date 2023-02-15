@@ -15,3 +15,6 @@ and support undoable operations.
 The Template pattern is a behavioral design pattern that defines the skeleton of an algorithm in a base class and allows subclasses to override some
 steps of the algorithm without changing its structure. In other words, it provides a way to define the steps of an algorithm, while allowing subclasses
 to implement specific behaviors that can vary.
+
+The Memento pattern is a behavioral design pattern that allows an object to save its internal state so that it can be restored later, without violating
+encapsulation. In other words, it provides a way to capture the current state of an object and restore it to that state later on.
