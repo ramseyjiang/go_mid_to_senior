@@ -30,3 +30,6 @@ Cons:
 
 1. It can lead to a large number of objects being created if the state changes frequently.
 2. It can impact the performance of the system if the state being stored is large.
+
+With the Memento pattern, we have learned a powerful way to create undoable operations that are very useful when writing UI applications but also when
+you have to develop transactional operations. In any case, the situation is the same: you need a Memento, an Originator, and a caretaker.
