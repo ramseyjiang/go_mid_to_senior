@@ -1,4 +1,4 @@
-package files
+package docs
 
 import "strings"
 
