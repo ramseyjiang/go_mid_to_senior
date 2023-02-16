@@ -11,14 +11,13 @@ Pros
 
 1. Separation of concerns: The Iterator separates the logic of accessing the elements of a collection from the collection itself, which leads to
    cleaner, more modular code.
-2. Reusability: Once an Iterator is implemented, it can be used to iterate over any collection that implements the Iterator interface. This makes the
-   Iterator pattern highly reusable.
+2. High reusable: Once an Iterator is implemented, it can be used to iterate over any collection that implements the Iterator interface.
 3. Encapsulation: The Iterator provides a way to encapsulate the internal representation of a collection, which makes it easier to change the collection
    without affecting the code that uses the Iterator.
 
 Cons
 
-1. Overhead: The use of an Iterator may introduce some overhead, as it requires an additional object to be created to maintain the iteration state.
+1. Overhead: it may introduce some overhead, as it requires an additional object to be created to maintain the iteration state.
 2. Inefficient for small collections: For very small collections, the overhead of using an Iterator may outweigh the benefits.
 
 How to implement
