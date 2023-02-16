@@ -22,3 +22,6 @@ encapsulation. In other words, it provides a way to capture the current state of
 The Iterator pattern is a behavioral design pattern that provides a way to traverse a collection of objects without exposing the underlying
 implementation details. It allows you to access the elements of a collection sequentially, one at a time, without having to know the internal structure
 of the collection.
+
+The Interpreter pattern is widely used to solve business cases where it's useful to have a language to perform common operations. The pattern involves
+creating a set of algorithm classes that are used to solve logical puzzles.
