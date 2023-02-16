@@ -18,3 +18,7 @@ to implement specific behaviors that can vary.
 
 The Memento pattern is a behavioral design pattern that allows an object to save its internal state so that it can be restored later, without violating
 encapsulation. In other words, it provides a way to capture the current state of an object and restore it to that state later on.
+
+The Iterator pattern is a behavioral design pattern that provides a way to traverse a collection of objects without exposing the underlying
+implementation details. It allows you to access the elements of a collection sequentially, one at a time, without having to know the internal structure
+of the collection.
