@@ -1,6 +1,7 @@
 package sample
 
 type IntIterator interface {
+	HasNext() bool
 	Next() (int, bool)
 }
 
@@ -9,8 +10,15 @@ type SliceIntIterator struct {
 	index int
 }
 
-func (i *SliceIntIterator) Next() (int, bool) {
+func (i *SliceIntIterator) HasNext() bool {
 	if i.index >= len(i.slice) {
+		return true
+	}
+	return false
+}
+
+func (i *SliceIntIterator) Next() (int, bool) {
+	if i.HasNext() {
 		return 0, false
 	}
 	value := i.slice[i.index]
