@@ -13,16 +13,16 @@ func TestArea(t *testing.T) {
 
 	areaCalculator := &CalculatorArea{}
 
-	// areaCalculator is the visitor, it is used in calculate() method.
-	// The calculate() method can accept many visitors, and it does not need to change the shape interface.
-	assert.Equal(t, float32(4), square.calculate(areaCalculator))
-	assert.Equal(t, float32(28.26), circle.calculate(areaCalculator))
-	assert.Equal(t, float32(6), rectangle.calculate(areaCalculator))
+	// areaCalculator is the visitor, it is used in accept() method.
+	// The accept() method can accept many visitors, and it does not need to change the shape interface.
+	assert.Equal(t, float32(4), square.accept(areaCalculator))
+	assert.Equal(t, float32(28.26), circle.accept(areaCalculator))
+	assert.Equal(t, float32(6), rectangle.accept(areaCalculator))
 
-	// perimeterCalculator is another visitor, it is used in calculate() method.
+	// perimeterCalculator is another visitor, it is used in accept() method.
 	// Use different visitors can do different things, and don't need to update the source code in the shape.
 	perimeterCalculator := &CalculatorPerimeter{}
-	assert.Equal(t, float32(8), square.calculate(perimeterCalculator))
-	assert.Equal(t, float32(18.84), circle.calculate(perimeterCalculator))
-	assert.Equal(t, float32(10), rectangle.calculate(perimeterCalculator))
+	assert.Equal(t, float32(8), square.accept(perimeterCalculator))
+	assert.Equal(t, float32(18.84), circle.accept(perimeterCalculator))
+	assert.Equal(t, float32(10), rectangle.accept(perimeterCalculator))
 }

@@ -1,10 +1,10 @@
 package area
 
-// Shape interface defines. calculate(Visitor) is the key method in the visitor pattern.
+// Shape interface defines. accept(Visitor) is the key method in the visitor pattern. It is always defined using accept().
 // It can accept many visitors and does not need to change the Shape interface.
 type Shape interface {
 	getType() string
-	calculate(Visitor) float32
+	accept(Visitor) float32
 }
 
 // Visitor is the abstract interface
@@ -19,7 +19,7 @@ type Square struct {
 	side float32
 }
 
-func (s *Square) calculate(v Visitor) float32 {
+func (s *Square) accept(v Visitor) float32 {
 	return v.visitSquare(s)
 }
 
@@ -32,7 +32,7 @@ type Circle struct {
 	radius float32
 }
 
-func (c *Circle) calculate(v Visitor) float32 {
+func (c *Circle) accept(v Visitor) float32 {
 	return v.visitCircle(c)
 }
 
@@ -46,7 +46,7 @@ type Rectangle struct {
 	w float32
 }
 
-func (t *Rectangle) calculate(v Visitor) float32 {
+func (t *Rectangle) accept(v Visitor) float32 {
 	return v.visitRectangle(t)
 }
 

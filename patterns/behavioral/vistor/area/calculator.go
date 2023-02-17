@@ -1,6 +1,6 @@
 package area
 
-// CalculatorArea is one of concrete struct, the below methods implement the Visitor abstract interface.
+// CalculatorArea is one of concrete visitor, the below methods implement the Visitor abstract interface.
 type CalculatorArea struct {
 	area float32
 }
@@ -17,6 +17,7 @@ func (c *CalculatorArea) visitRectangle(s *Rectangle) float32 {
 	return s.l * s.w
 }
 
+// CalculatorPerimeter is another concrete visitor. The below methods implement the Visitor abstract interface.
 type CalculatorPerimeter struct {
 	perimeter float32
 }
