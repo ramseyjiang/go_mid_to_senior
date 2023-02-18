@@ -8,7 +8,9 @@ type Shape interface {
 
 // The Visitable interface has a method called Accept(Visitor) that will execute the decoupled algorithm.
 // Accept(Visitor) is the key method in the visitor pattern. It is always defined using Accept().
-// It can accept many visitors and does not need to change the Shape interface.
+// Visitor is the abstract interface, all visit methods are defined in it.
+// Methods in Visitor interface can be used to alter the Visitable object.
+// Using this way, Visitor can change the original functionalities indirectly, and it won't change the original interface source code.
 type Visitable interface {
 	Accept(Visitor) float32
 }
