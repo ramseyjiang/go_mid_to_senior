@@ -1,27 +1,30 @@
 package shop
 
 import (
-	"fmt"
 	"testing"
+
+	"golang.org/x/exp/slices"
+
+	"github.com/go-playground/assert/v2"
 )
 
 func TestShop(t *testing.T) {
 	products := make([]Visitable, 3)
 	products[0] = &Rice{
 		Product: Product{
-			Price: 32.0,
+			Price: 22.0,
 			Name:  "Some rice",
 		},
 	}
 	products[1] = &Pasta{
 		Product: Product{
-			Price: 40.0,
+			Price: 50.0,
 			Name:  "Some pasta",
 		},
 	}
 	products[2] = &Fridge{
 		Product: Product{
-			Price: 50,
+			Price: 70,
 			Name:  "A fridge",
 		},
 	}
@@ -32,7 +35,7 @@ func TestShop(t *testing.T) {
 		p.Accept(priceVisitor)
 	}
 
-	fmt.Printf("Total: %f\n", priceVisitor.Sum)
+	assert.Equal(t, float32(172), priceVisitor.Sum)
 
 	nameVisitor := &NameVisitor{}
 
@@ -40,5 +43,7 @@ func TestShop(t *testing.T) {
 		p.Accept(nameVisitor)
 	}
 
-	fmt.Printf("\nProduct list:\n-------------\n%s", nameVisitor.ProductList)
+	assert.Equal(t, true, slices.Contains(nameVisitor.ProductList, "A fridge"))
+	assert.Equal(t, true, slices.Contains(nameVisitor.ProductList, "Some pasta"))
+	assert.Equal(t, true, slices.Contains(nameVisitor.ProductList, "Some rice"))
 }
