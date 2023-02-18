@@ -29,3 +29,7 @@ creating a set of algorithm classes that are used to solve logical puzzles.
 Visitor is a behavioral design pattern that allows you to add new algorithms from the objects structure on which they operate. It involves defining a
 separate object (the visitor) that can visit each object in a complex structure and perform some operation on it. This way, you can modify the behavior
 of a group of objects without changing their individual classes.
+
+The State pattern is a behavioral design pattern that allows an object to change its behavior based on its internal state. It allows an object to change
+its behavior without changing its class, by delegating the responsibility of behavior to different state objects. The State pattern promotes loose
+coupling, high cohesion, and easy maintenance of the codebase.
