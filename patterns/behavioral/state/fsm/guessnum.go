@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const target = 10
+const target = 100
 const retries = 10
 
 type GameState interface {
@@ -52,10 +52,10 @@ type AskState struct{}
 func (a *AskState) executeState(c *GameContext) bool {
 	fmt.Printf("Introduce a number between 0 and 10, you have %d tries left\n", c.Retries)
 
-	// auto generate a number between 0 to target
+	// The test can auto generate a number between 0 to target using the below 2 lines.
 	rand.Seed(time.Now().UnixNano())
 	n := rand.Intn(target)
-	fmt.Println(n)
+
 	fmt.Fscanf(os.Stdin, "%d", &n)
 	c.Retries = c.Retries - 1
 
