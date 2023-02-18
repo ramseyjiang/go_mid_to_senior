@@ -10,7 +10,9 @@ import (
 const target = 100
 const retries = 10
 
+// GameState is the state abstract interface
 type GameState interface {
+	// executeState return true is used to tell the engine that the game must continue. return false is used to tell the game is terminated.
 	executeState(*GameContext) bool
 }
 
@@ -21,9 +23,11 @@ type GameContext struct {
 	Next         GameState
 }
 
+// StartState struct implements the GameState structure because it has the executeState(*GameContext) method of Bool type on its structure.
 type StartState struct{}
 
 func (s *StartState) executeState(c *GameContext) bool {
+	// it sets the only state possible after executing AskState state.
 	c.Next = &AskState{}
 
 	rand.Seed(time.Now().UnixNano())
@@ -47,6 +51,7 @@ func (f *FinishState) executeState(c *GameContext) bool {
 	return true
 }
 
+// AskState struct is the state where we ask the player for a number to guess.
 type AskState struct{}
 
 func (a *AskState) executeState(c *GameContext) bool {

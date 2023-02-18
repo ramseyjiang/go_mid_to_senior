@@ -31,3 +31,7 @@ How to Implement
 5. Implement methods in the object that delegate the responsibility of behavior to the state interface.
 6. Implement methods in the state types that modify the behavior of the object.
 7. Define methods for transitioning between the different states.
+
+FSM has two states–on and off. One state can transit to the other and vice versa. The power of the State pattern is not only the capacity to create a
+complex FSM, but also the flexibility to improve it as much as you want by adding new states and modifying some old states to point to the new ones
+without affecting the rest of the FSM.
