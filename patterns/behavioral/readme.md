@@ -33,3 +33,7 @@ of a group of objects without changing their individual classes.
 The State pattern is a behavioral design pattern that allows an object to change its behavior based on its internal state. It allows an object to change
 its behavior without changing its class, by delegating the responsibility of behavior to different state objects. The State pattern promotes loose
 coupling, high cohesion, and easy maintenance of the codebase.
+
+The Mediator pattern is a behavioral design pattern that allows communication between different objects through a central object called the Mediator.
+This pattern reduces coupling between objects by making objects communicate indirectly. The Mediator object encapsulates the communication logic between
+objects and acts as an intermediary to coordinate their interactions.
