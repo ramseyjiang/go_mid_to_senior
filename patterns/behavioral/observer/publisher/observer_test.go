@@ -1,7 +1,6 @@
 package publisher
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/go-playground/assert/v2"
@@ -14,7 +13,7 @@ type TestObserver struct {
 
 // TestObserver structure implements the Observer pattern by defining a Notify(string) method
 func (p *TestObserver) Notify(m string) {
-	fmt.Printf("Observer %d: message '%s' received \n", p.ID, m)
+	// fmt.Printf("Observer %d: message '%s' received \n", p.ID, m)
 	p.Message = m
 }
 
@@ -43,10 +42,6 @@ func TestSubject(t *testing.T) {
 		publisher.RemoveObserver(testObserver2)
 
 		assert.Equal(t, len(publisher.ObserversList), 2)
-		if len(publisher.ObserversList) != 2 {
-			t.Errorf("The size of the observer list is not the "+
-				"expected. 3 != %d\n", len(publisher.ObserversList))
-		}
 
 		for _, observer := range publisher.ObserversList {
 			// make a type casting from a pointer to an observer, to a pointer to the TestObserver structure,
@@ -66,9 +61,7 @@ func TestSubject(t *testing.T) {
 
 	// When using the Notify method, all instances of TestObserver structure must change their Message field from empty to the passed message
 	t.Run("Notify", func(t *testing.T) {
-		if len(publisher.ObserversList) == 0 {
-			t.Errorf("The list is empty. Nothing to test\n")
-		}
+		assert.NotEqual(t, len(publisher.ObserversList), 0)
 
 		for _, observer := range publisher.ObserversList {
 			// make a type casting from a pointer to an observer, to a pointer to the TestObserver structure,
@@ -80,10 +73,6 @@ func TestSubject(t *testing.T) {
 			}
 
 			assert.Equal(t, printObserver.Message, "default")
-			if printObserver.Message != "default" {
-				t.Errorf("The observer's Message field weren't"+
-					" empty: %s\n", printObserver.Message)
-			}
 		}
 
 		message := "Hello World!"
@@ -97,11 +86,6 @@ func TestSubject(t *testing.T) {
 			}
 
 			assert.Equal(t, printObserver.Message, message)
-			if printObserver.Message != message {
-				t.Errorf("Expected message on observer %d was "+
-					"not expected: '%s' != '%s'\n", printObserver.ID,
-					printObserver.Message, message)
-			}
 		}
 	})
 }
