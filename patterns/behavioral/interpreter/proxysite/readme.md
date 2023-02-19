@@ -6,3 +6,5 @@ The signature process is doing the hash based on the request payload and then ma
 it to the API.
 
 In this example, using adapter pattern and interpreter pattern.
+
+This example is similar with proxy which receive outer requests and send them to inner applications.
