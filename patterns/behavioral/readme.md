@@ -37,3 +37,7 @@ coupling, high cohesion, and easy maintenance of the codebase.
 The Mediator pattern is a behavioral design pattern that allows communication between different objects through a central object called the Mediator.
 This pattern reduces coupling between objects by making objects communicate indirectly. The Mediator object encapsulates the communication logic between
 objects and acts as an intermediary to coordinate their interactions.
+
+Observer is a behavioral design pattern that lets you define a subscription mechanism to notify multiple objects about any events that happen to the
+object they’re observing. That means the observer pattern allows some objects to notify other objects about changes in their state. It is also known as
+publish/subscriber or publish/listener design pattern.
