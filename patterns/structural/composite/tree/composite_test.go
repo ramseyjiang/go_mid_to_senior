@@ -59,6 +59,7 @@ func TestComposite(t *testing.T) {
 		log.SetOutput(logger)
 
 		composite.Operation()
+		assert.Equal(t, 180, len(logger.String()))
 
 		// Check the output length, it is easy for doing the test.
 		// Because the log output always includes the current time, it is hard to test for the content.
