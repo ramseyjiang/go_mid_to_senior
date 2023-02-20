@@ -7,13 +7,6 @@ type ModernPrinter interface {
 	PrintMessage() string
 }
 
-// ModernPrinterImpl is an implementation of the ModernPrinter interface
-type ModernPrinterImpl struct{}
-
-func (p *ModernPrinterImpl) PrintMessage(s string) string {
-	return fmt.Sprintf("Modern Printer: %s", s)
-}
-
 // LegacyPrinter is an existing type with a specific interface that needs to be adapted.
 type LegacyPrinter interface {
 	Print(s string) string
@@ -25,7 +18,6 @@ type LegacyPrinterImpl struct{}
 // Print is a method that implements the LegacyPrinter interface and modifies the passed string by prefixing the text "Legacy Printer:"
 func (l *LegacyPrinterImpl) Print(s string) (newMsg string) {
 	newMsg = fmt.Sprintf("Legacy Printer: %s", s)
-	println(newMsg)
 	return
 }
 
