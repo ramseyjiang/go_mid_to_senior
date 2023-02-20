@@ -1,5 +1,12 @@
 package composition
 
+type Trainer interface {
+	Train() string
+}
+type Swimmer interface {
+	Swim() string
+}
+
 type Athlete struct{}
 
 func (a *Athlete) Train() string {
@@ -10,24 +17,15 @@ func Swim() string {
 	return "Swimming!"
 }
 
-type CompositeSwimmerA struct {
-	AthleteA Athlete
-	SwimmerA *func() string
-}
-
-// --------------------------------------------------------------------------
-
-type Trainer interface {
-	Train() string
-}
-type Swimmer interface {
-	Swim() string
-}
-
 type SwimmerImplementor struct{}
 
 func (s *SwimmerImplementor) Swim() string {
 	return "Swimming!"
+}
+
+type CompositeSwimmerA struct {
+	AthleteA Athlete
+	SwimmerA *func() string
 }
 
 // CompositeSwimmerB has two embed elements, both of them are point to interface separately.
@@ -35,8 +33,6 @@ type CompositeSwimmerB struct {
 	Trainer
 	Swimmer
 }
-
-// --------------------------------------------------------------------------
 
 type Animal struct{}
 
@@ -49,8 +45,6 @@ type Shark struct {
 	Swim func() string
 }
 
-// --------------------------------------------------------------------------
-
 // Tree is another very common approach always using the Composite pattern.
 // This is some kind of recursive compositing, and, because of the nature of recursive,
 // we must use pointers so that the compiler knows how much memory it must reserve for this struct.
@@ -59,8 +53,6 @@ type Tree struct {
 	Right     *Tree
 	Left      *Tree
 }
-
-// --------------------------------------------------------------------------
 
 type Parent struct {
 	SomeField int
