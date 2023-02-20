@@ -10,9 +10,9 @@ func TestAdapter(t *testing.T) {
 	msg := "Hello World!"
 
 	// The Client orchestrates the adapter by calling the adaptee’s method indirectly.
-	adapter := OutputAdapter{OldSystem: &InfoLegacySystem{}, Msg: msg}
-	assert.Equal(t, "Legacy System: Adapter: Hello World!", adapter.OutputStored())
+	adapter := PrinterAdapter{Legacy: &LegacyPrinterImpl{}, Msg: msg}
+	assert.Equal(t, "Legacy Printer: Adapter: Hello World!", adapter.PrintMessage())
 
-	adapter = OutputAdapter{OldSystem: nil, Msg: msg}
-	assert.Equal(t, "Hello World!", adapter.OutputStored())
+	adapter = PrinterAdapter{Legacy: nil, Msg: msg}
+	assert.Equal(t, "Hello World!", adapter.PrintMessage())
 }

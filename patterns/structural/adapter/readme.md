@@ -1,6 +1,13 @@
-Adapter pattern that allows you to connect two objects that have different interfaces. It is a special object that converts the interface of one object
-so that another object can understand it. Adapters can not only convert data into various formats but can also help objects with different interfaces
-collaborate.
+The Adapter pattern is a structural design pattern that allows objects with incompatible interfaces to collaborate. It converts the interface of one
+class into another interface that the client expects. This allows objects with incompatible interfaces to work together, without modifying their source
+code. It means the adaptor pattern uses a special algorithm to convert one object's interface so that another object can understand it. Adapters can not
+only convert data into various formats but can also help objects with different interfaces collaborate.
+
+Objectives
+
+1. Allow objects with incompatible interfaces to collaborate.
+2. Provide a bridge between two incompatible interfaces, allowing them to work together.
+3. Adapt an existing interface to meet the requirements of a new interface.
 
 The adapter pattern comprises the target, adaptee, adapter, and client.
 

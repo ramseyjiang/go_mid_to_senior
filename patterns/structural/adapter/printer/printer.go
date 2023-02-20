@@ -2,38 +2,45 @@ package print
 
 import "fmt"
 
-// NewSystem is the interface that Client uses, the NewSystem is the target.
-type NewSystem interface {
-	OutputStored() string
+// ModernPrinter is the interface that Client uses, the ModernPrinter is the target.
+type ModernPrinter interface {
+	PrintMessage() string
 }
 
-// LegacySystem is a third-party system with a different interface
-type LegacySystem interface {
-	Output(s string) string
+// ModernPrinterImpl is an implementation of the ModernPrinter interface
+type ModernPrinterImpl struct{}
+
+func (p *ModernPrinterImpl) PrintMessage(s string) string {
+	return fmt.Sprintf("Modern Printer: %s", s)
 }
 
-// InfoLegacySystem is an existing struct with the LegacySystem interface, the InfoLegacySystem is the Adaptee.
-type InfoLegacySystem struct{}
+// LegacyPrinter is an existing type with a specific interface that needs to be adapted.
+type LegacyPrinter interface {
+	Print(s string) string
+}
 
-// Output is a method that implements the LegacySystem interface and modifies the passed string by prefixing the text "Legacy System:"
-func (l *InfoLegacySystem) Output(s string) (newMsg string) {
-	newMsg = fmt.Sprintf("Legacy System: %s", s)
+// LegacyPrinterImpl is an implementation of the LegacyPrinter interface, the LegacyPrinterImpl is the Adaptee.
+type LegacyPrinterImpl struct{}
+
+// Print is a method that implements the LegacyPrinter interface and modifies the passed string by prefixing the text "Legacy Printer:"
+func (l *LegacyPrinterImpl) Print(s string) (newMsg string) {
+	newMsg = fmt.Sprintf("Legacy Printer: %s", s)
 	println(newMsg)
 	return
 }
 
-// OutputAdapter implements the NewSystem interface by using an instance of the LegacySystem struct, so it allows the LegacySystem to be used
-type OutputAdapter struct {
-	OldSystem LegacySystem
-	Msg       string
+// PrinterAdapter implements the ModernPrinter interface by using an instance of the LegacyPrinter struct, so it allows the LegacyPrinter to be used
+type PrinterAdapter struct {
+	Legacy LegacyPrinter
+	Msg    string
 }
 
-// OutputStored method of the NewSystem interface; this method doesn't accept any argument and must return the modified string.
-// The Adapter class implements the above target interface. It is an adapter between LegacySystem and NewSystem.
-func (p *OutputAdapter) OutputStored() (newMsg string) {
-	if p.OldSystem != nil {
+// PrintMessage method of the ModernPrinter interface; this method doesn't accept any argument and must return the modified string.
+// The PrinterAdapter implements the above target interface. It is an adapter between LegacyPrinter and ModernPrinter.
+func (p *PrinterAdapter) PrintMessage() (newMsg string) {
+	if p.Legacy != nil {
 		newMsg = fmt.Sprintf("Adapter: %s", p.Msg)
-		newMsg = p.OldSystem.Output(newMsg)
+		newMsg = p.Legacy.Print(newMsg)
 	} else {
 		newMsg = p.Msg
 	}
