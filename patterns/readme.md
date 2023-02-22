@@ -85,12 +85,15 @@ heavy and the datastore replicas could be placed near the geolocation where the 
 improving the performance of database read operations.
 
 How is CQRS implemented? Usually, a relational database is preferred for write operations, where all the data
-constraints can be applied, a NoSQL database is used to support read operations. This means, that two different data
-models are used for write and read operations.
+constraints can be applied, a NoSQL database is used to support read operations. This means, that two different data models are used for write and read
+operations.
 
-Event-driven architecture Consider a scenario where a User calls a POST API, after that api call processes data are
-updated into our relational database. Once the data is inserted into the DB a trigger is invoked that would update all
-the event handlers to update the read database. When another User calls a GET API, the application would retrieve the
-related data from the NoSQL database and send it back to the User.
+Event-driven architecture Consider a scenario where a User calls a POST API, after that api call processes data are updated into our relational
+database. Once the data is inserted into the DB a trigger is invoked that would update all the event handlers to update the read database. When another
+User calls a GET API, the application would retrieve the related data from the NoSQL database and send it back to the User.
 
 The processing way as the image link: https://miro.medium.com/max/1400/1*lVt236fC4mL2Z7Wq8BZGaA.png
+
+The Creational patterns are used to deal with creating objects. The Structural patterns are used to build idiomatic structures. The Behavioural patterns
+are used to manage mostly with algorithms. The Concurrency patterns are used to manage the timing execution and order execution of applications that has
+more than one flow.
