@@ -8,7 +8,12 @@ import (
 )
 
 func TestWebServer(t *testing.T) {
-	webServer := newWebServer()
+	webServer := &Web{
+		application:       &Application{},
+		maxAllowedRequest: 2,
+		rateLimiter:       make(map[string]int),
+	}
+
 	appStatusURL := "/app/status"
 	createUserURL := "/create/user"
 

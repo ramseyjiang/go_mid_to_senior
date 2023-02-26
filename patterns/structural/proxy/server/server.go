@@ -2,7 +2,7 @@ package server
 
 import "net/http"
 
-type server interface {
+type Server interface {
 	handleRequest(string, string) (int, string)
 }
 
@@ -10,14 +10,6 @@ type Web struct {
 	application       *Application
 	maxAllowedRequest int
 	rateLimiter       map[string]int
-}
-
-func newWebServer() *Web {
-	return &Web{
-		application:       &Application{},
-		maxAllowedRequest: 2,
-		rateLimiter:       make(map[string]int),
-	}
 }
 
 func (w *Web) handleRequest(url, method string) (int, string) {
