@@ -10,13 +10,13 @@ import (
 func TestUserListProxy(t *testing.T) {
 	mockedDatabase := UserList{}
 
-	rand.Seed(2342342) // The preceding test creates a user list of 1 million users with random IDs.
+	rand.Seed(8888888) // The preceding test creates a user list of million users with random IDs.
 	for i := 0; i < 1000000; i++ {
 		n := rand.Int31()
 		mockedDatabase = append(mockedDatabase, User{ID: n})
 	}
 
-	// a proxy object composed of a mock database with 1 million users, and a cache implemented as a FIFO stack with a size of 2.
+	// a proxy object composed of a mock database with the million users, and a cache implemented as a FIFO stack with a size of 2.
 	proxy := UserListProxy{
 		MockedDatabase: &mockedDatabase,
 		StackCache:     UserList{},
@@ -41,7 +41,7 @@ func TestUserListProxy(t *testing.T) {
 	})
 
 	// The second embedded test for the Proxy pattern is to ask for the same user as before, which must now be returned from the cache.
-	t.Run("FindUser - One user, ask for the same user", func(t *testing.T) {
+	t.Run("FindUser - One user asking for the same user", func(t *testing.T) {
 		user, err := proxy.FindUser(knownIDs[0])
 		if err != nil {
 			t.Fatal(err)
@@ -53,7 +53,7 @@ func TestUserListProxy(t *testing.T) {
 		assert.Equal(t, posInCache, user.Pos)
 	})
 
-	t.Run("FindUser - overflowing the stack", func(t *testing.T) {
+	t.Run("FindUser - overflowing stack", func(t *testing.T) {
 		user1, _ := proxy.FindUser(knownIDs[0])
 		assert.Equal(t, posInCache, user1.Pos)
 
