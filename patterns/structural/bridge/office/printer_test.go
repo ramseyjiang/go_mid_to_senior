@@ -9,22 +9,22 @@ import (
 func TestPrint(t *testing.T) {
 	// all client code are below, except to assert parts.
 	hpPrinter := &Hp{}
-	assert.Equal(t, "Printing by a HP Printer", hpPrinter.PrintFile())
+	assert.Equal(t, "Printing by an HP Printer", hpPrinter.PrintFile())
 
 	epsonPrinter := &Epson{}
-	assert.Equal(t, "Printing by a EPSON Printer", epsonPrinter.PrintFile())
+	assert.Equal(t, "Printing by an EPSON Printer", epsonPrinter.PrintFile())
 
-	macComputer := &Mac{}
-	macComputer.SetPrinter(hpPrinter)
-	assert.Equal(t, "Print request for mac, Printing by a HP Printer", macComputer.Print())
+	mac := &Mac{}
+	mac.SetPrinter(hpPrinter)
+	assert.Equal(t, "Print request for mac, Printing by an HP Printer", mac.Print())
 
-	macComputer.SetPrinter(epsonPrinter)
-	assert.Equal(t, "Print request for mac, Printing by a EPSON Printer", macComputer.Print())
+	mac.SetPrinter(epsonPrinter)
+	assert.Equal(t, "Print request for mac, Printing by an EPSON Printer", mac.Print())
 
-	winComputer := &Windows{}
-	winComputer.SetPrinter(hpPrinter)
-	assert.Equal(t, "Print request for windows, Printing by a HP Printer", winComputer.Print())
+	windows := &Windows{}
+	windows.SetPrinter(hpPrinter)
+	assert.Equal(t, "Print request for windows, Printing by an HP Printer", windows.Print())
 
-	winComputer.SetPrinter(epsonPrinter)
-	assert.Equal(t, "Print request for windows, Printing by a EPSON Printer", winComputer.Print())
+	windows.SetPrinter(epsonPrinter)
+	assert.Equal(t, "Print request for windows, Printing by an EPSON Printer", windows.Print())
 }

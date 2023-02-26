@@ -5,18 +5,18 @@ type Printer interface {
 	PrintFile() string
 }
 
-// Epson and method with Epson are Concrete implementation
+// Epson struct and the method with Epson are Concrete implementations.
 type Epson struct {
 }
 
 func (p *Epson) PrintFile() string {
-	return "Printing by a EPSON Printer"
+	return "Printing by an EPSON Printer"
 }
 
-// Hp and method with Hp are Concrete implementation
+// Hp struct and the method with Hp are Concrete implementations.
 type Hp struct {
 }
 
 func (p *Hp) PrintFile() string {
-	return "Printing by a HP Printer"
+	return "Printing by an HP Printer"
 }

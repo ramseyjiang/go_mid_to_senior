@@ -6,7 +6,7 @@ type Computer interface {
 	SetPrinter(Printer)
 }
 
-// Mac and all method within mac are Refined abstraction
+// Mac struct and all methods are concrete abstraction struct.
 type Mac struct {
 	printer Printer
 }
@@ -19,7 +19,7 @@ func (m *Mac) SetPrinter(p Printer) {
 	m.printer = p
 }
 
-// Windows and all method within Windows are Refined abstraction
+// Windows struct and all methods are also concrete implementations.
 type Windows struct {
 	printer Printer
 }
