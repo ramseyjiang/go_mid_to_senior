@@ -1,6 +1,5 @@
-Facade is a structural design pattern that provides a simplified(but limited) interface to a library, a framework, or any other complex set of classes
-which contains lots of moving parts. A facade might provide limited functionality in comparison to working with the subsystem directly. However, it
-includes only those features that clients really care about.
+The facade pattern is a design pattern that provides a simple interface to a complex system of classes, libraries, or subsystems. It is used to hide the
+complexity of the system and to provide an easy-to-use interface to the clients. The facade pattern is also known as a wrapper or an interface pattern.
 
 Facade scenarios
 

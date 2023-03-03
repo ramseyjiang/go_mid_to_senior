@@ -2,45 +2,48 @@ package weather
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"testing"
+
+	"github.com/go-playground/assert/v2"
 )
 
-func TestGetWeatherByCityName(t *testing.T) {
+func TestGetCityCountryCode(t *testing.T) {
 	r := getMockData()
-	weatherMap := CurrentWeatherData{APIkey: ""}
+	weatherMap := CurrentWeatherData{AppID: ""}
 
-	weather, _ := weatherMap.GetByCityAndCountryCode("Madrid", "ES")
-	weather, err := weatherMap.responseParser(r) // using mock data replace the weather return
+	// Implement the client that uses the Facade to interact with the subsystem.
+	weather, _ := weatherMap.GetCityCountryCode("Madrid", "ES")
+	mockWeather, err := weatherMap.responseParser(r) // using mock data replace the weather return
 	if err != nil {
 		t.Fatal(err)
 	}
+	weather = mockWeather
 
-	if weather.Coordinate.Lon != -3.7 {
-		t.Errorf("Lon was not -3.7 as expected. Lon=%f", weather.Coordinate.Lon)
-	}
-
-	fmt.Printf("Temperature in Madrid is %f celsius\n", weather.Main.Temp-273.15)
+	assert.Equal(t, float32(-3.7), weather.Coordinate.Lon)
+	assert.Equal(t, float32(40.42), weather.Coordinate.Lat)
 }
 
-func TestGetWeatherByGeographicalCoordinates(t *testing.T) {
+func TestGetGeoCoordinates(t *testing.T) {
 	r := getMockData()
-	weatherMap := CurrentWeatherData{APIkey: ""}
+	weatherMap := CurrentWeatherData{AppID: ""}
 
-	weather, _ := weatherMap.GetByGeoCoordinates(-3.7, 40.42)
-	weather, err := weatherMap.responseParser(r) // // using mock data replace the weather return
+	// Implement the client that uses the Facade to interact with the subsystem.
+	weather, _ := weatherMap.GetGeoCoordinates(-3.7, 40.42)
+	mockWeather, err := weatherMap.responseParser(r) // // using mock data replace the weather return
 	if err != nil {
 		t.Fatal(err)
 	}
+	weather = mockWeather
 
+	assert.Equal(t, 200, weather.Cod)
 	if weather.Cod != 200 {
 		t.Errorf("Cod was not 200 as expected. Code: %d\n", weather.Cod)
 	}
 }
 
 func getMockData() io.Reader {
-	response := `{"coordinate":{"lon":-3.7,"lat":40.42},"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04n"}],"base":"stations","main":{"temp":303.56,"pressure":1016.46,"humidity":26.8,"temp_min":300.95,"temp_max":305.93},"wind":{"speed":3.17,"deg":151.001},"rain":{"3h":0.0075},"clouds":{"all":68},"dt":1471295823,"sys":{"type":3,"id":1442829648,"message":0.0278,"country":"ES","sunrise":1471238808,"sunset":1471288232},"id":3117735,"name":"Madrid","cod":200}`
+	response := `{"coordinate":{"lon":-3.7,"lat":40.42},"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04n"}],"base":"stations","id":3117735,"name":"Madrid","cod":200}`
 	r := bytes.NewReader([]byte(response))
 
 	return r
@@ -48,14 +51,12 @@ func getMockData() io.Reader {
 
 func TestResponseParser(t *testing.T) {
 	r := getMockData()
-	weatherMap := CurrentWeatherData{APIkey: ""}
+	weatherMap := CurrentWeatherData{AppID: ""}
 
 	weather, err := weatherMap.responseParser(r)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if weather.ID != 3117735 {
-		t.Errorf("Madrid id is 3117735, not %d\n", weather.ID)
-	}
+	assert.Equal(t, 3117735, weather.ID)
 }

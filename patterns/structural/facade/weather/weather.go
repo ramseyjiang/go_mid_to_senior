@@ -7,15 +7,24 @@ import (
 	"net/http"
 )
 
-type CurrentWeatherDataRetriever interface {
+const (
+	commonRequestPrefix              = "http://api.openweathermap.org/data/2.5/"
+	weatherByCityName                = commonRequestPrefix + "weather?q=%s,%s&APPID=%s"
+	weatherByGeographicalCoordinates = commonRequestPrefix + "weather?lat=%f&lon=%f&APPID=%s"
+)
+
+// DataRetriever is a Facade interface
+type DataRetriever interface {
 	GetByGeoCoordinates(lat, lon float32) (*Weather, error)
 	GetByCityAndCountryCode(city, countryCode string) (*Weather, error)
 }
 
+// CurrentWeatherData is used to implement the Facade interface using a concrete implementation
 type CurrentWeatherData struct {
-	APIkey string `json:"-"`
+	AppID string `json:"-"`
 }
 
+// Weather is used to define the response structure.
 type Weather struct {
 	Coordinate struct {
 		Lon float32 `json:"lon"`
@@ -59,29 +68,18 @@ type Weather struct {
 	Cod  int    `json:"cod"`
 }
 
-const (
-	commonRequestPrefix              = "http://api.openweathermap.org/data/2.5/"
-	weatherByCityName                = commonRequestPrefix + "weather?q=%s,%s&APPID=%s"
-	weatherByGeographicalCoordinates = commonRequestPrefix + "weather?lat=%f&lon=%f&APPID=%s"
-)
-
-// GetByGeoCoordinates returns the current weather data by passing a geographical
-// coordinates (latitude and longitude) in decimal notation. It returns weather
-// information or a detailed error.
-// For example, to query about Madrid, Spain you do:
-//
-//	currentWeather.GetByGeoCoordinates(-3, 40)
-func (c *CurrentWeatherData) GetByGeoCoordinates(lat, lon float32) (weather *Weather, err error) {
-	return c.doRequest(fmt.Sprintf(weatherByGeographicalCoordinates, lat, lon, c.APIkey))
+// GetGeoCoordinates returns the current weather data by passing a geographical coordinates (latitude and longitude) in decimal notation.
+// It returns weather information or a detailed error.
+// For example, to query about Madrid, Spain you get: currentWeather.GetGeoCoordinates(-3, 40)
+func (c *CurrentWeatherData) GetGeoCoordinates(lat, lon float32) (weather *Weather, err error) {
+	return c.doRequest(fmt.Sprintf(weatherByGeographicalCoordinates, lat, lon, c.AppID))
 }
 
-// GetByCityAndCountryCode returns the current weather data by passing a city name
-// and an ISO country code. It returns weather information or a detailed error
-// For example, to query about Madrid, Spain you do:
-//
-//	currentWeather.GetByCityAndCountryCode("Madrid", "ES)
-func (c *CurrentWeatherData) GetByCityAndCountryCode(city, countryCode string) (weather *Weather, err error) {
-	return c.doRequest(fmt.Sprintf(weatherByCityName, city, countryCode, c.APIkey))
+// GetCityCountryCode returns the current weather data by passing a city name and an ISO country code.
+// It returns weather information or a detailed error
+// For example, to query about Madrid, Spain you get: currentWeather.GetCityCountryCode("Madrid", "ES)
+func (c *CurrentWeatherData) GetCityCountryCode(city, countryCode string) (weather *Weather, err error) {
+	return c.doRequest(fmt.Sprintf(weatherByCityName, city, countryCode, c.AppID))
 }
 
 func (c *CurrentWeatherData) responseParser(body io.Reader) (*Weather, error) {
@@ -94,6 +92,7 @@ func (c *CurrentWeatherData) responseParser(body io.Reader) (*Weather, error) {
 	return w, nil
 }
 
+// doRequest is used to define the APIs, it belongs to the step implement the complex subsystem's classes, interfaces, and APIs.
 func (c *CurrentWeatherData) doRequest(uri string) (weather *Weather, err error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", uri, nil)
