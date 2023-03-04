@@ -13,11 +13,13 @@ func TestNoodle(t *testing.T) {
 		noodle: noodle,
 	}
 
-	pizzaWithCheeseAndTomato := &TomatoTopping{
+	noodleWithCheeseAndTomato := &TomatoTopping{
 		noodle: noodleWithCheese,
 	}
 
 	assert.Equal(t, 15, noodle.getPrice())
 	assert.Equal(t, 22, noodleWithCheese.getPrice())
-	assert.Equal(t, 32, pizzaWithCheeseAndTomato.getPrice())
+	assert.Equal(t, 44, noodleWithCheese.BuyTwoBonusOne())
+	assert.Equal(t, 32, noodleWithCheeseAndTomato.getPrice())
+	assert.Equal(t, 64, noodleWithCheeseAndTomato.BuyTwoBonusOne())
 }
