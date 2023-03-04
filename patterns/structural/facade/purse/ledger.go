@@ -1,11 +1,14 @@
 package purse
 
-import "fmt"
+import (
+	"strconv"
+)
 
+// Ledger is the complex subsystem's structs.
 type Ledger struct {
+	record string
 }
 
-func (s *Ledger) makeEntry(accountID, txnType string, amount int) {
-	fmt.Printf("Make ledger entry for accountId %s with txnType %s for amount %d\n", accountID, txnType, amount)
-	return
+func (l *Ledger) makeEntry(accountID string, txnType string, amount int) {
+	l.record = "Make ledger entry for accountId" + accountID + "with txnType " + txnType + " for amount " + strconv.Itoa(amount)
 }

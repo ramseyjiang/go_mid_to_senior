@@ -1,7 +1,12 @@
 package purse
 
-import "fmt"
+// WalletIFace is used to define the Facade interface that provides a simplified interface to the subsystem.
+type WalletIFace interface {
+	AddMoneyToWallet(accountID string, securityCode int, amount int) error
+	DeductMoneyFromWallet(accountID string, securityCode int, amount int)
+}
 
+// WalletFacade is used to implement the Facade interface using a concrete implementation that delegates to the subsystem.
 type WalletFacade struct {
 	account      *Account
 	wallet       *Wallet
@@ -10,37 +15,36 @@ type WalletFacade struct {
 	ledger       *Ledger
 }
 
-func newWalletFacade(accountID string, code int) *WalletFacade {
-	fmt.Println("Starting create account")
+func NewWalletFacade(accountID string, code int) *WalletFacade {
 	walletFacade := &WalletFacade{
-		account:      newAccount(accountID),
-		securityCode: newSecurityCode(code),
-		wallet:       newWallet(),
+		account:      NewAccount(accountID),
+		securityCode: NewSecurityCode(code),
+		wallet:       NewWallet(),
 		notification: &Notification{},
 		ledger:       &Ledger{},
 	}
-	fmt.Println("Account created")
+
 	return walletFacade
 }
 
-func (w *WalletFacade) addMoneyToWallet(accountID string, securityCode int, amount int) error {
-	fmt.Println("Starting add money to wallet")
+func (w *WalletFacade) AddMoneyToWallet(accountID string, securityCode int, amount int) error {
 	err := w.account.checkAccount(accountID)
 	if err != nil {
 		return err
 	}
+
 	err = w.securityCode.checkCode(securityCode)
 	if err != nil {
 		return err
 	}
+
 	w.wallet.creditBalance(amount)
-	w.notification.sendWalletCreditNotification()
+	w.notification.SendWalletCreditNotice()
 	w.ledger.makeEntry(accountID, "credit", amount)
 	return nil
 }
 
-func (w *WalletFacade) deductMoneyFromWallet(accountID string, securityCode int, amount int) error {
-	fmt.Println("Starting debit money from wallet")
+func (w *WalletFacade) DeductMoneyFromWallet(accountID string, securityCode int, amount int) error {
 	err := w.account.checkAccount(accountID)
 	if err != nil {
 		return err
@@ -54,7 +58,7 @@ func (w *WalletFacade) deductMoneyFromWallet(accountID string, securityCode int,
 	if err != nil {
 		return err
 	}
-	w.notification.sendWalletDebitNotification()
+	w.notification.SendWalletDebitNotice()
 	w.ledger.makeEntry(accountID, "credit", amount)
 	return nil
 }

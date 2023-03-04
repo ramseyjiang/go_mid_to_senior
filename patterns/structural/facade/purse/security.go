@@ -1,12 +1,15 @@
 package purse
 
-import "fmt"
+import (
+	"github.com/pkg/errors"
+)
 
+// SecurityCode is the complex subsystem's structs.
 type SecurityCode struct {
 	code int
 }
 
-func newSecurityCode(code int) *SecurityCode {
+func NewSecurityCode(code int) *SecurityCode {
 	return &SecurityCode{
 		code: code,
 	}
@@ -14,8 +17,8 @@ func newSecurityCode(code int) *SecurityCode {
 
 func (s *SecurityCode) checkCode(incomingCode int) error {
 	if s.code != incomingCode {
-		return fmt.Errorf("security Code is incorrect")
+		return errors.New("security Code is incorrect")
 	}
-	fmt.Println("SecurityCode Verified")
+
 	return nil
 }

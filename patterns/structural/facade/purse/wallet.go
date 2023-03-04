@@ -1,12 +1,20 @@
 package purse
 
-import "fmt"
+import (
+	"github.com/pkg/errors"
+)
+
+// WalletOperation is the complex subsystem's interfaces
+type WalletOperation interface {
+	creditBalance(amount int)
+	debitBalance(amount int) error
+}
 
 type Wallet struct {
 	balance int
 }
 
-func newWallet() *Wallet {
+func NewWallet() *Wallet {
 	return &Wallet{
 		balance: 0,
 	}
@@ -14,15 +22,14 @@ func newWallet() *Wallet {
 
 func (w *Wallet) creditBalance(amount int) {
 	w.balance += amount
-	fmt.Println("Wallet balance added successfully")
 	return
 }
 
 func (w *Wallet) debitBalance(amount int) error {
 	if w.balance < amount {
-		return fmt.Errorf("balance is not sufficient")
+		return errors.New("balance is not sufficient")
 	}
-	fmt.Println("Wallet balance is Sufficient")
+
 	w.balance = w.balance - amount
 	return nil
 }
