@@ -8,20 +8,19 @@ import (
 
 type TestObserver struct {
 	ID      int
-	Message string
+	Message Event
 }
 
-// TestObserver structure implements the Observer pattern by defining a Notify(string) method
-func (p *TestObserver) Notify(m string) {
-	// fmt.Printf("Observer %d: message '%s' received \n", p.ID, m)
-	p.Message = m
+// TestObserver structure implements the Observer pattern by defining Notify(string) method
+func (p *TestObserver) Notify(e Event) {
+	p.Message = e
 }
 
 // given a different ID to each observer so that we can see later that each of them has printed the expected message.
 func TestSubject(t *testing.T) {
-	testObserver1 := &TestObserver{1, "default"}
-	testObserver2 := &TestObserver{2, "default"}
-	testObserver3 := &TestObserver{3, "default"}
+	testObserver1 := &TestObserver{1, Event{"default"}}
+	testObserver2 := &TestObserver{2, Event{"default"}}
+	testObserver3 := &TestObserver{3, Event{"default"}}
 
 	publisher := Publisher{}
 
@@ -48,7 +47,7 @@ func TestSubject(t *testing.T) {
 			// and check that the casting has been done correctly.
 			testObserver, ok := observer.(*TestObserver)
 			if !ok {
-				t.Fail()
+				t.Fail() // This marks the test as failed, but allows the execution to continue.
 			}
 
 			assert.NotEqual(t, testObserver.ID, 2)
@@ -72,11 +71,11 @@ func TestSubject(t *testing.T) {
 				break
 			}
 
-			assert.Equal(t, printObserver.Message, "default")
+			assert.Equal(t, printObserver.Message, Event{"default"})
 		}
 
-		message := "Hello World!"
-		publisher.NotifyObservers(message)
+		message := Event{"Hello World!"}
+		publisher.NotifyObservers(Event{"Hello World!"})
 
 		for _, observer := range publisher.ObserversList {
 			printObserver, ok := observer.(*TestObserver)

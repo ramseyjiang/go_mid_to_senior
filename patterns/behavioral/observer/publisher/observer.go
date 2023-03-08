@@ -2,8 +2,22 @@ package publisher
 
 import "fmt"
 
+// Event defines an indication of a some occurrence.
+type Event struct {
+	Data string
+}
+
+// Observer defines a standard interface to listen for a specific event.
 type Observer interface {
-	Notify(string)
+	// Notify allows to publish an event.
+	Notify(Event)
+}
+
+// Notifier is the instance being observed.
+type Notifier interface {
+	AddObserver(Observer)
+	RemoveObserver(Observer)
+	NotifyObservers(Event)
 }
 
 // Publisher struct, which is the one that triggers an event, so it must accept new observers and remove them if necessary.
@@ -37,9 +51,9 @@ func (s *Publisher) RemoveObserver(o Observer) {
 }
 
 // NotifyObservers method with a string that acts as the message we want to spread between all observers.
-func (s *Publisher) NotifyObservers(m string) {
-	fmt.Printf("Publisher received message '%s' to notify observers\n", m)
+func (s *Publisher) NotifyObservers(e Event) {
+	fmt.Printf("Publisher received message '%s' to notify observers\n", e)
 	for _, observer := range s.ObserversList {
-		observer.Notify(m)
+		observer.Notify(e)
 	}
 }
