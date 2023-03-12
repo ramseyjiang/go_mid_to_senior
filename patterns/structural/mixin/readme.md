@@ -40,8 +40,8 @@ The mixin pattern is useful in the following scenarios:
 
 How to implement
 
-1. Define the base type or struct that will be used as the foundation for the object to which mixins will be added.
-2. Define the interface for each mixin. The interface should define the methods that will be added to the base type or struct.
+1. Define the interface that the mixin will implement. This interface should include all of the methods that the mixin will add to the original object.
+2. Define the base type or struct that will be used as the foundation for the object to which mixins will be added.
 3. Create a separate struct for each mixin that implements the interface defined in step 2.
 4. Create a function that takes the base type or struct and one or more mixins as parameters and returns a new object that has all the methods from the
    base type or struct and the mixins combined.
