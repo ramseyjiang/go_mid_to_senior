@@ -3,14 +3,15 @@ the algorithm vary independently of clients that use it. The Strategy pattern is
 
 Objectives
 
-1. Encapsulate algorithms in separate objects to allow for dynamic and interchangeable behavior
-2. All types achieve the same functionality in a different way but the client of the strategy isn't affected.
+1. Define a common interface for multiple algorithms or behaviors.
+2. Encapsulate each algorithm or behavior in a separate class.
+3. Allow the client code to select the desired algorithm or behavior at runtime.
 
 Pros:
 
-1. Promotes clean, modular, and reusable code by encapsulating algorithms in separate objects
-2. Increases flexibility by allowing the algorithm to be changed at runtime
-3. Enables better separation of concerns by isolating algorithms from the context in which they are used
+1. Better separation of concerns: Each strategy encapsulates its own logic, making the code more modular and easier to maintain.
+2. Flexibility: New strategies can be added or existing ones modified without affecting the client code.
+3. Easy to switch between algorithms at runtime.
 
 Cons:
 
@@ -19,7 +20,7 @@ Cons:
 
 How to implement
 
-1. Define an interface that represents the algorithm you want to encapsulate.
-2. Define the methods that are needed to perform the algorithm in the above interface.
-3. Create separate structs that implement the interface, each defining a specific algorithm.
-4. The context class would then have a reference to an instance of the interface, and use it to perform the algorithm.
+1. Define a strategy interface that represents the algorithm you want to encapsulate.
+2. Implement concrete strategies that adhere to the above interface.
+3. Create a context class that uses the Strategy Interface:
+4. Use the context class and concrete strategies in client code
