@@ -14,8 +14,3 @@ func newPlayer(playerType, dressType string) *Player {
 		dress:      dress,
 	}
 }
-
-func (p *Player) newLocation(lat, long int) {
-	p.lat = lat
-	p.long = long
-}
