@@ -1,13 +1,5 @@
 package logger
 
-// func TestChain(t *testing.T) {
-// 	handlerChain := createHandlerChain()
-//
-// 	handlerChain.HandleLog(DEBUG, "This is a debug message")
-// 	handlerChain.HandleLog(INFO, "This is an info message")
-// 	handlerChain.HandleLog(ERROR, "This is an error message")
-// }
-
 import (
 	"bytes"
 	"log"
