@@ -1,7 +1,7 @@
 package clinic
 
 type Doctor struct {
-	next Step
+	next Handler
 }
 
 func (d *Doctor) execute(p *Patient) (resp []string) {
@@ -17,6 +17,6 @@ func (d *Doctor) execute(p *Patient) (resp []string) {
 	return append(p.record, "Doctor checking patient")
 }
 
-func (d *Doctor) setNext(next Step) {
+func (d *Doctor) setNext(next Handler) {
 	d.next = next
 }

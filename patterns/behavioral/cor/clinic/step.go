@@ -1,8 +1,8 @@
 package clinic
 
-type Step interface {
+type Handler interface {
 	execute(*Patient) []string
-	setNext(Step)
+	setNext(Handler)
 }
 
 type Patient struct {
