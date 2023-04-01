@@ -1,71 +1,80 @@
 package logger
 
 import (
-	"fmt"
-	"io"
-	"strings"
+	"log"
 )
 
-type ChainLogger interface {
-	Next(string)
+type LogLevel int
+
+const (
+	DEBUG LogLevel = iota
+	INFO
+	ERROR
+)
+
+type Handler interface {
+	SetNext(Handler)
+	HandleLog(level LogLevel, message string)
 }
 
-type FirstLogger struct {
-	NextChain ChainLogger
+type DebugHandler struct {
+	next   Handler
+	logger *log.Logger
 }
 
-func (f *FirstLogger) Next(s string) {
-	fmt.Printf("First logger: %s\n", s)
+func (h *DebugHandler) SetNext(next Handler) {
+	h.next = next
+}
 
-	if f.NextChain != nil {
-		f.NextChain.Next(s)
+func (h *DebugHandler) HandleLog(level LogLevel, message string) {
+	if level == DEBUG {
+		h.logger.Println("[DEBUG]:", message)
+	} else if h.next != nil {
+		h.next.HandleLog(level, message)
 	}
 }
 
-type SecondLogger struct {
-	NextChain ChainLogger
+type InfoHandler struct {
+	next   Handler
+	logger *log.Logger
 }
 
-func (se *SecondLogger) Next(s string) {
-	if strings.Contains(strings.ToLower(s), "hello") {
-		fmt.Printf("Second logger: %s\n", s)
-
-		if se.NextChain != nil {
-			se.NextChain.Next(s)
-		}
-
-		return
-	}
-
-	fmt.Printf("Finishing in second logging\n\n")
+func (h *InfoHandler) SetNext(next Handler) {
+	h.next = next
 }
 
-type WriterLogger struct {
-	NextChain ChainLogger
-	Writer    io.Writer
-}
-
-func (w *WriterLogger) Next(s string) {
-	if w.Writer != nil {
-		w.Writer.Write([]byte("WriterLogger: " + s))
-	}
-
-	if w.NextChain != nil {
-		w.NextChain.Next(s)
+func (h *InfoHandler) HandleLog(level LogLevel, message string) {
+	if level == INFO {
+		h.logger.Println("[INFO]:", message)
+	} else if h.next != nil {
+		h.next.HandleLog(level, message)
 	}
 }
 
-type ClosureChain struct {
-	NextChain ChainLogger
-	Closure   func(string)
+type ErrorHandler struct {
+	next   Handler
+	logger *log.Logger
 }
 
-func (c *ClosureChain) Next(s string) {
-	if c.Closure != nil {
-		c.Closure(s)
-	}
+func (h *ErrorHandler) SetNext(next Handler) {
+	h.next = next
+}
 
-	if c.NextChain != nil {
-		c.Next(s)
+func (h *ErrorHandler) HandleLog(level LogLevel, message string) {
+	if level == ERROR {
+		h.logger.Println("[ERROR]:", message)
+	} else if h.next != nil {
+		h.next.HandleLog(level, message)
 	}
+}
+
+func createHandlerChain(debugLogger, infoLogger, errorLogger *log.Logger) Handler {
+	debugHandler := &DebugHandler{logger: debugLogger}
+	infoHandler := &InfoHandler{logger: infoLogger}
+	errorHandler := &ErrorHandler{logger: errorLogger}
+
+	debugHandler.SetNext(infoHandler)
+	infoHandler.SetNext(errorHandler)
+
+	return debugHandler
 }
