@@ -20,3 +20,21 @@ func (a *Appointment) execute(p *Patient) (resp []string) {
 func (a *Appointment) setNext(next Step) {
 	a.next = next
 }
+
+func createHandlerChain() Step {
+	pharmacy := &Pharmacy{}
+	payment := &Payment{}
+	doctor := &Doctor{}
+	appointment := &Appointment{}
+
+	// Set next for doctor step
+	payment.setNext(pharmacy)
+
+	// Set next for payment step
+	doctor.setNext(payment)
+
+	// Set next for pharmacy step
+	appointment.setNext(doctor)
+
+	return appointment
+}

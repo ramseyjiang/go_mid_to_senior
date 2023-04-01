@@ -50,3 +50,11 @@ func (h *ConcreteHandlerB) Handle(req *Request) (resp string) {
 	}
 	return
 }
+
+func createHandlerChain() Handler {
+	handlerA := &ConcreteHandlerA{}
+	handlerB := &ConcreteHandlerB{}
+
+	handlerA.SetNext(handlerB)
+	return handlerA
+}

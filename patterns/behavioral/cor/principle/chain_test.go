@@ -7,26 +7,22 @@ import (
 )
 
 func TestHandlerA(t *testing.T) {
-	h1 := &ConcreteHandlerA{}
-	h2 := &ConcreteHandlerB{}
-	h1.SetNext(h2)
+	handler := createHandlerChain()
 
 	// create a Request structure and pass it to the first handler in the chain (h1) using the Handle method.
 	req := &Request{
 		Value: 5,
 	}
-	assert.Equal(t, "ConcreteHandlerA handled the request", h1.Handle(req))
+	assert.Equal(t, "ConcreteHandlerA handled the request", handler.Handle(req))
 }
 
 func TestHandlerB(t *testing.T) {
-	h1 := &ConcreteHandlerA{}
-	h2 := &ConcreteHandlerB{}
-	h1.SetNext(h2)
+	handler := createHandlerChain()
 
 	// create a Request structure and pass it to the first handler in the chain (h1) using the Handle method.
 	req := &Request{
 		Value: 15,
 	}
 
-	assert.Equal(t, "ConcreteHandlerB handled the request", h1.Handle(req))
+	assert.Equal(t, "ConcreteHandlerB handled the request", handler.Handle(req))
 }
