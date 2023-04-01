@@ -29,7 +29,9 @@ func (h *DebugHandler) SetNext(next Handler) {
 func (h *DebugHandler) HandleLog(level LogLevel, message string) {
 	if level == DEBUG {
 		h.logger.Println("[DEBUG]:", message)
-	} else if h.next != nil {
+	}
+
+	if h.next != nil {
 		h.next.HandleLog(level, message)
 	}
 }
@@ -46,7 +48,9 @@ func (h *InfoHandler) SetNext(next Handler) {
 func (h *InfoHandler) HandleLog(level LogLevel, message string) {
 	if level == INFO {
 		h.logger.Println("[INFO]:", message)
-	} else if h.next != nil {
+	}
+
+	if h.next != nil {
 		h.next.HandleLog(level, message)
 	}
 }
@@ -63,7 +67,9 @@ func (h *ErrorHandler) SetNext(next Handler) {
 func (h *ErrorHandler) HandleLog(level LogLevel, message string) {
 	if level == ERROR {
 		h.logger.Println("[ERROR]:", message)
-	} else if h.next != nil {
+	}
+
+	if h.next != nil {
 		h.next.HandleLog(level, message)
 	}
 }
