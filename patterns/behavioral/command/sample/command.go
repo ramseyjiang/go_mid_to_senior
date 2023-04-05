@@ -4,22 +4,30 @@ type Command interface {
 	Execute() string
 }
 
-type ConcreteCommand struct {
-	receiver Receiver
+type ConcreteCommandA struct {
+	receiver *Receiver
 }
 
-func (c *ConcreteCommand) Execute() string {
-	return c.receiver.Action()
+func (c *ConcreteCommandA) Execute() string {
+	return c.receiver.ActionA()
 }
 
-type Receiver interface {
-	Action() string
+type ConcreteCommandB struct {
+	receiver *Receiver
 }
 
-type ConcreteReceiver struct{}
+func (c *ConcreteCommandB) Execute() string {
+	return c.receiver.ActionB()
+}
 
-func (r *ConcreteReceiver) Action() string {
-	return "Action called"
+type Receiver struct{}
+
+func (r *Receiver) ActionA() string {
+	return "ActionA called"
+}
+
+func (r *Receiver) ActionB() string {
+	return "ActionB called"
 }
 
 type Invoker struct {
