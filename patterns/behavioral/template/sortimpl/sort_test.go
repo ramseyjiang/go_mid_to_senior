@@ -1,7 +1,7 @@
 package sortimpl
 
 import (
-	"reflect"
+	"fmt"
 	"sort"
 	"testing"
 
@@ -9,12 +9,14 @@ import (
 )
 
 func TestSort(t *testing.T) {
-	var list intList = []int{5, 8, 2, 1}
-
-	// here if defines expected := []int{1, 2, 5, 8}, it won't equal to list, because the type are different.
-	// Hence, the only way to make reflect.DeepEqual is true, you should use MyList as a type.
-	var expected intList = []int{1, 2, 5, 8}
+	list := baseAlgorithm{
+		intSlice: []int{5, 8, 2, 1},
+	}
+	expected := baseAlgorithm{
+		intSlice: []int{1, 2, 5, 8},
+	}
 	sort.Sort(list)
+	fmt.Println(list)
 
-	assert.Equal(t, true, reflect.DeepEqual(list, expected))
+	assert.Equal(t, list, expected)
 }

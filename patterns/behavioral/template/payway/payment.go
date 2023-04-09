@@ -14,7 +14,7 @@ type PaymentProcessor interface {
 	ProcessPayment(float64) bool
 }
 
-// CreditCardProcessor is the Concrete class 1
+// CreditCardProcessor is the Concrete struct 1
 type CreditCardProcessor struct{}
 
 // ProcessPayment is an implement for the method of PaymentProcessor.
@@ -24,7 +24,7 @@ func (c *CreditCardProcessor) ProcessPayment(amount float64) bool {
 	return true
 }
 
-// PayPalProcessor is the Concrete class 2
+// PayPalProcessor is the Concrete struct 2
 type PayPalProcessor struct{}
 
 // ProcessPayment is an implement for the method of PaymentProcessor.
@@ -34,12 +34,12 @@ func (p *PayPalProcessor) ProcessPayment(amount float64) bool {
 	return true
 }
 
-// PaymentOrder Abstract class
+// PaymentOrder Abstract struct
 type PaymentOrder interface {
 	ProcessOrder(float64) bool
 }
 
-// OnlineOrder Concrete class
+// OnlineOrder Concrete struct
 type OnlineOrder struct {
 	paymentProcessor PaymentProcessor
 }
