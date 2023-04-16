@@ -22,7 +22,7 @@ func TestInsertUserCommitted(t *testing.T) {
 		log.Fatalf("Failed to start transaction: %v", err)
 	}
 
-	user := User{Username: "Test User", Password: "12345678", Email: gofakeit.Email()}
+	user := User{Username: gofakeit.Username(), Email: gofakeit.Email()}
 
 	err = insertUser(tx, &user)
 	assert.NoError(t, err, "Failed to insert user")
@@ -50,7 +50,7 @@ func TestInsertUserRollback(t *testing.T) {
 	}
 	defer tx.Rollback() // Rollback any changes in case the test fails
 
-	user := User{Username: "Test User", Password: "12345678", Email: gofakeit.Email()}
+	user := User{Username: gofakeit.Username(), Email: gofakeit.Email()}
 
 	err = insertUser(tx, &user)
 	assert.NoError(t, err, "Failed to insert user 1")
