@@ -1,7 +1,6 @@
 package sqlxpq
 
 import (
-	"fmt"
 	"log"
 	"testing"
 
@@ -27,7 +26,7 @@ func TestInsertUserCommitted(t *testing.T) {
 	err = insertUser(tx, &user)
 	assert.NoError(t, err, "Failed to insert user")
 	assert.NotZero(t, user.ID, "User1 ID should be non-zero after insertion")
-	fmt.Println(user.ID)
+	log.Println(user.ID)
 
 	// Commit the transaction
 	err = tx.Commit()
@@ -55,5 +54,5 @@ func TestInsertUserRollback(t *testing.T) {
 	err = insertUser(tx, &user)
 	assert.NoError(t, err, "Failed to insert user 1")
 	assert.NotZero(t, user.ID, "User1 ID should be non-zero after insertion")
-	fmt.Println(user.ID)
+	log.Println(user.ID)
 }
