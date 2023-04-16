@@ -28,5 +28,9 @@ func connectToDatabase() (*gorm.DB, error) {
 		pwd,
 	)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	// Migrate the schema
+	err = db.AutoMigrate(&User{})
+
 	return db, err
 }

@@ -12,10 +12,6 @@ func TestInsertUser(t *testing.T) {
 	db, err := connectToDatabase()
 	require.NoError(t, err, "Failed to connect to the database")
 
-	// Migrate the schema
-	err = db.AutoMigrate(&User{})
-	require.NoError(t, err, "Failed to migrate the schema")
-
 	// Begin a transaction
 	tx := db.Begin()
 	require.NoError(t, tx.Error, "Failed to begin transaction")
@@ -35,10 +31,6 @@ func TestInsertUser(t *testing.T) {
 func TestQueryUser(t *testing.T) {
 	db, err := connectToDatabase()
 	require.NoError(t, err, "Failed to connect to the database")
-
-	// Migrate the schema
-	err = db.AutoMigrate(&User{})
-	require.NoError(t, err, "Failed to migrate the schema")
 
 	// Begin a transaction for inserting a user
 	tx1 := db.Begin()
