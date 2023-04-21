@@ -1,6 +1,6 @@
 package shoe
 
-type footwear interface {
+type Footwear interface {
 	setCategory(name string)
 	getCategory() string
 
@@ -42,7 +42,7 @@ func (s *Shoe) getGender() string {
 	return s.Gender
 }
 
-func newShoe(category string, size int64, price float32, gender string, discount float32) footwear {
+func newShoe(category string, size int64, price float32, gender string, discount float32) Footwear {
 	return &Shoe{
 		Size:     size,
 		Category: category,

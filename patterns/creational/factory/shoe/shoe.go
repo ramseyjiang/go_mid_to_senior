@@ -13,12 +13,12 @@ const SandalDiscount = 0.7
 const BucksDiscount = 0
 
 type FactoryShoe interface {
-	CreateShoe(shoeType string) (footwear, error)
+	CreateShoe(shoeType string) (Footwear, error)
 }
 
 type ConcreteShoeFactory struct{}
 
-func CreateShoe(category string, size int64, gender string, price float32) (footwear, error) {
+func CreateShoe(category string, size int64, gender string, price float32) (Footwear, error) {
 	switch category {
 	case Slipper:
 		return newShoe(Slipper, size, price, gender, SlipperDiscount), nil
