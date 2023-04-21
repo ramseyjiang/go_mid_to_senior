@@ -12,14 +12,20 @@ const SlipperDiscount = 0.5
 const SandalDiscount = 0.7
 const BucksDiscount = 0
 
-func getShoe(category string, size int64, gender string, price float32) (footwear, error) {
+type FactoryShoe interface {
+	GetShoe(shoeType string) (footwear, error)
+}
+
+type ConcreteShoeFactory struct{}
+
+func CreateShoe(category string, size int64, gender string, price float32) (footwear, error) {
 	switch category {
 	case Slipper:
-		return newShoe(size, Slipper, price, gender, SlipperDiscount), nil
+		return newShoe(Slipper, size, price, gender, SlipperDiscount), nil
 	case Sandal:
-		return newShoe(size, Sandal, price, gender, SandalDiscount), nil
+		return newShoe(Sandal, size, price, gender, SandalDiscount), nil
 	case Bucks:
-		return newShoe(size, Bucks, price, gender, BucksDiscount), nil
+		return newShoe(Bucks, size, price, gender, BucksDiscount), nil
 	default:
 		return nil, fmt.Errorf("invalid footwear type")
 	}
