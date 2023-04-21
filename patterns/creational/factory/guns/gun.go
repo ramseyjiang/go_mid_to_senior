@@ -7,42 +7,51 @@ import (
 )
 
 type GunInfo interface {
-	setName(name string)
-	setPower(power int)
 	getName() string
 	getPower() int
 }
 
-type Gun struct {
-	name  string
-	power int
+const Ak = "Ak47"
+const Mk = "musket"
+
+type Ak47 struct {
+	Name  string
+	Power int
 }
 
-const ak = "ak47"
-const mk = "musket"
-
-func (g *Gun) setName(name string) {
-	g.name = name
+func (a *Ak47) getName() string {
+	return a.Name
 }
 
-func (g *Gun) getName() string {
-	return g.name
+func (a *Ak47) getPower() int {
+	return a.Power
 }
 
-func (g *Gun) setPower(power int) {
-	g.power = power
+type Musket struct {
+	Name  string
+	Power int
 }
 
-func (g *Gun) getPower() int {
-	return g.power
+func (m *Musket) getName() string {
+	return m.Name
 }
 
-func getGun(gunType string) (GunInfo, error) {
+func (m *Musket) getPower() int {
+	return m.Power
+}
+
+type GunFactory interface {
+	GetGun(gunType string) (GunInfo, error)
+}
+
+type GunCreator struct{}
+
+func GetGun(gunType string) (GunInfo, error) {
 	switch gunType {
-	case ak:
-		return newAk47(), nil
-	case mk:
-		return newMusket(), nil
+	case Ak:
+		return &Ak47{Name: Ak, Power: 5}, nil
+	case Mk:
+		return &Ak47{Name: Mk, Power: 1}, nil
 	default:
 		return nil, errors.New(fmt.Sprintf("wrong gun type %s passed", gunType))
 	}
