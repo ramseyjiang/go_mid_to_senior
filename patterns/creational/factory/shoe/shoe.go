@@ -13,7 +13,7 @@ const SandalDiscount = 0.7
 const BucksDiscount = 0
 
 type FactoryShoe interface {
-	GetShoe(shoeType string) (footwear, error)
+	CreateShoe(shoeType string) (footwear, error)
 }
 
 type ConcreteShoeFactory struct{}
