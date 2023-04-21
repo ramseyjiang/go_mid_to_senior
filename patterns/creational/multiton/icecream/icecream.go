@@ -10,13 +10,14 @@ type Multiton struct {
 	Favour string
 }
 
-var fruitMap map[string]*Multiton
-var once sync.Once
+var (
+	fruitMap = make(map[string]*Multiton)
+	mutex    = &sync.Mutex{}
+)
 
 func GetIceCream(fruit string) *Multiton {
-	once.Do(func() {
-		fruitMap = make(map[string]*Multiton)
-	})
+	mutex.Lock()
+	defer mutex.Unlock()
 
 	if fruitMap[fruit] == nil {
 		fruitMap[fruit] = &Multiton{
