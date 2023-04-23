@@ -1,16 +1,20 @@
 package fabonacci
 
-// Fibonacci struct holds the first two numbers in the Fibonacci sequence (a and b) and the maximum number of iterations (max).
-type Fibonacci struct {
-	a, b, max int
-}
-
 // Iterator interface defines the methods for iterating over the sequence:
 // HasNext() to check if there are more elements in the sequence,
 // and Next() to get the next number in the sequence.
 type Iterator interface {
 	HasNext() bool
 	Next() int
+}
+
+type Aggregate interface {
+	Iterator() Iterator
+}
+
+// Fibonacci struct holds the first two numbers in the Fibonacci sequence (a and b) and the maximum number of iterations (max).
+type Fibonacci struct {
+	a, b, max int
 }
 
 // FibonacciIterator implements this interface and maintains the state of the iteration,
