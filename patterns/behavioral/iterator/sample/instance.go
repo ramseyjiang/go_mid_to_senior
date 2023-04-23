@@ -11,7 +11,7 @@ type Aggregate interface {
 	Iterator() Iterator
 }
 
-// IntegerCollection is used to implement the concrete aggregate. Step 4.
+// IntegerCollection is used to implement the concrete aggregate. Step 3.
 type IntegerCollection struct {
 	items []int
 }
@@ -24,7 +24,7 @@ func NewIntegerCollection(items []int) *IntegerCollection {
 	return &IntegerCollection{items: items}
 }
 
-// IntegerIterator is used to implement the concrete iterator.
+// IntegerIterator is used to implement the concrete iterator. Step 4.
 type IntegerIterator struct {
 	collection *IntegerCollection
 	index      int
