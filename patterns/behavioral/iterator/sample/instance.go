@@ -1,31 +1,43 @@
 package sample
 
-type IntIterator interface {
+// Iterator is defined as the iterator interface. Step 1.
+type Iterator interface {
 	HasNext() bool
-	Next() (int, bool)
+	Next() interface{}
 }
 
-type SliceIntIterator struct {
-	slice []int
-	index int
+// Aggregate is defined as the Aggregate interface. Step 2.
+type Aggregate interface {
+	Iterator() Iterator
 }
 
-func (i *SliceIntIterator) HasNext() bool {
-	if i.index >= len(i.slice) {
-		return true
+// IntegerCollection is used to implement the concrete aggregate. Step 4.
+type IntegerCollection struct {
+	items []int
+}
+
+func (c *IntegerCollection) Iterator() Iterator {
+	return &IntegerIterator{collection: c, index: -1}
+}
+
+func NewIntegerCollection(items []int) *IntegerCollection {
+	return &IntegerCollection{items: items}
+}
+
+// IntegerIterator is used to implement the concrete iterator.
+type IntegerIterator struct {
+	collection *IntegerCollection
+	index      int
+}
+
+func (it *IntegerIterator) HasNext() bool {
+	return it.index < len(it.collection.items)-1
+}
+
+func (it *IntegerIterator) Next() interface{} {
+	if it.HasNext() {
+		it.index++
+		return it.collection.items[it.index]
 	}
-	return false
-}
-
-func (i *SliceIntIterator) Next() (int, bool) {
-	if i.HasNext() {
-		return 0, false
-	}
-	value := i.slice[i.index]
-	i.index++
-	return value, true
-}
-
-func NewSliceIntIterator(slice []int) IntIterator {
-	return &SliceIntIterator{slice: slice}
+	return nil
 }
