@@ -1,0 +1,8 @@
+{
+  "timestamp": "2023-04-23T20:09:10.004354+12:00",
+  "message": "{\"action\":\"User added\",\"user\":{\"id\":1,\"name\":\"Adam\"}}"
+}
+{
+  "timestamp": "2023-04-23T20:12:31.725842+12:00",
+  "message": "{\"action\":\"User added\",\"user\":{\"id\":2,\"name\":\"Ramsey\"}}"
+}
