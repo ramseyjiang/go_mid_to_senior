@@ -1,4 +1,4 @@
-package caculator
+package calculator
 
 type Expression interface {
 	Interpret() int
