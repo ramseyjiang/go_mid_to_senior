@@ -1,0 +1,17 @@
+paths:
+  /greeting:
+    get:
+      description: Returns a simple greeting message.
+      operationId: getGreeting
+      produces:
+        - application/json
+      responses:
+        "200":
+          $ref: '#/responses/greetingResponse'
+      summary: Get a greeting message
+      tags:
+        - greeting
+responses:
+  greetingResponse:
+    description: GreetingResponse defines the response structure for the /greeting endpoint
+swagger: "2.0"
