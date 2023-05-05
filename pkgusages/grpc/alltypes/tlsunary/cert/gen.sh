@@ -16,7 +16,7 @@
 SERVER_CN=localhost
 MY_SUBJECT="/CN=${SERVER_CN}"
 
-# Step 1: Generate Certificate Authority + Trust Certificate (ca.crt)
+# Step 1: Generate Certificate Authority (ca.key) + Trust Certificate (ca.crt)
 openssl genrsa -passout pass:12345678 -des3 -out ca.key 4096
 openssl req -passin pass:12345678 -new -x509 -sha256 -days 365 -key ca.key -out ca.crt -subj "/CN=ca"
 
