@@ -6,10 +6,9 @@ import (
 	"log"
 	"testing"
 
-	"google.golang.org/grpc/credentials"
-
 	tlsunary "github.com/ramseyjiang/go_mid_to_senior/pkgusages/grpc/alltypes/tlsunary/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/test/bufconn"
 )
 
