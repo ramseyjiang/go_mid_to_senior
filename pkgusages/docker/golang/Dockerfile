@@ -6,7 +6,7 @@ ENV GO111MODULE=on \
     GOOS=linux \
     GOARCH=amd64
 
-# Move to working directory /build
+# Move to working directory /build, the working directory name you can define it by yourself
 WORKDIR /build
 
 ## If you have a go.mod and go.sum file in your project, uncomment lines 13, 14, 15
@@ -17,7 +17,8 @@ RUN go mod download
 # Copy the code into the container
 COPY .. .
 
-# Build the application
+# Build the current project to a binary file called main
+# The location of the binary file is /build
 RUN go build -o main .
 
 # Move to /dist directory as the place for resulting binary folder
@@ -35,5 +36,5 @@ FROM scratch
 COPY --from=builder /dist/main /
 COPY ./db/data.json /db/data.json
 
-# Command to run
+# Command to run the binary once the container starts
 ENTRYPOINT ["/main"]
