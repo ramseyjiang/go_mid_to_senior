@@ -9,7 +9,7 @@ ENV GO111MODULE=on \
 # Move to working directory /build
 WORKDIR /build
 
-# Copy and download dependency using go mod
+## If you have a go.mod and go.sum file in your project, uncomment lines 13, 14, 15
 COPY go.mod .
 COPY go.sum .
 RUN go mod download
