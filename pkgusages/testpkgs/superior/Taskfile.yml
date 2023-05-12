@@ -1,0 +1,35 @@
+version: '3'
+
+tasks:
+  build:
+    desc: Build the application
+    cmds:
+      - go build -o myapp
+
+  test:
+    desc: Run tests for the application
+    cmds:
+      - go test ./...
+
+  cover:
+    desc: Run tests to know
+    cmds:
+      - go test . -cover
+
+  clean:
+    desc: Clean up the application
+    cmds:
+      - rm -f myapp
+
+  build-run:
+    desc: Build and run the application
+    deps:
+      - build
+      - run
+
+  all:
+    desc: Build, test, and run the application
+    deps:
+      - build
+      - test
+      - cover
