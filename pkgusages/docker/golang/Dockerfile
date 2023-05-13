@@ -6,16 +6,14 @@ ENV GO111MODULE=on \
     GOOS=linux \
     GOARCH=amd64
 
-# Move to working directory /build, the working directory name you can define it by yourself
+# Move to working directory /build, the working directory name you can define it by yourself,
+# you also can change to /go/src/app/
 WORKDIR /build
 
-## If you have a go.mod and go.sum file in your project, uncomment lines 13, 14, 15
-COPY go.mod .
-COPY go.sum .
-RUN go mod download
+# Copy everything from the current directory to the PWD(Present Working Directory) inside the container
+COPY . .
 
-# Copy the code into the container
-COPY .. .
+RUN go mod download
 
 # Build the current project to a binary file called main
 # The location of the binary file is /build
