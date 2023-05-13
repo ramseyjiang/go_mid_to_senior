@@ -12,10 +12,10 @@ The flag -d means that the container is running as a daemon. In this mode, the t
 
 Access http://localhost:8080/, it will show the local database adminer webpage.
 
-Connect with docker container in terminal
+Connect with docker postgres in terminal
 
-docker container exec -it container-name bash
+% docker exec -it postgres psql -U test -d test
 
-% docker container exec -it my-postgres bash
+show docker postgres database list in terminal
 
-Cannot connect to docker postgres yet, but it can connect with local postgres database.
+% docker exec -it postgres psql -U test -l 

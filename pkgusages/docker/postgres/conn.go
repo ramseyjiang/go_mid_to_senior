@@ -13,7 +13,7 @@ type User struct {
 }
 
 func conn() {
-	host := "127.0.0.1"
+	host := "172.17.0.3"
 	port := "5432"
 	username := "test"
 	pwd := "test"
@@ -31,20 +31,21 @@ func conn() {
 		fmt.Println(err)
 		return
 	}
+	fmt.Println("connect db successfully")
 
-	sql := `
-		CREATE TABLE IF NOT EXISTS users (
-			id SERIAL PRIMARY KEY,
-			name TEXT NOT NULL
-		);
-	`
-
-	result := db.Exec(sql)
-	if result.Error != nil {
-		fmt.Println(result.Error)
-		return
-	}
-	fmt.Println("Table created successfully")
+	// sql := `
+	// 	CREATE TABLE IF NOT EXISTS users (
+	// 		id SERIAL PRIMARY KEY,
+	// 		name TEXT NOT NULL
+	// 	);
+	// `
+	//
+	// result := db.Exec(sql)
+	// if result.Error != nil {
+	// 	fmt.Println(result.Error)
+	// 	return
+	// }
+	// fmt.Println("Table created successfully")
 
 	var user User
 	err = db.First(&user, 1).Error
