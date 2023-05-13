@@ -32,7 +32,10 @@ RUN cp /build/main .
 FROM scratch
 
 COPY --from=builder /dist/main /
-COPY ./db/data.json /db/data.json
+
+# Copy everything from the current directory to the PWD(Present Working Directory) inside the container
+COPY . .
+#COPY /db/data.json /db/data.json
 
 # Command to run the binary once the container starts
 ENTRYPOINT ["/main"]
