@@ -1,9 +1,11 @@
 package tracffic
 
+// State is the first step to define the State interface
 type State interface {
 	Handle(context *Context) string
 }
 
+// Context is the second step to define the Context Struct.
 type Context struct {
 	state State
 }
@@ -22,6 +24,7 @@ func (c *Context) Request() string {
 	return c.state.Handle(c)
 }
 
+// GreenLightState YellowLightState, RedLightState are all concretes structs to implement the state interface.
 type GreenLightState struct{}
 
 func (g *GreenLightState) Handle(context *Context) string {
