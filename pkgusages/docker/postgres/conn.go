@@ -13,18 +13,18 @@ type User struct {
 }
 
 func conn() {
-	host := "localhost"
+	host := "127.0.0.1"
 	port := "5432"
-	username := "root"
+	username := "test"
 	pwd := "test"
-	dbName := "postgres"
+	dbName := "test"
 
-	connStr := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
+	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable port=%s",
 		host,
-		port,
 		username,
-		dbName,
 		pwd,
+		dbName,
+		port,
 	)
 	db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {

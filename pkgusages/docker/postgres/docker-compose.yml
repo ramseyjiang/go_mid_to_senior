@@ -1,25 +1,21 @@
-version: '1.0'
+version: '3.1'
 
 services:
   db:
-    image: postgres:14.3
-    container_name: postgres
+    image: postgres
     restart: always
     environment:
+      POSTGRES_USER: test
       POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - 5433:5433 #On the left side is the port that is available to the outside. The port on the right side specifies the port within the Docker container.
-    deploy:
-      resources:
-        limits:
-          cpus: "2"
-          memory: 1GB
-        reservations:
-          cpus: "2"
-          memory: 1GB
+      - 5432:5432
   adminer:
     image: adminer:4.8.1
     container_name: adminer
     restart: always
     ports:
-      - 8087:8080
+      - 8080:8080
