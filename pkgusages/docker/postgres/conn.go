@@ -13,7 +13,7 @@ type User struct {
 }
 
 func conn() {
-	host := "172.17.0.3"
+	host := "localhost"
 	port := "5432"
 	username := "test"
 	pwd := "test"
