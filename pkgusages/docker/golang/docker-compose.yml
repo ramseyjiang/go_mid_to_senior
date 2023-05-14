@@ -8,8 +8,11 @@ services:
       - 3000:3000
     restart: on-failure
     environment:
-      PORT: 3000
-      DB_CONN: "postgres://test:test@db:5432/db?sslmode=disable"
+      DB_HOST: db
+      DB_USER: test
+      DB_PASSWORD: test
+      DB_NAME: db
+      DB_CONN: "db://test:test@db:5432/db?sslmode=disable"
     volumes:
       - .:/app
     depends_on:

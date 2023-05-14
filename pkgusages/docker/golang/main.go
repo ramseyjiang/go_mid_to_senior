@@ -28,7 +28,7 @@ func main() {
 	})
 
 	r.GET("db/conn", func(c *gin.Context) {
-		host := "0.0.0.0"
+		host := "db"
 		port := "5432"
 		username := "test"
 		pwd := "test"
@@ -42,7 +42,9 @@ func main() {
 			port,
 		)
 		db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
+
 		if err != nil {
+			fmt.Println(123)
 			c.JSON(http.StatusNotFound, err.Error())
 			return
 		}
