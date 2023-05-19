@@ -1,0 +1,90 @@
+package booking_test
+
+import (
+	"testing"
+
+	"github.com/cucumber/godog"
+)
+
+type Booking struct {
+	// Fields related to booking
+	// (city, date range, hotel room, user info, payment info, etc.)
+	// You'd typically have complex types or interfaces here
+	// but for simplicity let's use basic types.
+	city          string
+	dateRange     string
+	hotelRoom     string
+	personalInfo  string
+	paymentInfo   string
+	isConfirmed   bool
+	receivedEmail bool
+}
+
+func (b *Booking) theUserHasSelectedAValidCityAndDateRange() error {
+	// Implement logic for selecting a valid city and date range
+	// Here we just hardcode some values
+	b.city = "San Francisco"
+	b.dateRange = "2023-07-10 to 2023-07-15"
+
+	return nil
+}
+
+func (b *Booking) theySelectASpecificHotelRoom() error {
+	// Implement logic for selecting a specific hotel room
+	// Here we just hardcode some value
+	b.hotelRoom = "Deluxe Suite"
+
+	return nil
+}
+
+func (b *Booking) theyInputValidPersonalAndPaymentInformation() error {
+	// Implement logic for inputting personal and payment information
+	// Here we just hardcode some values
+	b.personalInfo = "John Doe"
+	b.paymentInfo = "Valid Credit Card"
+
+	return nil
+}
+
+func (b *Booking) theirBookingIsConfirmed() error {
+	// Implement logic for confirming booking
+	// For simplicity, let's just set the field to true
+	b.isConfirmed = true
+
+	return nil
+}
+
+func (b *Booking) theyReceiveABookingConfirmationEmail() error {
+	// Implement logic for receiving a booking confirmation email
+	// For simplicity, let's just set the field to true
+	b.receivedEmail = true
+
+	return nil
+}
+
+func InitializeScenario(ctx *godog.ScenarioContext) {
+	booking := &Booking{}
+
+	ctx.Step(`^the user has selected a valid city and date range$`, booking.theUserHasSelectedAValidCityAndDateRange)
+	ctx.Step(`^they select a specific hotel room$`, booking.theySelectASpecificHotelRoom)
+	ctx.Step(`^they input valid personal and payment information$`, booking.theyInputValidPersonalAndPaymentInformation)
+	ctx.Step(`^their booking is confirmed$`, booking.theirBookingIsConfirmed)
+	ctx.Step(`^they receive a booking confirmation email$`, booking.theyReceiveABookingConfirmationEmail)
+}
+
+func Test_Booking(t *testing.T) {
+	status := godog.TestSuite{
+		Name:                 "godogs",
+		TestSuiteInitializer: nil,
+		ScenarioInitializer:  InitializeScenario,
+		Options: &godog.Options{
+			Format:    "pretty",
+			Paths:     []string{"features"},
+			Randomize: 0,
+		},
+	}.Run()
+
+	if status != 0 {
+		t.Errorf("Some scenarios did not pass")
+	}
+}

@@ -133,6 +133,25 @@ github.com/codegangsta/inject
 ## explicit; go 1.13
 github.com/confluentinc/confluent-kafka-go/kafka
 github.com/confluentinc/confluent-kafka-go/kafka/librdkafka_vendor
+# github.com/cucumber/gherkin-go/v19 v19.0.3
+## explicit; go 1.13
+github.com/cucumber/gherkin-go/v19
+# github.com/cucumber/godog v0.12.6
+## explicit; go 1.16
+github.com/cucumber/godog
+github.com/cucumber/godog/colors
+github.com/cucumber/godog/formatters
+github.com/cucumber/godog/internal/builder
+github.com/cucumber/godog/internal/flags
+github.com/cucumber/godog/internal/formatters
+github.com/cucumber/godog/internal/models
+github.com/cucumber/godog/internal/parser
+github.com/cucumber/godog/internal/storage
+github.com/cucumber/godog/internal/tags
+github.com/cucumber/godog/internal/utils
+# github.com/cucumber/messages-go/v16 v16.0.1
+## explicit; go 1.13
+github.com/cucumber/messages-go/v16
 # github.com/davecgh/go-spew v1.1.1
 ## explicit
 github.com/davecgh/go-spew/spew
@@ -359,6 +378,9 @@ github.com/gofiber/fiber/v2/internal/msgp
 github.com/gofiber/fiber/v2/internal/schema
 github.com/gofiber/fiber/v2/internal/uuid
 github.com/gofiber/fiber/v2/utils
+# github.com/gofrs/uuid v4.2.0+incompatible
+## explicit
+github.com/gofrs/uuid
 # github.com/goki/freetype v0.0.0-20220119013949-7a161fd3728c
 ## explicit
 github.com/goki/freetype
@@ -406,12 +428,21 @@ github.com/gorilla/websocket
 # github.com/hashicorp/errwrap v1.1.0
 ## explicit
 github.com/hashicorp/errwrap
+# github.com/hashicorp/go-immutable-radix v1.3.1
+## explicit
+github.com/hashicorp/go-immutable-radix
+# github.com/hashicorp/go-memdb v1.3.2
+## explicit; go 1.12
+github.com/hashicorp/go-memdb
 # github.com/hashicorp/go-multierror v1.1.1
 ## explicit; go 1.13
 github.com/hashicorp/go-multierror
 # github.com/hashicorp/go-uuid v1.0.3
 ## explicit
 github.com/hashicorp/go-uuid
+# github.com/hashicorp/golang-lru v0.5.4
+## explicit; go 1.12
+github.com/hashicorp/golang-lru/simplelru
 # github.com/hashicorp/hcl v1.0.0
 ## explicit
 github.com/hashicorp/hcl
@@ -428,6 +459,8 @@ github.com/hashicorp/hcl/json/token
 ## explicit; go 1.12
 # github.com/imdario/mergo v0.3.15
 ## explicit; go 1.13
+# github.com/inconshreveable/mousetrap v1.0.1
+## explicit; go 1.18
 # github.com/jackc/pgpassfile v1.0.0
 ## explicit; go 1.12
 github.com/jackc/pgpassfile
@@ -827,6 +860,8 @@ github.com/spf13/afero/mem
 # github.com/spf13/cast v1.5.0
 ## explicit; go 1.18
 github.com/spf13/cast
+# github.com/spf13/cobra v1.6.1
+## explicit; go 1.15
 # github.com/spf13/jwalterweatherman v1.1.0
 ## explicit
 github.com/spf13/jwalterweatherman
