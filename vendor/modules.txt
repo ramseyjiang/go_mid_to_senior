@@ -554,6 +554,9 @@ github.com/json-iterator/go
 # github.com/jsummers/gobmp v0.0.0-20151104160322-e2ba15ffa76e
 ## explicit
 github.com/jsummers/gobmp
+# github.com/jtolds/gls v4.20.0+incompatible
+## explicit
+github.com/jtolds/gls
 # github.com/kennygrant/sanitize v1.2.4
 ## explicit
 github.com/kennygrant/sanitize
@@ -846,6 +849,17 @@ github.com/segmentio/ksuid
 # github.com/sirupsen/logrus v1.9.0
 ## explicit; go 1.13
 github.com/sirupsen/logrus
+# github.com/smartystreets/assertions v1.13.1
+## explicit; go 1.18
+github.com/smartystreets/assertions
+github.com/smartystreets/assertions/internal/go-diff/diffmatchpatch
+github.com/smartystreets/assertions/internal/go-render/render
+github.com/smartystreets/assertions/internal/oglematchers
+# github.com/smartystreets/goconvey v1.8.0
+## explicit; go 1.18
+github.com/smartystreets/goconvey/convey
+github.com/smartystreets/goconvey/convey/gotest
+github.com/smartystreets/goconvey/convey/reporting
 # github.com/sony/gobreaker v0.5.0
 ## explicit; go 1.12
 github.com/sony/gobreaker
