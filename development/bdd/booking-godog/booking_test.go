@@ -20,7 +20,7 @@ type Booking struct {
 	receivedEmail bool
 }
 
-func (b *Booking) theUserHasSelectedAValidCityAndDateRange() error {
+func (b *Booking) SelectedAValidCityAndDateRange() error {
 	// Implement logic for selecting a valid city and date range
 	// Here we just hardcode some values
 	b.city = "San Francisco"
@@ -29,7 +29,7 @@ func (b *Booking) theUserHasSelectedAValidCityAndDateRange() error {
 	return nil
 }
 
-func (b *Booking) theySelectASpecificHotelRoom() error {
+func (b *Booking) SelectASpecificHotelRoom() error {
 	// Implement logic for selecting a specific hotel room
 	// Here we just hardcode some value
 	b.hotelRoom = "Deluxe Suite"
@@ -37,7 +37,7 @@ func (b *Booking) theySelectASpecificHotelRoom() error {
 	return nil
 }
 
-func (b *Booking) theyInputValidPersonalAndPaymentInformation() error {
+func (b *Booking) InputValidPersonalAndPaymentInformation() error {
 	// Implement logic for inputting personal and payment information
 	// Here we just hardcode some values
 	b.personalInfo = "John Doe"
@@ -46,7 +46,7 @@ func (b *Booking) theyInputValidPersonalAndPaymentInformation() error {
 	return nil
 }
 
-func (b *Booking) theirBookingIsConfirmed() error {
+func (b *Booking) BookingIsConfirmed() error {
 	// Implement logic for confirming booking
 	// For simplicity, let's just set the field to true
 	b.isConfirmed = true
@@ -54,7 +54,7 @@ func (b *Booking) theirBookingIsConfirmed() error {
 	return nil
 }
 
-func (b *Booking) theyReceiveABookingConfirmationEmail() error {
+func (b *Booking) ReceiveABookingConfirmationEmail() error {
 	// Implement logic for receiving a booking confirmation email
 	// For simplicity, let's just set the field to true
 	b.receivedEmail = true
@@ -65,11 +65,11 @@ func (b *Booking) theyReceiveABookingConfirmationEmail() error {
 func InitializeScenario(ctx *godog.ScenarioContext) {
 	booking := &Booking{}
 
-	ctx.Step(`^the user has selected a valid city and date range$`, booking.theUserHasSelectedAValidCityAndDateRange)
-	ctx.Step(`^they select a specific hotel room$`, booking.theySelectASpecificHotelRoom)
-	ctx.Step(`^they input valid personal and payment information$`, booking.theyInputValidPersonalAndPaymentInformation)
-	ctx.Step(`^their booking is confirmed$`, booking.theirBookingIsConfirmed)
-	ctx.Step(`^they receive a booking confirmation email$`, booking.theyReceiveABookingConfirmationEmail)
+	ctx.Step(`^the user has selected a valid city and date range$`, booking.SelectedAValidCityAndDateRange)
+	ctx.Step(`^they select a specific hotel room$`, booking.SelectASpecificHotelRoom)
+	ctx.Step(`^they input valid personal and payment information$`, booking.InputValidPersonalAndPaymentInformation)
+	ctx.Step(`^their booking is confirmed$`, booking.BookingIsConfirmed)
+	ctx.Step(`^they receive a booking confirmation email$`, booking.ReceiveABookingConfirmationEmail)
 }
 
 func Test_Booking(t *testing.T) {
