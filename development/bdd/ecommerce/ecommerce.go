@@ -13,10 +13,10 @@ func (c *Cart) AddProduct(p Product) {
 	c.Products = append(c.Products, p)
 }
 
-func (c *Cart) TotalPrice() float64 {
-	var total float64
-	for _, p := range c.Products {
-		total += p.Price
-	}
-	return total
+func (c *Cart) Checkout() {
+	c.Products = []Product{} // Empty the cart
+}
+
+func (c *Cart) TotalItems() int {
+	return len(c.Products)
 }

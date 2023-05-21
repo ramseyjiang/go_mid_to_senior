@@ -4,27 +4,19 @@ import "testing"
 
 func TestCart(t *testing.T) {
 	// Given
-	t.Run("Given a cart with added products", func(t *testing.T) {
+	t.Run("Given a user with items in their shopping cart", func(t *testing.T) {
 		cart := &Cart{}
+		product := Product{Name: "Go Book", Price: 10.0}
+		cart.AddProduct(product)
 
 		// When
-		t.Run("When the user adds a product to the cart", func(t *testing.T) {
-			product := Product{Name: "Go Book", Price: 10.0}
-			cart.AddProduct(product)
+		t.Run("When the user goes to the checkout page and inputs valid payment and shipping information", func(t *testing.T) {
+			cart.Checkout()
 
 			// Then
-			if len(cart.Products) != 1 {
-				t.Errorf("Expected 1 product, but got %d", len(cart.Products))
-			}
-
-			if cart.Products[0] != product {
-				t.Errorf("Expected %v, but got %v", product, cart.Products[0])
-			}
-
-			// And
-			t.Run("And the total price should be updated accordingly", func(t *testing.T) {
-				if cart.TotalPrice() != product.Price {
-					t.Errorf("Expected total price to be %f, but got %f", product.Price, cart.TotalPrice())
+			t.Run("Then their purchase is confirmed and the items are removed from their shopping cart", func(t *testing.T) {
+				if cart.TotalItems() != 0 {
+					t.Errorf("Expected no items in cart, but got %d", cart.TotalItems())
 				}
 			})
 		})
