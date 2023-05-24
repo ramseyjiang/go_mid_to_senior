@@ -2,43 +2,57 @@ package chatroom
 
 import "fmt"
 
-// The Mediator interface defines a method for sending messages to colleagues
-type Mediator interface {
-	SendMessage(message string, colleague Colleague) string
+// Chatroom is the mediator interface
+type Chatroom interface {
+	Register(participant Participant)
+	Send(message string, origin Participant)
 }
 
-// Colleague interface defines methods for GetName and ReceiveMessage.
-type Colleague interface {
+// Participant is the colleague interface
+type Participant interface {
+	Send(message string)
+	Receive(message string, origin Participant)
 	GetName() string
-	ReceiveMessage(message string)
 }
 
-// The Chatroom is a concrete type, it implements the mediator interface.
-// the Chatroom is a mediator between the users, receiving and directing messages between them.
-type Chatroom struct {
-	colleagues []Colleague
+// ChatroomImpl is the concrete mediator
+type ChatroomImpl struct {
+	participants []Participant
 }
 
-func (c *Chatroom) SendMessage(message string, sender Colleague) string {
-	return sender.GetName() + ": " + message
+func (c *ChatroomImpl) Register(participant Participant) {
+	c.participants = append(c.participants, participant)
 }
 
-// User is a concrete colleague implementation of the Colleague interface.
-// The User objects only need to know about the Mediator interface and the Colleague interface, and not each other directly.
-// This promotes loose coupling between the objects and simplifies their relationships.
-type User struct {
+func (c *ChatroomImpl) Send(message string, origin Participant) {
+	for _, p := range c.participants {
+		if p != origin {
+			p.Receive(message, origin)
+		}
+	}
+}
+
+// ParticipantImpl is the concrete colleague
+type ParticipantImpl struct {
 	name     string
-	mediator Mediator
+	chatroom Chatroom
+	messages []string
 }
 
-func (u *User) GetName() string {
-	return u.name
+func (p *ParticipantImpl) Send(message string) {
+	fmt.Println(p.name + " sends message: " + message)
+	p.chatroom.Send(message, p)
 }
 
-func (u *User) ReceiveMessage(message string) {
-	fmt.Printf("%s received: %s\n", u.name, message)
+func (p *ParticipantImpl) Receive(message string, origin Participant) {
+	fmt.Println(p.name + " received message from " + origin.GetName() + ": " + message)
+	p.messages = append(p.messages, message)
 }
 
-func (u *User) SendMessage(message string) string {
-	return u.mediator.SendMessage(message, u)
+func (p *ParticipantImpl) GetName() string {
+	return p.name
+}
+
+func (p *ParticipantImpl) GetMessages() []string {
+	return p.messages
 }

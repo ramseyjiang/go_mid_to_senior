@@ -2,22 +2,34 @@ package chatroom
 
 import (
 	"testing"
-
-	"github.com/go-playground/assert/v2"
 )
 
-func TestMessage(t *testing.T) {
-	chatroom := &Chatroom{}
+func TestChatroom(t *testing.T) {
+	chatroom := &ChatroomImpl{}
 
-	user1 := &User{name: "User 1", mediator: chatroom}
-	user2 := &User{name: "User 2", mediator: chatroom}
-	user3 := &User{name: "User 3", mediator: chatroom}
+	alice := &ParticipantImpl{name: "Alice", chatroom: chatroom}
+	bob := &ParticipantImpl{name: "Bob", chatroom: chatroom}
 
-	assert.Equal(t, user1.name, user1.GetName())
-	assert.Equal(t, user2.name, user2.GetName())
-	assert.Equal(t, user3.name, user3.GetName())
+	chatroom.Register(alice)
+	chatroom.Register(bob)
 
-	assert.Equal(t, "User 1: Hello, User 2!", user1.SendMessage("Hello, User 2!"))
-	assert.Equal(t, "User 2: Hi, User 1!", user2.SendMessage("Hi, User 1!"))
-	assert.Equal(t, "User 3: Hi, everyone!", user3.SendMessage("Hi, everyone!"))
+	tests := []struct {
+		name     string
+		sender   Participant
+		receiver *ParticipantImpl
+		message  string
+	}{
+		{"Alice sends to Bob", alice, bob, "Hello, Bob!"},
+		{"Bob sends to Alice", bob, alice, "Hello, Alice!"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.sender.Send(tt.message)
+			messages := tt.receiver.GetMessages()
+			if len(messages) == 0 || messages[len(messages)-1] != tt.message {
+				t.Errorf("Expected to receive message %v, but it was not received", tt.message)
+			}
+		})
+	}
 }
