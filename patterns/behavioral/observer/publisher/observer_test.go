@@ -1,6 +1,7 @@
 package publisher
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -67,7 +68,7 @@ func TestPublisher(t *testing.T) {
 				if len(receivedLogs) != len(expectedLogs) {
 					t.Errorf("expected %d log(s) for observer %s, got %d", len(expectedLogs), observer.(*TestObserver).Name, len(receivedLogs))
 				}
-
+				fmt.Println(expectedLogs)
 				for i := range receivedLogs {
 					if receivedLogs[i] != expectedLogs[i] {
 						t.Errorf("observer %s: expected log %q, got %q", observer.(*TestObserver).Name, expectedLogs[i], receivedLogs[i])
