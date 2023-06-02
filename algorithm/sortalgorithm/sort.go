@@ -1,32 +1,4 @@
-package main
-
-import (
-	"log"
-	"math/rand"
-	"time"
-)
-
-const arrayNum = 7
-const arrayMaxNum = 100
-
-func main() {
-	arr := generateUnsortedArr()
-	log.Println("Initial array is:", arr)
-	log.Println("Quick sorted array is: ", quickSort(arr))
-	log.Println("merge sorted array is: ", mergeSort(arr))
-	log.Println("Bubble sorted array is: ", bubbleSort(arr))
-	log.Println("Insertion sorted array is: ", insertionSort(arr))
-	log.Println("Selection sorted array is: ", selectionQuick(arr))
-}
-
-func generateUnsortedArr() []int {
-	rand.Seed(time.Now().Unix()) // It is used to confirm rand() will generate a random number each run time.
-	arr := make([]int, arrayNum)
-	for i := 0; i <= arrayNum-1; i++ {
-		arr[i] = rand.Intn(arrayMaxNum)
-	}
-	return arr
-}
+package sort
 
 // quickSort Time complexity is O(nlogn), the best is O(nlogn), the worst is O(n*n)
 func quickSort(arr []int) []int {
@@ -110,7 +82,7 @@ func insertionSort(arr []int) []int {
 }
 
 // selectionQuick Time complexity is O(n*n), the best is O(n*n), the worst is O(n*n)
-func selectionQuick(arr []int) []int {
+func selectionSort(arr []int) []int {
 	if len(arr) <= 1 {
 		return arr
 	}
