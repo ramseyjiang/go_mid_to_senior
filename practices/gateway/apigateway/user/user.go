@@ -6,11 +6,13 @@ import (
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 // User is a struct for a user
 type User struct {
-	ID   int    `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 
@@ -32,7 +34,7 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	newUser.ID = len(users) + 1
+	newUser.ID = uuid.New().String()
 	users = append(users, newUser)
 
 	// Create a map with keys "action" and "user"

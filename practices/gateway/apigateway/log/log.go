@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const logFileName = "logs.json"
+const logFileName = "logs.txt"
 
 // LogEntry is a struct for a log entry
 type LogEntry struct {
@@ -24,7 +24,11 @@ func receiveLog(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	logMessage := string(body)
-	fmt.Println("Received log:", logMessage)
+	if len(logMessage) == 0 {
+		fmt.Println("Received log content length is:", len(logMessage))
+	} else {
+		fmt.Println("Received log:", logMessage)
+	}
 
 	logEntry := createLogEntry(logMessage)
 	err := appendLogEntryToFile(logEntry, logFileName)
