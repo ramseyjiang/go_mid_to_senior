@@ -5,22 +5,40 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestReceiveLog(t *testing.T) {
-	logMessage := `{"action": "User added", "user": {"id": 1, "name": "Test User"}}`
-
-	req, err := http.NewRequest("POST", "/log", bytes.NewBuffer([]byte(logMessage)))
-	if err != nil {
-		t.Fatal(err)
+	tests := []struct {
+		name     string
+		input    string
+		expected int
+	}{
+		{
+			name:     "Valid Log",
+			input:    `{"action": "User added", "user": {"id": "123", "name": "Test User"}}`,
+			expected: http.StatusOK,
+		},
+		{
+			name:     "Empty Log",
+			input:    "",
+			expected: http.StatusOK,
+		},
 	}
 
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(receiveLog)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			req, err := http.NewRequest("POST", "/log", bytes.NewBufferString(test.input))
+			if err != nil {
+				t.Fatal(err)
+			}
 
-	handler.ServeHTTP(rr, req)
+			rr := httptest.NewRecorder()
+			handler := http.HandlerFunc(receiveLog)
+			handler.ServeHTTP(rr, req)
 
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+			assert.Equal(t, test.expected, rr.Code)
+		})
 	}
 }

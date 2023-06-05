@@ -16,6 +16,10 @@ type User struct {
 	Name string `json:"name"`
 }
 
+func (u User) IsEmpty() bool {
+	return u == User{}
+}
+
 var users []User
 var logServiceURL = "http://localhost:8081/log"
 
@@ -28,9 +32,21 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 // addUser adds a new user
 func addUser(w http.ResponseWriter, r *http.Request) {
 	var newUser User
+
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if newUser.IsEmpty() {
+		http.Error(w, "User cannot be empty", http.StatusBadRequest)
+		return
+	}
+
+	// Add this check
+	if len(newUser.Name) == 0 {
+		http.Error(w, "Name cannot be empty", http.StatusBadRequest)
 		return
 	}
 
@@ -61,17 +77,8 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-
-	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		switch r.Method {
-		case "POST":
-			addUser(w, r)
-		case "GET":
-			getUsers(w, r)
-		default:
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		}
-	})
+	http.Handle("/user/create", http.HandlerFunc(addUser))
+	http.Handle("/user/list", http.HandlerFunc(getUsers))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

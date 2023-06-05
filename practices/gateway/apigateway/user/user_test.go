@@ -6,42 +6,86 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestGetUsers(t *testing.T) {
-	req, err := http.NewRequest("GET", "/user", nil)
-	if err != nil {
-		t.Fatal(err)
+func TestAddUser(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    User
+		expected int
+	}{
+		{
+			name:     "Valid User",
+			input:    User{Name: "Test User"},
+			expected: http.StatusOK,
+		},
+		{
+			name:     "Empty User",
+			input:    User{},
+			expected: http.StatusBadRequest,
+		},
+		{
+			name:     "Empty Username",
+			input:    User{Name: ""},
+			expected: http.StatusBadRequest,
+		},
 	}
 
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(getUsers)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			reqBody, _ := json.Marshal(test.input)
+			req, err := http.NewRequest("POST", "/user", bytes.NewBuffer(reqBody))
+			if err != nil {
+				t.Fatal(err)
+			}
 
-	handler.ServeHTTP(rr, req)
+			rr := httptest.NewRecorder()
+			handler := http.HandlerFunc(addUser)
+			handler.ServeHTTP(rr, req)
 
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+			assert.Equal(t, test.expected, rr.Code)
+		})
 	}
 }
 
-func TestAddUser(t *testing.T) {
-	user := &User{
-		Name: "Test User",
+func TestGetUsers(t *testing.T) {
+	tests := []struct {
+		name     string
+		users    []User
+		expected int
+	}{
+		{
+			name:     "No Users",
+			users:    []User{},
+			expected: http.StatusOK,
+		},
+		{
+			name: "With Users",
+			users: []User{
+				{ID: uuid.New().String(), Name: "Test User 1"},
+				{ID: uuid.New().String(), Name: "Test User 2"},
+			},
+			expected: http.StatusOK,
+		},
 	}
 
-	jsonUser, _ := json.Marshal(user)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			users = test.users
 
-	req, err := http.NewRequest("POST", "/user", bytes.NewBuffer(jsonUser))
-	if err != nil {
-		t.Fatal(err)
-	}
+			req, err := http.NewRequest("GET", "/user", nil)
+			if err != nil {
+				t.Fatal(err)
+			}
 
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(addUser)
+			rr := httptest.NewRecorder()
+			handler := http.HandlerFunc(getUsers)
+			handler.ServeHTTP(rr, req)
 
-	handler.ServeHTTP(rr, req)
-
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+			assert.Equal(t, test.expected, rr.Code)
+		})
 	}
 }

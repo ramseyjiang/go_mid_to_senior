@@ -69,7 +69,7 @@ func appendLogEntryToFile(logEntry LogEntry, logFileName string) error {
 }
 
 func main() {
-	http.HandleFunc("/log", receiveLog)
+	http.Handle("/log/add", http.HandlerFunc(receiveLog))
 
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
