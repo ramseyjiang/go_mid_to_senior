@@ -24,7 +24,7 @@ func createRouter() *gin.Engine {
 	// Define the routes for the API Gateway
 	router.GET("/user/list", createReverseProxy(userURL, "/user/list"))
 	router.POST("/user/create", createReverseProxy(userURL, "/user/create"))
-	router.GET("/log/add", createReverseProxy(logURL, "/log/add"))
+	router.POST("/log/add", createReverseProxy(logURL, "/log/add"))
 
 	return router
 }

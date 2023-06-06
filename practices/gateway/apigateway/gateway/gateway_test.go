@@ -47,7 +47,7 @@ func TestCreateRouter(t *testing.T) {
 		},
 		{
 			name:     "LogAdd",
-			method:   "GET",
+			method:   "POST",
 			path:     "/log/add",
 			expected: "Service 3",
 		},
@@ -62,7 +62,7 @@ func TestCreateRouter(t *testing.T) {
 		httpmock.NewStringResponder(200, "Service 1"))
 	httpmock.RegisterResponder("POST", "http://localhost:8080/user/create",
 		httpmock.NewStringResponder(200, "Service 2"))
-	httpmock.RegisterResponder("GET", "http://localhost:8081/log/add",
+	httpmock.RegisterResponder("POST", "http://localhost:8081/log/add",
 		httpmock.NewStringResponder(200, "Service 3"))
 
 	// Create the router

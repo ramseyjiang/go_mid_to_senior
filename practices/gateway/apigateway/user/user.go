@@ -21,7 +21,7 @@ func (u User) IsEmpty() bool {
 }
 
 var users []User
-var logServiceURL = "http://localhost:8081/log"
+var logServiceURL = "http://localhost:8081/log/add"
 
 // getUsers returns a list of users
 func getUsers(w http.ResponseWriter, r *http.Request) {
