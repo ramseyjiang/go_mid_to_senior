@@ -11,7 +11,7 @@ import (
 func TestBarrier(t *testing.T) {
 	rand.Seed(time.Now().UnixNano()) // Ensure randomness
 	var wg sync.WaitGroup
-	barrier := NewBarrier(amount) // 15 students in total
+	barrier := NewBarrier(amount) // 5 students in total
 	var mutex sync.Mutex
 	var sum = 0
 
