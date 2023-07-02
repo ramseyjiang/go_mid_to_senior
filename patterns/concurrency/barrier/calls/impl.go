@@ -7,54 +7,49 @@ import (
 	"sync"
 )
 
-type HttpClient interface {
-	Get(url string) (*http.Response, error)
+type Barrier struct {
+	total int
+	count int
+	mutex sync.Mutex
+	cond  *sync.Cond
 }
 
-type Response struct {
-	Url  string
-	Body string
+func NewBarrier(count int) *Barrier {
+	b := &Barrier{
+		total: count,
+		count: 0,
+	}
+	b.cond = sync.NewCond(&b.mutex)
+	return b
 }
 
-func performRequests(w io.Writer, client HttpClient, urls []string) {
-	var wg sync.WaitGroup
-	responseChannel := make(chan string, len(urls))
+func (b *Barrier) Wait() {
+	b.mutex.Lock()
+	b.count++
+	if b.count >= b.total {
+		b.count = 0
+		b.cond.Broadcast()
+	} else {
+		b.cond.Wait()
+	}
+	b.mutex.Unlock()
+}
 
-	for _, url := range urls {
-		wg.Add(1)
-		go func(url string) {
-			defer wg.Done()
-			resp, err := client.Get(url)
-			if err != nil {
-				responseChannel <- fmt.Sprintf("Error making GET request to %s: %v", url, err)
-				return
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				responseChannel <- fmt.Sprintf("Error reading body of response from %s: %v", url, err)
-				return
-			}
-
-			if resp.StatusCode != http.StatusOK {
-				responseChannel <- fmt.Sprintf("Non-ok status returned from %s: %d", url, resp.StatusCode)
-				return
-			}
-
-			responseChannel <- fmt.Sprintf("Response from %s:\n%s", url, string(body))
-		}(url)
+func makeRequest(url string, barrier *Barrier, wg *sync.WaitGroup, ch chan string) {
+	defer wg.Done()
+	resp, err := http.Get(url)
+	if err != nil {
+		ch <- fmt.Sprintf("Error making request to %s: %v", url, err)
+		return
 	}
 
-	go func() {
-		wg.Wait()
-		close(responseChannel)
-	}()
-
-	var combinedResponse string
-	for response := range responseChannel {
-		combinedResponse += response + "\n"
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		ch <- fmt.Sprintf("Error reading response body: %v", err)
+		return
 	}
+	ch <- string(body)
 
-	fmt.Fprint(w, combinedResponse)
+	barrier.Wait()
 }

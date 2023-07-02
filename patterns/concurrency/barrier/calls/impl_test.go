@@ -1,86 +1,70 @@
 package calls
 
 import (
-	"bytes"
-	"io"
+	"fmt"
 	"net/http"
-	"strings"
+	"net/http/httptest"
+	"sync"
 	"testing"
-	"time"
 )
 
-type MockHttpSuccessClient struct{}
+func TestBarrier(t *testing.T) {
+	t.Run("Wait", func(t *testing.T) {
+		b := NewBarrier(2)
+		var wg sync.WaitGroup
 
-func (m *MockHttpSuccessClient) Get(url string) (*http.Response, error) {
-	return &http.Response{
-		StatusCode: 200,
-		Body:       io.NopCloser(bytes.NewReader([]byte(url))),
-	}, nil
+		for i := 0; i < 2; i++ {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				b.Wait()
+			}()
+		}
+
+		wg.Wait()
+		if b.count != 0 {
+			t.Errorf("Expected count to be 0, got %d", b.count)
+		}
+	})
 }
 
-type MockHttpErrorClient struct{}
+func TestMakeRequest(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "Hello, client")
+	}))
+	defer ts.Close()
 
-func (m *MockHttpErrorClient) Get(url string) (*http.Response, error) {
-	return &http.Response{
-		StatusCode: 404,
-		Body:       io.NopCloser(bytes.NewBufferString("")),
-	}, nil
-}
+	t.Run("Successful request", func(t *testing.T) {
+		b := NewBarrier(1)
+		var wg sync.WaitGroup
+		ch := make(chan string, 1)
 
-type MockHttpTimeoutClient struct{}
+		wg.Add(1)
+		go makeRequest(ts.URL, b, &wg, ch)
 
-func (m *MockHttpTimeoutClient) Get(url string) (*http.Response, error) {
-	// Simulate a delay
-	select {
-	case <-time.After(3 * time.Second):
-		return &http.Response{
-			StatusCode: 200,
-			Body:       io.NopCloser(bytes.NewReader([]byte(url))),
-		}, nil
-	}
-}
+		wg.Wait()
+		close(ch)
 
-func TestPerformRequests(t *testing.T) {
-	t.Run("Test with valid URLs", func(t *testing.T) {
-		client := &MockHttpSuccessClient{}
-		urls := []string{"http://example.com", "http://example.org"}
-
-		var buf bytes.Buffer
-		performRequests(&buf, client, urls)
-
-		got := buf.String()
-
-		if !strings.Contains(got, "Response from http://example.com:\nhttp://example.com") ||
-			!strings.Contains(got, "Response from http://example.org:\nhttp://example.org") {
-			t.Errorf("performRequests() returned unexpected output: %q", got)
+		msg := <-ch
+		if msg != "Hello, client\n" {
+			t.Errorf("Expected 'Hello, client\\n', got '%s'", msg)
 		}
 	})
 
-	t.Run("Test with wrong URL", func(t *testing.T) {
-		client := &MockHttpErrorClient{}
-		urls := []string{"http://wrong.url"}
+	t.Run("Failed request", func(t *testing.T) {
+		b := NewBarrier(1)
+		var wg sync.WaitGroup
+		ch := make(chan string, 1)
 
-		var buf bytes.Buffer
-		performRequests(&buf, client, urls)
+		wg.Add(1)
+		go makeRequest("http://invalid.url", b, &wg, ch)
 
-		got := buf.String()
+		wg.Wait()
+		close(ch)
 
-		if !strings.Contains(got, "404") {
-			t.Errorf("performRequests() did not handle error correctly, got: %q", got)
-		}
-	})
-
-	t.Run("Test with timeout", func(t *testing.T) {
-		client := &MockHttpTimeoutClient{}
-		urls := []string{"http://timeout.url"}
-
-		var buf bytes.Buffer
-		start := time.Now()
-		performRequests(&buf, client, urls)
-		elapsed := time.Since(start)
-
-		if elapsed < 3*time.Second {
-			t.Errorf("performRequests() didn't timeout as expected, elapsed: %v", elapsed)
+		msg := <-ch
+		if msg == "" {
+			t.Error("Expected an error message, got an empty string")
 		}
 	})
 }
