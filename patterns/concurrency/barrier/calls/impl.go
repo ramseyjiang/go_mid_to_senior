@@ -7,6 +7,8 @@ import (
 	"sync"
 )
 
+const total = 2
+
 type Barrier struct {
 	total int
 	count int

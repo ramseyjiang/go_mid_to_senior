@@ -10,10 +10,10 @@ import (
 
 func TestBarrier(t *testing.T) {
 	t.Run("Wait", func(t *testing.T) {
-		b := NewBarrier(2)
+		b := NewBarrier(total)
 		var wg sync.WaitGroup
 
-		for i := 0; i < 2; i++ {
+		for i := 0; i < total; i++ {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
