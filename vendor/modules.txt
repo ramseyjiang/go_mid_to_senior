@@ -557,6 +557,9 @@ github.com/jsummers/gobmp
 # github.com/jtolds/gls v4.20.0+incompatible
 ## explicit
 github.com/jtolds/gls
+# github.com/jung-kurt/gofpdf v1.16.2
+## explicit; go 1.12
+github.com/jung-kurt/gofpdf
 # github.com/kennygrant/sanitize v1.2.4
 ## explicit
 github.com/kennygrant/sanitize

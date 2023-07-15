@@ -146,6 +146,7 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/jsummers/gobmp v0.0.0-20151104160322-e2ba15ffa76e // indirect
 	github.com/jtolds/gls v4.20.0+incompatible // indirect
+	github.com/jung-kurt/gofpdf v1.16.2 // indirect
 	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
