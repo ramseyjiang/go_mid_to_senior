@@ -20,20 +20,20 @@ const contentWidth = 190
 const contentHeight = 10
 const contentsDistance = 10
 
-func TxtConvertPDF(fileName string) {
+func TxtConvertPDF(outputFileName string, inputFileName string) {
 	pdf := gofpdf.New("P", "mm", paperSize, "")
 	pdf.AddPage()
 
 	// Header
 	pdf.SetFont(fontStyle, bold, headerFontSize)
-	pdf.Cell(headerWidth, headerHeight, fileName)
+	pdf.Cell(headerWidth, headerHeight, outputFileName)
 	pdf.Ln(headerContentDistance) // New line
 
 	// Content
 	pdf.SetFont(fontStyle, "", fontSize)
 
 	// Open the text file
-	file, err := os.Open("input.txt")
+	file, err := os.Open(inputFileName)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func TxtConvertPDF(fileName string) {
 	}
 
 	// Save the file
-	err = pdf.OutputFileAndClose(fileName + ".pdf")
+	err = pdf.OutputFileAndClose(outputFileName + ".pdf")
 	if err != nil {
 		log.Printf("Error saving file: %v", err)
 		return
