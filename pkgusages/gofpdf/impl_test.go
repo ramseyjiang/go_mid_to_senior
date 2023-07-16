@@ -1,7 +1,6 @@
 package gofpdf
 
 import (
-	"fmt"
 	"os"
 	"strings"
 	"testing"
@@ -94,8 +93,6 @@ func TestTxtConvertPDF(t *testing.T) {
 		expectedContent = "Example" + expectedContent
 
 		if pdfContent != expectedContent {
-			fmt.Printf("PDF Content: %s\n", pdfContent)
-			fmt.Printf("Expected Content: %s\n", expectedContent)
 			t.Fatalf("PDF content does not match expected content")
 		}
 
