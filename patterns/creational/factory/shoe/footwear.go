@@ -1,14 +1,14 @@
 package shoe
 
 type Footwear interface {
-	setCategory(name string)
-	getCategory() string
+	SetCategory(name string)
+	GetCategory() string
 
-	setPrice(discount float32) float32
-	getPrice() float32
+	SetPrice(discount float32)
+	GetPrice() float32
 
-	setGender(gender string)
-	getGender() string
+	SetGender(gender string)
+	GetGender() string
 }
 
 type Shoe struct {
@@ -18,31 +18,31 @@ type Shoe struct {
 	Gender   string
 }
 
-func (s *Shoe) setCategory(name string) {
+func (s *Shoe) SetCategory(name string) {
 	s.Category = name
 }
 
-func (s *Shoe) getCategory() string {
+func (s *Shoe) GetCategory() string {
 	return s.Category
 }
 
-func (s *Shoe) setPrice(discount float32) float32 {
-	return s.Price * (1 - discount)
+func (s *Shoe) SetPrice(discount float32) {
+	s.Price = s.Price * (1 - discount)
 }
 
-func (s *Shoe) getPrice() float32 {
+func (s *Shoe) GetPrice() float32 {
 	return s.Price
 }
 
-func (s *Shoe) setGender(gender string) {
+func (s *Shoe) SetGender(gender string) {
 	s.Gender = gender
 }
 
-func (s *Shoe) getGender() string {
+func (s *Shoe) GetGender() string {
 	return s.Gender
 }
 
-func newShoe(category string, size int64, price float32, gender string, discount float32) Footwear {
+func NewShoe(category string, size int64, price float32, gender string, discount float32) Footwear {
 	return &Shoe{
 		Size:     size,
 		Category: category,
