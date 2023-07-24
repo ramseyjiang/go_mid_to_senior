@@ -7,6 +7,7 @@ import (
 )
 
 func TestSlipper(t *testing.T) {
+	// Use the Factory Pattern in the client code. Step 5
 	factory := NewConcreteShoeFactory()
 	slipper, _ := factory.CreateShoe(Slipper, 41, "Male", 200)
 	assert.Equal(t, Slipper, slipper.GetCategory())
@@ -15,6 +16,7 @@ func TestSlipper(t *testing.T) {
 }
 
 func TestSandal(t *testing.T) {
+	// Use the Factory Pattern in the client code. Step 5
 	factory := NewConcreteShoeFactory()
 	sandal, _ := factory.CreateShoe(Sandal, 42, "Male", 1000)
 	assert.Equal(t, Sandal, sandal.GetCategory())
@@ -23,6 +25,7 @@ func TestSandal(t *testing.T) {
 }
 
 func TestBucks(t *testing.T) {
+	// Use the Factory Pattern in the client code. Step 5
 	factory := NewConcreteShoeFactory()
 	bucks, _ := factory.CreateShoe(Bucks, 38, "Female", 100)
 	assert.Equal(t, Bucks, bucks.GetCategory())
@@ -31,11 +34,11 @@ func TestBucks(t *testing.T) {
 }
 
 func TestNoneShoeType(t *testing.T) {
+	// Use the Factory Pattern in the client code. Step 5
 	factory := NewConcreteShoeFactory()
 	_, err := factory.CreateShoe("test", 38, "Female", 100)
 	if err == nil {
-		t.Error("Expected an error for invalid shoe type, got nil")
-	} else {
-		t.Log("Received expected error:", err)
+		t.Error("invalid footwear type")
 	}
+	t.Log("LOG:", err)
 }
