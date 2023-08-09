@@ -5,20 +5,6 @@ import (
 	"testing"
 )
 
-func TestPipelineIntegration(t *testing.T) {
-	inputData := "the quick brown fox jumps over the lazy dog and keeps running"
-	in := make(chan string, 1)
-	in <- inputData
-	close(in)
-
-	vector := <-vectorised(stem(removeStopWords(tokenize(in))))
-
-	expectedVector := []float64{0.1, 0.2, 0.3} // As defined in our vectorised function
-	if !reflect.DeepEqual(vector, expectedVector) {
-		t.Errorf("got %v, want %v", vector, expectedVector)
-	}
-}
-
 func TestPipelineStages(t *testing.T) {
 	t.Run("Tokenization", func(t *testing.T) {
 		in := make(chan string, 1)
@@ -69,6 +55,20 @@ func TestPipelineStages(t *testing.T) {
 
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got %v, want %v", got, want)
+		}
+	})
+
+	t.Run("Pipeline Integration", func(t *testing.T) {
+		inputData := "the quick brown fox jumps over the lazy dog and keeps running"
+		in := make(chan string, 1)
+		in <- inputData
+		close(in)
+
+		vector := <-vectorised(stem(removeStopWords(tokenize(in))))
+
+		expectedVector := []float64{0.1, 0.2, 0.3} // As defined in our vectorised function
+		if !reflect.DeepEqual(vector, expectedVector) {
+			t.Errorf("got %v, want %v", vector, expectedVector)
 		}
 	})
 }

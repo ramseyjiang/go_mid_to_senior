@@ -11,7 +11,6 @@ func generator(max int) <-chan int {
 		for i := 1; i <= max; i++ {
 			outChInt <- i
 		}
-
 		close(outChInt)
 	}()
 
