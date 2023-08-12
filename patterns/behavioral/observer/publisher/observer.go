@@ -59,7 +59,6 @@ type ConcreteObserver struct {
 	Messages []string
 }
 
-// Update prints the message received by the observer.
 func (o *ConcreteObserver) Update(message string) {
 	o.Messages = append(o.Messages, message)
 }
