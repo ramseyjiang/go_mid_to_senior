@@ -1,7 +1,5 @@
 package publisher
 
-import "fmt"
-
 // Step 1: Define a subject interface and an observer interface.
 
 // Subject represents the subject being observed.
@@ -57,10 +55,11 @@ func (s *ConcreteSubject) NotifyObservers(message string) {
 
 // ConcreteObserver represents the concrete implementation of the Observer interface.
 type ConcreteObserver struct {
-	name string
+	Name     string
+	Messages []string
 }
 
 // Update prints the message received by the observer.
 func (o *ConcreteObserver) Update(message string) {
-	fmt.Printf("%s received: %s\n", o.name, message)
+	o.Messages = append(o.Messages, message)
 }

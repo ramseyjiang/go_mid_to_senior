@@ -4,15 +4,6 @@ import (
 	"testing"
 )
 
-type TestObserver struct {
-	Name     string
-	Messages []string
-}
-
-func (o *TestObserver) Update(message string) {
-	o.Messages = append(o.Messages, message)
-}
-
 func TestPublisher(t *testing.T) {
 	tests := []struct {
 		name         string
@@ -23,7 +14,7 @@ func TestPublisher(t *testing.T) {
 		{
 			name: "Single Subscriber",
 			subscribers: []Observer{
-				&TestObserver{Name: "Observer 1"},
+				&ConcreteObserver{Name: "Observer 1"},
 			},
 			message: "Hello, World!",
 			expectedLogs: map[string][]string{
@@ -33,8 +24,8 @@ func TestPublisher(t *testing.T) {
 		{
 			name: "Multiple Subscribers",
 			subscribers: []Observer{
-				&TestObserver{Name: "Observer 1"},
-				&TestObserver{Name: "Observer 2"},
+				&ConcreteObserver{Name: "Observer 1"},
+				&ConcreteObserver{Name: "Observer 2"},
 			},
 			message: "Hello, World!",
 			expectedLogs: map[string][]string{
@@ -61,16 +52,16 @@ func TestPublisher(t *testing.T) {
 			publisher.NotifyObservers(test.message)
 
 			for _, observer := range test.subscribers {
-				expectedLogs := test.expectedLogs[observer.(*TestObserver).Name]
-				receivedLogs := observer.(*TestObserver).Messages
+				expectedLogs := test.expectedLogs[observer.(*ConcreteObserver).Name]
+				receivedLogs := observer.(*ConcreteObserver).Messages
 
 				if len(receivedLogs) != len(expectedLogs) {
-					t.Errorf("expected %d log(s) for observer %s, got %d", len(expectedLogs), observer.(*TestObserver).Name, len(receivedLogs))
+					t.Errorf("expected %d log(s) for observer %s, got %d", len(expectedLogs), observer.(*ConcreteObserver).Name, len(receivedLogs))
 				}
 
 				for i := range receivedLogs {
 					if receivedLogs[i] != expectedLogs[i] {
-						t.Errorf("observer %s: expected log %q, got %q", observer.(*TestObserver).Name, expectedLogs[i], receivedLogs[i])
+						t.Errorf("observer %s: expected log %q, got %q", observer.(*ConcreteObserver).Name, expectedLogs[i], receivedLogs[i])
 					}
 				}
 			}
