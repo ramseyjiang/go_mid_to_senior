@@ -7,15 +7,19 @@ import (
 	"testing"
 )
 
-func TestTradingBot(t *testing.T) {
-	bot := &TradingBot{ID: "testBot"}
+func TestTradingBots(t *testing.T) {
+	bot1 := &TradingBot{ID: "bot1"}
+	bot2 := &TradingBot{ID: "bot2"}
 
-	t.Run("MultiplePublisherUpdates", func(t *testing.T) {
-		nasdaq := NewStockExchange()
-		nyse := NewStockExchange()
+	nasdaq := NewStockExchange()
+	nyse := NewStockExchange()
 
-		nasdaq.AddSubscriber(bot)
-		nyse.AddSubscriber(bot)
+	t.Run("MultiplePublishersAndSubscribers", func(t *testing.T) {
+		// Add both bots as subscribers to both exchanges
+		nasdaq.AddSubscriber(bot1)
+		nasdaq.AddSubscriber(bot2)
+		nyse.AddSubscriber(bot1)
+		nyse.AddSubscriber(bot2)
 
 		// Capturing stdout to a buffer
 		old := os.Stdout
@@ -32,12 +36,17 @@ func TestTradingBot(t *testing.T) {
 		buf.ReadFrom(r)
 		output := buf.String()
 
-		if !strings.Contains(output, "TradingBot testBot: Received AAPL price update: $150.00") {
-			t.Errorf("Expected output for AAPL update not found")
+		expectedOutputs := []string{
+			"TradingBot bot1: Received AAPL price update: $150.00",
+			"TradingBot bot2: Received AAPL price update: $150.00",
+			"TradingBot bot1: Received GOOGL price update: $2500.00",
+			"TradingBot bot2: Received GOOGL price update: $2500.00",
 		}
 
-		if !strings.Contains(output, "TradingBot testBot: Received GOOGL price update: $2500.00") {
-			t.Errorf("Expected output for GOOGL update not found")
+		for _, expected := range expectedOutputs {
+			if !strings.Contains(output, expected) {
+				t.Errorf("Expected output \"%s\" not found", expected)
+			}
 		}
 	})
 }
