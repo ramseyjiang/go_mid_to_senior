@@ -1,14 +1,14 @@
 package concurrencyobserver
 
 type Publisher interface {
-	start()
+	Start()
 	AddSubscriberCh() chan<- Subscriber
 	RemoveSubscriberCh() chan<- Subscriber
 	PublishingCh() chan<- interface{}
 	Stop()
 }
 
-type publisher struct {
+type ChPublisher struct {
 	subscribers []Subscriber
 	addSubCh    chan Subscriber
 	removeSubCh chan Subscriber
@@ -16,52 +16,52 @@ type publisher struct {
 	stop        chan struct{}
 }
 
-func NewPublisher() Publisher {
-	return &publisher{}
+func NewPublisher() *ChPublisher {
+	return &ChPublisher{}
 }
 
-func (p *publisher) start() {
+func (cp *ChPublisher) Start() {
 	for {
 		select {
-		case msg := <-p.in:
-			for _, sub := range p.subscribers {
+		case msg := <-cp.in:
+			for _, sub := range cp.subscribers {
 				sub.Notify(msg)
 			}
-		case sub := <-p.addSubCh:
-			p.subscribers = append(p.subscribers, sub)
-		case sub := <-p.removeSubCh:
-			for i, candidate := range p.subscribers {
+		case sub := <-cp.addSubCh:
+			cp.subscribers = append(cp.subscribers, sub)
+		case sub := <-cp.removeSubCh:
+			for i, candidate := range cp.subscribers {
 				if candidate == sub {
-					p.subscribers = append(p.subscribers[:i],
-						p.subscribers[i+1:]...)
+					cp.subscribers = append(cp.subscribers[:i],
+						cp.subscribers[i+1:]...)
 					candidate.Close()
 					break
 				}
 			}
-		case <-p.stop:
-			for _, sub := range p.subscribers {
+		case <-cp.stop:
+			for _, sub := range cp.subscribers {
 				sub.Close()
 			}
-			close(p.addSubCh)
-			close(p.in)
-			close(p.removeSubCh)
+			close(cp.addSubCh)
+			close(cp.in)
+			close(cp.removeSubCh)
 			return
 		}
 	}
 }
 
-func (p *publisher) AddSubscriberCh() chan<- Subscriber {
-	return p.addSubCh
+func (cp *ChPublisher) AddSubscriberCh() chan<- Subscriber {
+	return cp.addSubCh
 }
 
-func (p *publisher) RemoveSubscriberCh() chan<- Subscriber {
-	return p.removeSubCh
+func (cp *ChPublisher) RemoveSubscriberCh() chan<- Subscriber {
+	return cp.removeSubCh
 }
 
-func (p *publisher) PublishingCh() chan<- interface{} {
-	return p.in
+func (cp *ChPublisher) PublishingCh() chan<- interface{} {
+	return cp.in
 }
 
-func (p *publisher) Stop() {
-	close(p.stop)
+func (cp *ChPublisher) Stop() {
+	close(cp.stop)
 }

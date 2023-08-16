@@ -20,7 +20,7 @@ func (m *mockSubscriber) Close() {
 }
 
 func TestPublisher(t *testing.T) {
-	pub := NewPublisher().(*publisher) // Assert to concrete type
+	pub := NewPublisher()
 
 	// Initialize the publisher's channels
 	pub.addSubCh = make(chan Subscriber)
@@ -29,7 +29,7 @@ func TestPublisher(t *testing.T) {
 	pub.stop = make(chan struct{})
 
 	// Start the publisher in a goroutine
-	go pub.start()
+	go pub.Start()
 
 	msgToSend := "Hello"
 	notified := make(chan bool, 1)
