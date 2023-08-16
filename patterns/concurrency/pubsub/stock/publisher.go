@@ -5,6 +5,7 @@ import (
 )
 
 type Publisher interface {
+	Start()
 	AddSubscriber(s Subscriber)
 	RemoveSubscriber(s Subscriber)
 	Notify(ticker string, price float64)
@@ -51,4 +52,9 @@ func (sp *StockPublisher) RemoveSubscriber(s Subscriber) {
 	sp.mu.Lock()
 	defer sp.mu.Unlock()
 	delete(sp.subscribers, s)
+}
+
+// Start could be implemented here if needed.
+func (sp *StockPublisher) Start() {
+	// Implementation of start method (if required)
 }
