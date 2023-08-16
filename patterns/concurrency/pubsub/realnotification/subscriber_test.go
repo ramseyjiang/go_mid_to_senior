@@ -1,4 +1,4 @@
-package concurrencyobserver
+package realnotification
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func TestWriter(t *testing.T) {
+func TestWriterSubscriber(t *testing.T) {
 	t.Run("Notify", func(t *testing.T) {
 		var buf bytes.Buffer
 		sub := NewWriterSubscriber(1, &buf)

@@ -1,4 +1,4 @@
-package concurrencyobserver
+package realnotification
 
 type Publisher interface {
 	Start()
