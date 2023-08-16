@@ -1,6 +1,8 @@
 package stock
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Subscriber (Trading Algorithm/Entity)
 type Subscriber interface {

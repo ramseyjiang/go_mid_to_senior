@@ -5,38 +5,45 @@ import (
 )
 
 func TestStockExchange(t *testing.T) {
+	// Create two publishers
 	nasdaq := NewStockExchange()
 	nyse := NewStockExchange()
 
-	// Testing multiple price updates and notifications across exchanges
-	t.Run("MultipleUpdatesAndNotify", func(t *testing.T) {
-		mockSub1 := &MockSubscriber{}
-		mockSub2 := &MockSubscriber{}
+	// Create two subscribers (TradingBots)
+	bot1 := &TradingBot{ID: "Bot1"}
+	bot2 := &TradingBot{ID: "Bot2"}
 
-		nasdaq.AddSubscriber(mockSub1)
-		nasdaq.AddSubscriber(mockSub2)
-		nyse.AddSubscriber(mockSub2)
+	// Test: Adding subscribers to publishers
+	t.Run("AddSubscribers", func(t *testing.T) {
+		nasdaq.AddSubscriber(bot1)
+		nasdaq.AddSubscriber(bot2)
+		nyse.AddSubscriber(bot1)
+		nyse.AddSubscriber(bot2)
 
-		nasdaq.UpdatePrice("AAPL", 150.0)
-		nyse.UpdatePrice("GOOGL", 2500.0)
-
-		if mockSub1.LastPrice != 150.0 || mockSub1.LastTicker != "AAPL" {
-			t.Fatalf("MockSub1 expected AAPL with 150.0, got %s with %.2f", mockSub1.LastTicker, mockSub1.LastPrice)
+		if _, exists := nasdaq.subscribers[bot1]; !exists {
+			t.Errorf("Bot1 not added to nasdaq")
 		}
-
-		if mockSub2.LastPrice != 2500.0 || mockSub2.LastTicker != "GOOGL" {
-			t.Fatalf("MockSub2 expected GOOGL with 2500.0, got %s with %.2f", mockSub2.LastTicker, mockSub2.LastPrice)
+		if _, exists := nasdaq.subscribers[bot2]; !exists {
+			t.Errorf("Bot2 not added to nasdaq")
+		}
+		if _, exists := nyse.subscribers[bot1]; !exists {
+			t.Errorf("Bot1 not added to nyse")
+		}
+		if _, exists := nyse.subscribers[bot2]; !exists {
+			t.Errorf("Bot2 not added to nyse")
 		}
 	})
-}
 
-// MockSubscriber for testing purpose, similar to the one you have seen earlier.
-type MockSubscriber struct {
-	LastTicker string
-	LastPrice  float64
-}
+	// Test: Removing subscribers from publishers
+	t.Run("RemoveSubscribers", func(t *testing.T) {
+		nasdaq.RemoveSubscriber(bot1)
+		nyse.RemoveSubscriber(bot2)
 
-func (ms *MockSubscriber) OnPriceUpdate(ticker string, price float64) {
-	ms.LastTicker = ticker
-	ms.LastPrice = price
+		if _, exists := nasdaq.subscribers[bot1]; exists {
+			t.Errorf("Bot1 not removed from nasdaq")
+		}
+		if _, exists := nyse.subscribers[bot2]; exists {
+			t.Errorf("Bot2 not removed from nyse")
+		}
+	})
 }

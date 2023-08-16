@@ -5,14 +5,12 @@ import (
 )
 
 type Publisher interface {
-	start()
-	AddSubscriber()
-	RemoveSubscriber()
+	AddSubscriber(s Subscriber)
+	RemoveSubscriber(s Subscriber)
 	Notify(ticker string, price float64)
 	UpdatePrice(ticker string, price float64)
 }
 
-// StockPublisher Publisher (Stock Exchange)
 type StockPublisher struct {
 	tickers     map[string]float64
 	subscribers map[Subscriber]struct{}
@@ -26,23 +24,31 @@ func NewStockExchange() *StockPublisher {
 	}
 }
 
-func (se *StockPublisher) UpdatePrice(ticker string, price float64) {
-	se.mu.Lock()
-	se.tickers[ticker] = price
-	se.mu.Unlock()
-	se.Notify(ticker, price)
+func (sp *StockPublisher) UpdatePrice(ticker string, price float64) {
+	sp.mu.Lock()
+	sp.tickers[ticker] = price
+	sp.mu.Unlock()
+	sp.Notify(ticker, price)
 }
 
-func (se *StockPublisher) Notify(ticker string, price float64) {
-	se.mu.Lock()
-	defer se.mu.Unlock()
-	for listener := range se.subscribers {
+func (sp *StockPublisher) Notify(ticker string, price float64) {
+	sp.mu.Lock()
+	defer sp.mu.Unlock()
+	for listener := range sp.subscribers {
 		listener.OnPriceUpdate(ticker, price)
 	}
 }
 
-func (se *StockPublisher) AddSubscriber(subscriber Subscriber) {
-	se.mu.Lock()
-	defer se.mu.Unlock()
-	se.subscribers[subscriber] = struct{}{}
+// AddSubscriber adds a subscriber to the StockPublisher.
+func (sp *StockPublisher) AddSubscriber(s Subscriber) {
+	sp.mu.Lock()
+	defer sp.mu.Unlock()
+	sp.subscribers[s] = struct{}{}
+}
+
+// RemoveSubscriber removes a subscriber from the StockPublisher.
+func (sp *StockPublisher) RemoveSubscriber(s Subscriber) {
+	sp.mu.Lock()
+	defer sp.mu.Unlock()
+	delete(sp.subscribers, s)
 }
