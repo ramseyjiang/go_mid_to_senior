@@ -38,7 +38,7 @@ func NewWriterSubscriber(id int, out io.Writer) Subscriber {
 func (s *writerSubscriber) Notify(msg interface{}) (err error) {
 	defer func() {
 		if rec := recover(); rec != nil {
-			err = fmt.Errorf("%#v", rec)
+			err = fmt.Errorf("send on closed channel")
 		}
 	}()
 

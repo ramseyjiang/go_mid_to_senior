@@ -1,43 +1,56 @@
 package concurrencyobserver
 
 import (
-	"fmt"
-	"strings"
-	"sync"
+	"bytes"
 	"testing"
+	"time"
 )
 
-type mockWriter struct {
-	testingFunc func(string)
-}
-
-func (m *mockWriter) Write(p []byte) (n int, err error) {
-	m.testingFunc(string(p))
-	return len(p), nil
-}
-
 func TestWriter(t *testing.T) {
-	sub := NewWriterSubscriber(0, nil)
-	msg := "Hello"
+	t.Run("Notify", func(t *testing.T) {
+		var buf bytes.Buffer
+		sub := NewWriterSubscriber(1, &buf)
 
-	var wg sync.WaitGroup
-	wg.Add(1)
+		err := sub.Notify("Test")
+		if err != nil {
+			t.Fatalf("failed to notify: %v", err)
+		}
 
-	stdoutPrinter := sub.(*writerSubscriber)
-	stdoutPrinter.Writer = &mockWriter{
-		testingFunc: func(res string) {
-			if !strings.Contains(res, msg) {
-				t.Fatal(fmt.Errorf("incorrect string: %s", res))
-			}
-			wg.Done()
-		},
-	}
+		time.Sleep(50 * time.Millisecond) // Allow some time for the message to be written
 
-	err := sub.Notify(msg)
-	if err != nil {
-		wg.Done()
-		t.Fatal(err)
-	}
-	wg.Wait()
-	sub.Close()
+		if buf.String() != "(W1): Test\n" {
+			t.Fatalf("expected '(W1): Test\n' but got %v", buf.String())
+		}
+	})
+
+	t.Run("Timeout", func(t *testing.T) {
+		var buf bytes.Buffer
+		sub := NewWriterSubscriber(1, &buf)
+
+		close(sub.(*writerSubscriber).in) // Close the channel to induce a timeout
+
+		err := sub.Notify("Test")
+		if err == nil {
+			t.Fatal("expected a timeout error but got none")
+		}
+	})
+
+	t.Run("Close", func(t *testing.T) {
+		var buf bytes.Buffer
+		sub := NewWriterSubscriber(1, &buf)
+
+		sub.Notify("Before Close")
+		sub.Close()
+
+		time.Sleep(50 * time.Millisecond) // Allow some time for the message to be written
+
+		if buf.String() != "(W1): Before Close\n" {
+			t.Fatalf("expected '(W1): Before Close\n' but got %v", buf.String())
+		}
+
+		err := sub.Notify("After Close")
+		if err == nil || err.Error() != "send on closed channel" {
+			t.Fatal("expected a 'send on closed channel' error when notifying after close, got:", err)
+		}
+	})
 }

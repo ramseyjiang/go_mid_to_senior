@@ -17,7 +17,12 @@ type ChPublisher struct {
 }
 
 func NewPublisher() *ChPublisher {
-	return &ChPublisher{}
+	return &ChPublisher{
+		addSubCh:    make(chan Subscriber),
+		removeSubCh: make(chan Subscriber),
+		in:          make(chan interface{}),
+		stop:        make(chan struct{}),
+	}
 }
 
 func (cp *ChPublisher) Start() {

@@ -1,86 +1,50 @@
 package concurrencyobserver
 
 import (
+	"bytes"
 	"testing"
 	"time"
 )
 
-type mockSubscriber struct {
-	notifyTestingFunc func(msg interface{})
-	closeTestingFunc  func()
-}
-
-func (m *mockSubscriber) Notify(msg interface{}) error {
-	m.notifyTestingFunc(msg)
-	return nil
-}
-
-func (m *mockSubscriber) Close() {
-	m.closeTestingFunc()
-}
-
 func TestPublisher(t *testing.T) {
-	pub := NewPublisher()
+	t.Run("AddSubscriber", func(t *testing.T) {
+		var buf bytes.Buffer
+		pub := NewPublisher()
+		sub := NewWriterSubscriber(1, &buf)
+		go pub.Start()
 
-	// Initialize the publisher's channels
-	pub.addSubCh = make(chan Subscriber)
-	pub.removeSubCh = make(chan Subscriber)
-	pub.in = make(chan interface{})
-	pub.stop = make(chan struct{})
+		pub.AddSubscriberCh() <- sub
+		time.Sleep(50 * time.Millisecond) // Allow some time for the subscriber to be added
 
-	// Start the publisher in a goroutine
-	go pub.Start()
+		pub.PublishingCh() <- "Hello"
+		time.Sleep(50 * time.Millisecond) // Allow some time for the message to be processed
 
-	msgToSend := "Hello"
-	notified := make(chan bool, 1)
-	closed := make(chan bool, 1)
-
-	sub := &mockSubscriber{
-		notifyTestingFunc: func(received interface{}) {
-			if s, ok := received.(string); ok && s == msgToSend {
-				notified <- true
-			} else {
-				notified <- false
-			}
-		},
-		closeTestingFunc: func() {
-			closed <- true
-		},
-	}
-
-	// Add a subscriber
-	go func() { pub.addSubCh <- sub }()
-	time.Sleep(50 * time.Millisecond) // Give a short delay to ensure the subscriber is added
-
-	// Publish a message
-	go func() { pub.in <- msgToSend }()
-	select {
-	case success := <-notified:
-		if !success {
-			t.Error("Subscriber did not receive the expected message")
+		if buf.String() != "(W1): Hello\n" {
+			t.Fatalf("expected '(W1): Hello\n' but got %v", buf.String())
 		}
-	case <-time.After(1 * time.Second):
-		t.Error("Timed out waiting for subscriber notification")
-	}
 
-	// Assert subscriber count
-	if len(pub.subscribers) != 1 {
-		t.Errorf("Expected 1 subscriber but got %d", len(pub.subscribers))
-	}
+		pub.Stop()
+	})
 
-	// Remove subscriber
-	go func() { pub.removeSubCh <- sub }()
-	select {
-	case <-closed:
-		// Subscriber was closed, this is expected
-	case <-time.After(1 * time.Second):
-		t.Error("Timed out waiting for subscriber closure")
-	}
+	t.Run("RemoveSubscriber", func(t *testing.T) {
+		var buf bytes.Buffer
+		pub := NewPublisher()
+		sub := NewWriterSubscriber(1, &buf)
+		go pub.Start()
 
-	if len(pub.subscribers) != 0 {
-		t.Errorf("Expected 0 subscribers but got %d", len(pub.subscribers))
-	}
+		pub.AddSubscriberCh() <- sub
+		time.Sleep(50 * time.Millisecond) // Allow some time for the subscriber to be added
 
-	// Stop the publisher
-	pub.Stop()
+		pub.RemoveSubscriberCh() <- sub
+		time.Sleep(50 * time.Millisecond) // Allow some time for the subscriber to be removed
+
+		pub.PublishingCh() <- "Hello"
+		time.Sleep(50 * time.Millisecond) // Allow some time to ensure the message is not received
+
+		if buf.String() != "" {
+			t.Fatalf("expected no messages but got %v", buf.String())
+		}
+
+		pub.Stop()
+	})
 }
