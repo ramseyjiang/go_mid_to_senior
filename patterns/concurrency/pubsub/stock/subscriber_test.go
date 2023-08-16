@@ -22,6 +22,8 @@ func TestTradingBots(t *testing.T) {
 		nyse.AddSubscriber(bot2)
 
 		// Capturing stdout to a buffer
+		// The code temporarily redirects the standard output (os.Stdout) to a custom writer (w).
+		// This is done so the code can capture any data that's written to the standard output.
 		old := os.Stdout
 		r, w, _ := os.Pipe()
 		os.Stdout = w
