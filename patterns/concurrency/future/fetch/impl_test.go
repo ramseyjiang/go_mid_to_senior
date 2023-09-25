@@ -1,6 +1,7 @@
 package fetch
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -23,7 +24,7 @@ func TestFetch(t *testing.T) {
 			if result.Err != nil {
 				t.Errorf("Error: %v", result.Err)
 			} else {
-				// fmt.Println("Result:", string(result.Body))
+				fmt.Println("Result body length:", len(string(result.Body)))
 			}
 		})
 	}

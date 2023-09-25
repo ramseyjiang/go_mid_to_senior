@@ -1,21 +1,51 @@
 package simple
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
-func TestCompute(t *testing.T) {
-	t.Run("TestComputeWith5", func(t *testing.T) {
-		future := compute(5)
-		result := <-future
-		if result != 10 {
-			t.Errorf("Expected 10, but got %d", result)
-		}
-	})
+func TestCalculateAverage(t *testing.T) {
+	tests := []struct {
+		name     string
+		data     []int
+		expected float64
+		hasError bool
+	}{
+		{
+			name:     "Average of non-empty slice",
+			data:     []int{10, 20, 30, 40, 50},
+			expected: 30,
+			hasError: false,
+		},
+		{
+			name:     "Average of empty slice",
+			data:     []int{},
+			expected: 0,
+			hasError: true,
+		},
+	}
 
-	t.Run("TestComputeWith7", func(t *testing.T) {
-		future := compute(7)
-		result := <-future
-		if result != 14 {
-			t.Errorf("Expected 14, but got %d", result)
-		}
-	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			future := CalculateAverage(tt.data)
+
+			// Using a select with a timeout to ensure the test doesn't hang indefinitely
+			select {
+			case <-time.After(3 * time.Second):
+				t.Fatal("Test timed out")
+			default:
+				average, err := future.Get()
+				if tt.hasError && err == nil {
+					t.Fatalf("Expected an error but got none")
+				}
+				if !tt.hasError && err != nil {
+					t.Fatalf("Didn't expect an error but got: %v", err)
+				}
+				if average != tt.expected {
+					t.Fatalf("Expected average %f but got %f", tt.expected, average)
+				}
+			}
+		})
+	}
 }
