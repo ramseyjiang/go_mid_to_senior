@@ -1,4 +1,4 @@
-package faninout
+package faninfanout
 
 import (
 	"fmt"
