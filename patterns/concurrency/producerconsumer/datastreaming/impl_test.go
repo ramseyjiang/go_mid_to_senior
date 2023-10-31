@@ -2,7 +2,6 @@ package datastreaming
 
 import (
 	"reflect"
-	"sync"
 	"testing"
 )
 
@@ -26,20 +25,12 @@ func TestProducerConsumer(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ch := make(chan Item, 10)
-			var wg sync.WaitGroup
+			stream := NewStreamer(10)
 			processedItems := make([]Item, 0)
 
-			wg.Add(1)
-			go func() {
-				Producer(ch, &wg, tt.itemsToProduce)
-				close(ch) // Close the channel after the producer is done sending items.
-			}()
-
-			wg.Add(1)
-			go Consumer(ch, &wg, &processedItems)
-
-			wg.Wait() // Wait for both the producer and consumer to finish.
+			stream.Producer(tt.itemsToProduce)
+			stream.Consumer(&processedItems)
+			stream.Close()
 
 			if !reflect.DeepEqual(processedItems, tt.expected) {
 				t.Errorf("Expected %v, but got %v", tt.expected, processedItems)
