@@ -47,6 +47,6 @@ func TestSportsBet(t *testing.T) {
 	})
 
 	// Close the channel and wait for the consumer to finish processing
-	close(orderChannel)
+	close(orderBufferChannel)
 	wg.Wait()
 }

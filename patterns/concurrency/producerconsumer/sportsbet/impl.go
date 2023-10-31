@@ -11,7 +11,7 @@ type BetOrder struct {
 	PotentialWin float64
 }
 
-var orderChannel = make(chan *BetOrder, 10) // Channel to hold up to 10 orders
+var orderBufferChannel = make(chan *BetOrder, 10) // Channel to hold up to 10 orders
 
 // ReceiveOrders is a Producer Function to receive orders
 func ReceiveOrders(order *BetOrder) error {
@@ -19,13 +19,13 @@ func ReceiveOrders(order *BetOrder) error {
 		return errors.New("invalid bet amount")
 	}
 	order.PotentialWin = order.Amount * order.Odds
-	orderChannel <- order
+	orderBufferChannel <- order
 	return nil
 }
 
 // ProcessOrders func is a Consumer Function to process orders:
 func ProcessOrders() {
-	for order := range orderChannel {
+	for order := range orderBufferChannel {
 		// Here, you can add logic to save the order to a database or any other storage.
 		// For this example, we'll just print the order.
 		println("Processed order for user:", order.UserID)
