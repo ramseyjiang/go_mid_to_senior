@@ -25,10 +25,11 @@ func TestProducerConsumer(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			// Initialize and Start
 			stream := NewStreamer(10)
 			processedItems := make([]Item, 0)
-
 			stream.Producer(tt.itemsToProduce)
+			// Handle Synchronization
 			stream.Consumer(&processedItems)
 			stream.Close()
 
