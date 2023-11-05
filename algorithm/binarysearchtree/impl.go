@@ -1,7 +1,8 @@
-package main
+package bst
 
 import (
 	"fmt"
+	"io"
 )
 
 type Node struct {
@@ -55,21 +56,21 @@ func (bst *BST) SearchRec(node *Node, val int) bool {
 	return bst.SearchRec(node.right, val)
 }
 
-// Inorder traversal is a depth-first, recursive method that traverses the tree in a left node > root node > right node order.
+// InOrder traversal is a depth-first, recursive method that traverses the tree in a left node > root node > right node order.
 // A depth-first approach will poke the deepest leaf nodes in a subtree before moving on to the next subtree.
-func (bst *BST) Inorder(node *Node) {
+func (bst *BST) InOrder(w io.Writer, node *Node) {
 	if node == nil {
 		return
 	}
 
-	bst.Inorder(node.left)
-	bst.Inorder(node.right)
-	fmt.Print(node.data, " ")
+	bst.InOrder(w, node.left)
+	fmt.Fprint(w, node.data, " ")
+	bst.InOrder(w, node.right)
 }
 
 // LevelOrder traversal takes a breadth-first approach.
 // A breadth-first approach, unlike a depth-first approach, will iterate through the tree level-by-level.
-func (bst *BST) LevelOrder() {
+func (bst *BST) LevelOrder(w io.Writer) {
 	if bst.root == nil {
 		return
 	}
@@ -77,7 +78,7 @@ func (bst *BST) LevelOrder() {
 	nodeList = append(nodeList, bst.root)
 	for len(nodeList) != 0 {
 		current := nodeList[0]
-		fmt.Print(current.data, " ")
+		fmt.Fprint(w, current.data, " ")
 		if current.left != nil {
 			nodeList = append(nodeList, current.left)
 		}
@@ -95,19 +96,19 @@ func (bst *BST) LevelOrder() {
 // Binary search trees, abbreviated as BSTs.
 // Perform a binary search: split the list in half, pick the half where the item would be, split again, and vice versa.
 // While a linear search would take O(n) time, a binary search would take O(log n) time, which makes it more efficient.
-func main() {
-	bst := BST{}
-	bst.Insert(10)
-	bst.Insert(5)
-	bst.Insert(15)
-	bst.Insert(20)
-	bst.Insert(17)
-	bst.Insert(4)
-	bst.Insert(6)
-	bst.Inorder(bst.root)
-	fmt.Println()
-	bst.LevelOrder()
-	fmt.Println()
-	fmt.Println(bst.Search(5))
-	fmt.Println(bst.Search(11))
-}
+// func main() {
+// 	bst := BST{}
+// 	bst.Insert(10)
+// 	bst.Insert(5)
+// 	bst.Insert(15)
+// 	bst.Insert(20)
+// 	bst.Insert(17)
+// 	bst.Insert(4)
+// 	bst.Insert(6)
+// 	bst.Inorder(bst.root)
+// 	fmt.Println()
+// 	bst.LevelOrder()
+// 	fmt.Println()
+// 	fmt.Println(bst.Search(5))
+// 	fmt.Println(bst.Search(11))
+// }
