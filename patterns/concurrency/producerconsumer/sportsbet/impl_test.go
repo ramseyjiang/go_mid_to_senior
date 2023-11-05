@@ -1,52 +1,62 @@
 package sportsbet
 
 import (
-	"sync"
 	"testing"
+	"time"
 )
 
-func TestSportsBet(t *testing.T) {
-	var wg sync.WaitGroup
+func TestBetting(t *testing.T) {
+	tests := []struct {
+		name          string
+		order         *BetOrder
+		expectedError string
+		expectedWin   float64
+	}{
+		{
+			name: "Place valid order",
+			order: &BetOrder{
+				UserID:  "user123",
+				MatchID: "match456",
+				BetType: "WIN",
+				Amount:  100,
+				Odds:    1.5,
+			},
+			expectedError: "",
+			expectedWin:   150,
+		},
+		{
+			name: "Place invalid order",
+			order: &BetOrder{
+				UserID:  "user123",
+				MatchID: "match456",
+				BetType: "WIN",
+				Amount:  -100,
+				Odds:    1.5,
+			},
+			expectedError: "invalid bet amount",
+			expectedWin:   0,
+		},
+	}
 
-	// Start the consumer in a goroutine
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		ProcessOrders()
-	}()
+	// Initialize and Start the consumer in a goroutine
+	go ProcessOrders()
 
-	t.Run("Place valid order", func(t *testing.T) {
-		order := &BetOrder{
-			UserID:  "user123",
-			MatchID: "match456",
-			BetType: "WIN",
-			Amount:  100,
-			Odds:    1.5,
-		}
-		err := ReceiveOrders(order)
-		if err != nil {
-			t.Errorf("expected no error but got %v", err)
-		}
-		if order.PotentialWin != 150 {
-			t.Errorf("expected potential win to be 150 but got %v", order.PotentialWin)
-		}
-	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Handle Synchronization
+			err := ReceiveOrders(tt.order)
+			if err != nil && err.Error() != tt.expectedError {
+				t.Errorf("expected error %v but got %v", tt.expectedError, err.Error())
+			} else if err == nil && tt.expectedError != "" {
+				t.Errorf("expected error %v but got nil", tt.expectedError)
+			}
 
-	t.Run("Place invalid order", func(t *testing.T) {
-		order := &BetOrder{
-			UserID:  "user123",
-			MatchID: "match456",
-			BetType: "WIN",
-			Amount:  -100,
-			Odds:    1.5,
-		}
-		err := ReceiveOrders(order)
-		if err == nil {
-			t.Error("expected error but got none")
-		}
-	})
+			if tt.order.PotentialWin != tt.expectedWin {
+				t.Errorf("expected potential win to be %v but got %v", tt.expectedWin, tt.order.PotentialWin)
+			}
+		})
+	}
 
-	// Close the channel and wait for the consumer to finish processing
-	close(orderBufferChannel)
-	wg.Wait()
+	// Give some time for the consumer to process the orders before ending the tests
+	time.Sleep(1 * time.Second)
 }
