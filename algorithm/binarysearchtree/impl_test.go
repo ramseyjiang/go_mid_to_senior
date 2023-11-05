@@ -19,7 +19,7 @@ func TestBST(t *testing.T) {
 
 	// Test Insert
 	t.Run("Insert", func(t *testing.T) {
-		valuesToInsert := []int{10, 5, 15, 20, 17, 4, 6}
+		valuesToInsert := []int{10, 5, 20, 15, 17, 4, 6}
 		for _, val := range valuesToInsert {
 			bst.Insert(val)
 		}
@@ -66,7 +66,7 @@ func TestBST(t *testing.T) {
 
 	// Test LevelOrder
 	t.Run("LevelOrder", func(t *testing.T) {
-		expectedOutput := "10 5 15 4 6 20 17 "
+		expectedOutput := "10 5 20 4 6 15 17 "
 		actualOutput := captureOutput(func(w io.Writer) {
 			bst.LevelOrder(w)
 		})
