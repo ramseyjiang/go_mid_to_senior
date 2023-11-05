@@ -40,19 +40,19 @@ func (bst *BST) Search(val int) bool {
 }
 
 func (bst *BST) SearchRec(node *Node, val int) bool {
-	if node.data == val {
-		return true
-	}
 	if node == nil {
 		return false
 	}
+
+	if node.data == val {
+		return true
+	}
+
 	if val < node.data {
 		return bst.SearchRec(node.left, val)
 	}
-	if val > node.data {
-		return bst.SearchRec(node.right, val)
-	}
-	return false
+
+	return bst.SearchRec(node.right, val)
 }
 
 // Inorder traversal is a depth-first, recursive method that traverses the tree in a left node > root node > right node order.
@@ -60,22 +60,22 @@ func (bst *BST) SearchRec(node *Node, val int) bool {
 func (bst *BST) Inorder(node *Node) {
 	if node == nil {
 		return
-	} else {
-		bst.Inorder(node.left)
-		fmt.Print(node.data, " ")
-		bst.Inorder(node.right)
 	}
+
+	bst.Inorder(node.left)
+	bst.Inorder(node.right)
+	fmt.Print(node.data, " ")
 }
 
-// LevelOrder traversal takes a breadth-first approach. A breadth-first approach, unlike a depth-first approach,
-// will iterate through the tree level-by-level.
+// LevelOrder traversal takes a breadth-first approach.
+// A breadth-first approach, unlike a depth-first approach, will iterate through the tree level-by-level.
 func (bst *BST) LevelOrder() {
 	if bst.root == nil {
 		return
 	}
 	nodeList := make([]*Node, 0)
 	nodeList = append(nodeList, bst.root)
-	for !(len(nodeList) == 0) {
+	for len(nodeList) != 0 {
 		current := nodeList[0]
 		fmt.Print(current.data, " ")
 		if current.left != nil {
@@ -109,4 +109,5 @@ func main() {
 	bst.LevelOrder()
 	fmt.Println()
 	fmt.Println(bst.Search(5))
+	fmt.Println(bst.Search(11))
 }
