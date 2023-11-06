@@ -5,19 +5,29 @@ import (
 	"io"
 )
 
+// In BST, it has two most popular methods: inorder traversal and level order traversal.
+// A binary tree is a tree where each node can have at most two children.
+// A binary search tree is a special type of binary tree.
+// The left child must have a value less than the parent, and the right child must have a value greater than the parent.
+// Binary search trees, abbreviated as BSTs.
+// Perform a binary search: split the list in half, pick the half where the item would be, split again, and vice versa.
+// While a linear search would take O(n) time, a binary search would take O(log n) time, which makes it more efficient.
+
+type BST struct {
+	root *Node
+}
+
 type Node struct {
 	data  int
 	left  *Node
 	right *Node
-}
-type BST struct {
-	root *Node
 }
 
 func (bst *BST) Insert(val int) {
 	bst.InsertRec(bst.root, val)
 }
 
+// InsertRec means insert recursive implementation.
 func (bst *BST) InsertRec(node *Node, val int) *Node {
 	if bst.root == nil {
 		bst.root = &Node{val, nil, nil}
@@ -40,6 +50,7 @@ func (bst *BST) Search(val int) bool {
 	return found
 }
 
+// SearchRec means search recursive implementation.
 func (bst *BST) SearchRec(node *Node, val int) bool {
 	if node == nil {
 		return false
@@ -88,27 +99,3 @@ func (bst *BST) LevelOrder(w io.Writer) {
 		nodeList = nodeList[1:]
 	}
 }
-
-// In BST, it has two most popular methods: inorder traversal and level order traversal.
-// A binary tree is a tree where each node can have at most two children.
-// A binary search tree is a special type of binary tree.
-// The left child must have a value less than the parent, and the right child must have a value greater than the parent.
-// Binary search trees, abbreviated as BSTs.
-// Perform a binary search: split the list in half, pick the half where the item would be, split again, and vice versa.
-// While a linear search would take O(n) time, a binary search would take O(log n) time, which makes it more efficient.
-// func main() {
-// 	bst := BST{}
-// 	bst.Insert(10)
-// 	bst.Insert(5)
-// 	bst.Insert(15)
-// 	bst.Insert(20)
-// 	bst.Insert(17)
-// 	bst.Insert(4)
-// 	bst.Insert(6)
-// 	bst.Inorder(bst.root)
-// 	fmt.Println()
-// 	bst.LevelOrder()
-// 	fmt.Println()
-// 	fmt.Println(bst.Search(5))
-// 	fmt.Println(bst.Search(11))
-// }
