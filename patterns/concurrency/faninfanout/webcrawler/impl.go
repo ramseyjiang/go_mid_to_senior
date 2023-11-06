@@ -1,4 +1,4 @@
-package webcrawl
+package webcrawler
 
 import (
 	"io"
@@ -14,7 +14,8 @@ type Fetcher interface {
 // HTTPFetcher implements the Fetcher interface using the http package.
 type HTTPFetcher struct{}
 
-// Fetch makes an HTTP GET request to the specified URL and returns the response body as a string.
+// Fetch is the worker function.
+// It makes an HTTP GET request to the specified URL and returns the response body as a string.
 func (f *HTTPFetcher) Fetch(url string) (string, error) {
 	resp, err := http.Get(url)
 	if err != nil {

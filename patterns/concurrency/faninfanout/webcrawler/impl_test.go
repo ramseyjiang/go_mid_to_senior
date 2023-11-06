@@ -1,4 +1,4 @@
-package webcrawl
+package webcrawler
 
 import (
 	"testing"
