@@ -11,7 +11,9 @@ func removeOuterParentheses(s string) string {
 				result = append(result, char)
 			}
 			balance++
-		} else if char == ')' {
+		}
+
+		if char == ')' {
 			balance--
 			// If balance is greater than 0, this is not an outer parenthesis.
 			if balance > 0 {
