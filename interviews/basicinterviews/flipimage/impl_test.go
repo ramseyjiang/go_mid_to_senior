@@ -6,7 +6,7 @@ import (
 )
 
 // TestFlipAndInvertImage tests the flipAndInvertImage function.
-func TestFlipAndInvertImage(t *testing.T) {
+func TestFlipInvertImage(t *testing.T) {
 	testCases := []struct {
 		name   string
 		input  [][]int
