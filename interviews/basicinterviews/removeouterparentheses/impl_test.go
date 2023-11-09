@@ -14,6 +14,7 @@ func TestRemoveOuterParentheses(t *testing.T) {
 		{"Nested parentheses", "((()))", "(())"},
 		{"Multiple sets", "(()())(())", "()()()"},
 		{"Complex nesting", "(()(()))", "()(())"},
+		{"All outer", "(()())(())(()(()))", "()()()()(())"},
 	}
 
 	for _, tc := range testCases {
