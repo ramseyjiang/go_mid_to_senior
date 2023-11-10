@@ -1,6 +1,6 @@
 package rotate
 
-func rotate(nums []int, k int) {
+func Rotate(nums []int, k int) {
 	n := len(nums)
 	k %= n // Ensure k is within the bounds of nums length
 	result := make([]int, n)
@@ -13,7 +13,7 @@ func rotate(nums []int, k int) {
 	copy(nums, result)
 }
 
-func rotate2(nums []int, k int) {
+func Rotate2(nums []int, k int) {
 	tmp := make([]int, len(nums)-1)
 	for i := 1; i <= k; i++ {
 		tmpLast := nums[len(nums)-1]

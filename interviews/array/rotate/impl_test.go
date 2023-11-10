@@ -22,7 +22,7 @@ func TestRotate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rotate(tt.nums, tt.k)
+			Rotate(tt.nums, tt.k)
 			if !reflect.DeepEqual(tt.nums, tt.expected) {
 				t.Errorf("rotate(%v, %d) got %v, want %v", tt.nums, tt.k, tt.nums, tt.expected)
 			}
