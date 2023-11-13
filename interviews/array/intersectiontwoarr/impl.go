@@ -7,6 +7,9 @@ func intersect(nums1 []int, nums2 []int) []int {
 		return intersect(nums2, nums1)
 	}
 
+	sort.Ints(nums1)
+	sort.Ints(nums2)
+
 	countMap := make(map[int]int)
 	var result []int
 
