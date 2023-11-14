@@ -12,7 +12,7 @@ func twoSum2(nums []int, target int) (res []int) {
 }
 
 func twoSum(nums []int, target int) (res []int) {
-	record := make(map[int]int)
+	record := make(map[int]int, 2)
 	for i := 0; i < len(nums); i++ {
 		if val, ok := record[target-nums[i]]; ok {
 			res = append(res, i, val)
