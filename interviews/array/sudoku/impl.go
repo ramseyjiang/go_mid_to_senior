@@ -1,6 +1,6 @@
 package sudoku
 
-func isValidSudoku2(board [][]byte) bool {
+func isValidSudoku(board [][]byte) bool {
 	var row, col, box [9][9]bool
 
 	for i := 0; i < 9; i++ {
@@ -21,7 +21,7 @@ func isValidSudoku2(board [][]byte) bool {
 	return true
 }
 
-func isValidSudoku(board [][]byte) bool {
+func isValidSudoku2(board [][]byte) bool {
 	for j := 0; j < 9; j++ {
 		for i := 0; i < 9; i++ {
 			if board[i][j] != '.' {
