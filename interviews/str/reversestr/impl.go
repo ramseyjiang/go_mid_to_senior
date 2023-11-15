@@ -1,4 +1,4 @@
-package str
+package reversestr
 
 func ReverseStr(s []byte) {
 	i := 0
