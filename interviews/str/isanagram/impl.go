@@ -6,6 +6,25 @@ func isAnagram(s string, t string) bool {
 	if len(s) != len(t) {
 		return false
 	}
+	sArr := strings.Split(s, "")
+	tArr := strings.Split(t, "")
+	sMap := make(map[string]int)
+	for i, _ := range sArr {
+		sMap[sArr[i]] += 1
+		sMap[tArr[i]] -= 1
+	}
+	for _, val := range sMap {
+		if val != 0 {
+			return false
+		}
+	}
+	return true
+}
+
+func isAnagram1(s string, t string) bool {
+	if len(s) != len(t) {
+		return false
+	}
 
 	var freq [26]int
 
@@ -37,7 +56,7 @@ func isAnagram2(s string, t string) bool {
 
 	// Decrease the count for each character found in t
 	for _, char := range t {
-		if !strings.ContainsAny(t, string(char)) {
+		if !strings.Contains(t, string(char)) {
 			return false
 		}
 		count[char]--
