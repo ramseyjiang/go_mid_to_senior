@@ -6,7 +6,7 @@ import (
 	"unicode"
 )
 
-func isPalindrome2(s string) bool {
+func isPalindrome(s string) bool {
 	var builder strings.Builder
 	builder.Grow(len(s))
 
@@ -28,7 +28,7 @@ func isPalindrome2(s string) bool {
 	return true
 }
 
-func isPalindrome(s string) bool {
+func isPalindrome2(s string) bool {
 	if len(s) == 0 {
 		return true
 	}
