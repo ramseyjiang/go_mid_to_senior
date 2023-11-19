@@ -1,11 +1,13 @@
 package singlenum
 
-import "sort"
+import (
+	"sort"
+)
 
 func singleNumber(nums []int) int {
 	result := 0
 	for _, num := range nums {
-		result ^= num
+		result ^= num // zero XOR with any number, it equals to any number. XOR all nums can find the num does not have the same one.
 	}
 	return result
 }
