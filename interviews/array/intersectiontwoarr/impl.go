@@ -2,6 +2,7 @@ package intersectiontwoarr
 
 import "sort"
 
+// intersect is using the countMap way to solve.
 func intersect(nums1 []int, nums2 []int) []int {
 	if len(nums1) > len(nums2) {
 		return intersect(nums2, nums1)
@@ -27,6 +28,8 @@ func intersect(nums1 []int, nums2 []int) []int {
 	return result
 }
 
+// intersect2 is used the quick sort way, it uses two pointers to find the common elements.
+// Time complexity is O(n+m), the space complexity is O(1).
 func intersect2(nums1 []int, nums2 []int) []int {
 	sort.Ints(nums1)
 	sort.Ints(nums2)
