@@ -1,4 +1,4 @@
-package edd
+package orderevent
 
 import (
 	"fmt"
