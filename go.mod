@@ -1,6 +1,6 @@
 module github.com/ramseyjiang/go_mid_to_senior
 
-go 1.19
+go 1.21
 
 require (
 	fyne.io/fyne/v2 v2.3.0
@@ -15,10 +15,10 @@ require (
 	github.com/confluentinc/confluent-kafka-go v1.9.2
 	github.com/gdamore/tcell/v2 v2.5.3
 	github.com/gin-contrib/static v0.0.1
-	github.com/gin-gonic/gin v1.8.2
+	github.com/gin-gonic/gin v1.9.1
 	github.com/go-martini/martini v0.0.0-20170121215854-22fa46961aab
-	github.com/go-playground/assert/v2 v2.0.1
-	github.com/go-playground/validator/v10 v10.11.1
+	github.com/go-playground/assert/v2 v2.2.0
+	github.com/go-playground/validator/v10 v10.14.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/go-sql-driver/mysql v1.6.0
@@ -43,12 +43,12 @@ require (
 	github.com/segmentio/ksuid v1.0.4
 	github.com/sony/gobreaker v0.5.0
 	github.com/spf13/viper v1.15.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.3
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/uber/jaeger-lib v2.4.1+incompatible
 	github.com/zeromicro/go-zero v1.3.3
 	go.uber.org/ratelimit v0.2.0
-	golang.org/x/text v0.8.0
+	golang.org/x/text v0.9.0
 	google.golang.org/grpc v1.52.0
 	google.golang.org/protobuf v1.30.0
 	gorm.io/driver/mysql v1.3.3
@@ -73,7 +73,9 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/benoitkugler/textlayout v0.3.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
+	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0 // indirect
 	github.com/cucumber/gherkin-go/v19 v19.0.3 // indirect
 	github.com/cucumber/godog v0.12.6 // indirect
@@ -90,6 +92,7 @@ require (
 	github.com/fyne-io/gl-js v0.0.0-20220119005834-d2da28d9ccfe // indirect
 	github.com/fyne-io/glfw-js v0.0.0-20220120001248-ee7290d23504 // indirect
 	github.com/fyne-io/image v0.0.0-20220602074514-4956b0afb3d2 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -108,12 +111,12 @@ require (
 	github.com/go-openapi/strfmt v0.21.5 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
 	github.com/go-openapi/validate v0.22.1 // indirect
-	github.com/go-playground/locales v0.14.0 // indirect
-	github.com/go-playground/universal-translator v0.18.0 // indirect
+	github.com/go-playground/locales v0.14.1 // indirect
+	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-swagger/go-swagger v0.30.4 // indirect
 	github.com/go-text/typesetting v0.0.0-20221212183139-1eb938670a1f // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
-	github.com/goccy/go-json v0.10.0 // indirect
+	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/goki/freetype v0.0.0-20220119013949-7a161fd3728c // indirect
@@ -149,16 +152,17 @@ require (
 	github.com/jung-kurt/gofpdf v1.16.2 // indirect
 	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/klauspost/compress v1.15.9 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
-	github.com/leodido/go-urn v1.2.1 // indirect
+	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/lib/pq v1.10.8 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
-	github.com/mattn/go-isatty v0.0.17 // indirect
+	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
@@ -171,7 +175,7 @@ require (
 	github.com/open-policy-agent/opa v0.43.1 // indirect
 	github.com/openzipkin/zipkin-go v0.4.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
-	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
+	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/pierrec/lz4/v4 v4.1.15 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.12.2 // indirect
@@ -199,7 +203,8 @@ require (
 	github.com/temoto/robotstxt v1.1.2 // indirect
 	github.com/tevino/abool v1.2.0 // indirect
 	github.com/toqueteos/webbrowser v1.2.0 // indirect
-	github.com/ugorji/go/codec v1.2.8 // indirect
+	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
+	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.38.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
@@ -217,14 +222,15 @@ require (
 	go.opentelemetry.io/otel/trace v1.11.1 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/automaxprocs v1.5.1 // indirect
-	golang.org/x/crypto v0.7.0 // indirect
+	golang.org/x/arch v0.3.0 // indirect
+	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb // indirect
 	golang.org/x/image v0.0.0-20220601225756-64ec528b34cd // indirect
 	golang.org/x/mobile v0.0.0-20211207041440-4e6c2922fdee // indirect
 	golang.org/x/mod v0.9.0 // indirect
-	golang.org/x/net v0.8.0 // indirect
-	golang.org/x/sys v0.6.0 // indirect
-	golang.org/x/term v0.6.0 // indirect
+	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/term v0.8.0 // indirect
 	golang.org/x/tools v0.7.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
