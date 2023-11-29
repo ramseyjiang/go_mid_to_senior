@@ -2,7 +2,7 @@ package reverseint
 
 import "math"
 
-func reverseInt2(x int) int {
+func reverseInt(x int) int {
 	var reversed int
 	for x != 0 {
 		d := x % 10
@@ -16,7 +16,7 @@ func reverseInt2(x int) int {
 	return reversed
 }
 
-func reverseInt(x int) int {
+func reverseInt2(x int) int {
 	var reversed int
 	for x != 0 {
 		pop := x % 10
