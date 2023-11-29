@@ -2,6 +2,20 @@ package reverseint
 
 import "math"
 
+func reverseInt2(x int) int {
+	var reversed int
+	for x != 0 {
+		d := x % 10
+		reversed = reversed*10 + d
+		x /= 10
+		if reversed > math.MaxInt32 || reversed < math.MinInt32 {
+			return 0
+		}
+
+	}
+	return reversed
+}
+
 func reverseInt(x int) int {
 	var reversed int
 	for x != 0 {
