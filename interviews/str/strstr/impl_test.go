@@ -1,4 +1,4 @@
-package implstrstr
+package strstr
 
 import "testing"
 
