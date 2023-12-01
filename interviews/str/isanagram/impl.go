@@ -1,27 +1,11 @@
 package isanagram
 
-import "strings"
+import (
+	"reflect"
+	"strings"
+)
 
 func isAnagram(s string, t string) bool {
-	if len(s) != len(t) {
-		return false
-	}
-	sArr := strings.Split(s, "")
-	tArr := strings.Split(t, "")
-	sMap := make(map[string]int)
-	for i, _ := range sArr {
-		sMap[sArr[i]] += 1
-		sMap[tArr[i]] -= 1
-	}
-	for _, val := range sMap {
-		if val != 0 {
-			return false
-		}
-	}
-	return true
-}
-
-func isAnagram1(s string, t string) bool {
 	if len(s) != len(t) {
 		return false
 	}
@@ -42,6 +26,29 @@ func isAnagram1(s string, t string) bool {
 	return true
 }
 
+func isAnagram1(s string, t string) bool {
+	if len(s) != len(t) {
+		return false
+	}
+
+	sArr := [26]int{}
+	tArr := [26]int{}
+
+	for i := range s {
+		sArr[s[i]-'a']++
+	}
+
+	for j := range t {
+		tArr[t[j]-'a']++
+	}
+
+	if !reflect.DeepEqual(sArr, tArr) {
+		return false
+	}
+
+	return true
+}
+
 func isAnagram2(s string, t string) bool {
 	// If the lengths of the strings are different, they cannot be anagrams
 	if len(s) != len(t) {
@@ -56,14 +63,30 @@ func isAnagram2(s string, t string) bool {
 
 	// Decrease the count for each character found in t
 	for _, char := range t {
-		if !strings.Contains(t, string(char)) {
-			return false
-		}
 		count[char]--
 		if count[char] < 0 {
 			return false
 		}
 	}
 
+	return true
+}
+
+func isAnagram3(s string, t string) bool {
+	if len(s) != len(t) {
+		return false
+	}
+	sArr := strings.Split(s, "")
+	tArr := strings.Split(t, "")
+	sMap := make(map[string]int)
+	for i, _ := range sArr {
+		sMap[sArr[i]] += 1
+		sMap[tArr[i]] -= 1
+	}
+	for _, val := range sMap {
+		if val != 0 {
+			return false
+		}
+	}
 	return true
 }
