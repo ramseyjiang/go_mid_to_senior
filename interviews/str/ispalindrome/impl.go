@@ -7,6 +7,10 @@ import (
 )
 
 func isPalindrome(s string) bool {
+	if len(s) == 0 {
+		return true
+	}
+
 	var builder strings.Builder
 	builder.Grow(len(s))
 
