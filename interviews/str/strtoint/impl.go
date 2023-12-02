@@ -2,7 +2,6 @@ package strtoint
 
 import (
 	"math"
-	"strconv"
 	"strings"
 	"unicode"
 )
@@ -10,32 +9,25 @@ import (
 func myAtoi(s string) int {
 	// Step 1: Trim leading whitespace
 	s = strings.TrimSpace(s)
-
 	if len(s) == 0 {
 		return 0
 	}
 
-	sign := 1
-	start := 0
-
 	// Step 2: Check for sign
-	if s[0] == '-' || s[0] == '+' {
-		if s[0] == '-' {
+	i := 0
+	sign := 1
+	if i < len(s) && (s[i] == '+' || s[i] == '-') {
+		if s[i] == '-' {
 			sign = -1
 		}
-		start++
+		i++
 	}
 
-	result := 0
-
 	// Step 3: Process digits
-	for i := start; i < len(s); i++ {
-		if s[i] < '0' || s[i] > '9' {
-			break
-		}
+	result := 0
+	for i < len(s) && unicode.IsDigit(rune(s[i])) {
+		// Step 4
 		digit := int(s[i] - '0')
-
-		// Step 4 & 5: Convert to integer and handle overflow
 		if result > math.MaxInt32/10 || (result == math.MaxInt32/10 && digit > math.MaxInt32%10) {
 			if sign == 1 {
 				return math.MaxInt32
@@ -43,6 +35,7 @@ func myAtoi(s string) int {
 			return math.MinInt32
 		}
 		result = result*10 + digit
+		i++
 	}
 
 	// Apply sign
@@ -50,56 +43,38 @@ func myAtoi(s string) int {
 }
 
 func myAtoi2(s string) int {
+	// Step 1
 	s = strings.TrimSpace(s)
 	if len(s) == 0 {
 		return 0
 	}
 
+	// Step 2
+	i := 0
 	sign := 1
-	start := 0
-
-	// Check for sign at the start
-	if s[0] == '-' || s[0] == '+' {
-		if s[0] == '-' {
+	if i < len(s) && (s[i] == '+' || s[i] == '-') {
+		if s[i] == '-' {
 			sign = -1
 		}
-		start++
+		i++
 	}
 
-	var builder strings.Builder
-
-	// Process only the numeric part
-	for i := start; i < len(s); i++ {
-		if unicode.IsDigit(rune(s[i])) {
-			builder.WriteRune(rune(s[i]))
-		} else {
+	// Step 3
+	result := 0
+	for i < len(s) {
+		if s[i] < '0' || s[i] > '9' {
 			break
 		}
-	}
 
-	str := builder.String()
-
-	// Handle empty string or string with only '+' or '-'
-	if str == "" {
-		return 0
-	}
-
-	result, err := strconv.Atoi(str)
-	if err != nil {
-		// Handle integer overflow
-		if sign == 1 {
-			return 1<<31 - 1
+		// Step 4
+		result = result*10 + int(s[i]-'0')
+		if result*sign > math.MaxInt32 {
+			return math.MaxInt32
+		} else if result*sign < math.MinInt32 {
+			return math.MinInt32
 		}
-		return -1 << 31
+		i++
 	}
 
-	// Apply sign and clamp within 32-bit integer range
-	result *= sign
-	if result > 1<<31-1 {
-		return 1<<31 - 1
-	} else if result < -1<<31 {
-		return -1 << 31
-	}
-
-	return result
+	return result * sign
 }
