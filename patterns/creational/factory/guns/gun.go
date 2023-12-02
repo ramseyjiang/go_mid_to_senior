@@ -51,7 +51,7 @@ func GetGun(gunType string) (GunInfo, error) {
 	case Ak:
 		return &Ak47{Name: Ak, Power: 5}, nil
 	case Mk:
-		return &Ak47{Name: Mk, Power: 1}, nil
+		return &Musket{Name: Mk, Power: 1}, nil
 	default:
 		return nil, errors.New(fmt.Sprintf("wrong gun type %s passed", gunType))
 	}
