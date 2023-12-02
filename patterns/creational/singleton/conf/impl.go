@@ -2,26 +2,26 @@ package conf
 
 import "sync"
 
-type config struct {
+type Config struct {
 	settings map[string]string
 }
 
-var instance *config
+var instance *Config
 var once sync.Once
 
-func GetInstance() *config {
+func GetInstance() *Config {
 	once.Do(func() {
-		instance = &config{
+		instance = &Config{
 			settings: make(map[string]string),
 		}
 	})
 	return instance
 }
 
-func (c *config) Set(key, value string) {
+func (c *Config) Set(key, value string) {
 	c.settings[key] = value
 }
 
-func (c *config) Get(key string) string {
+func (c *Config) Get(key string) string {
 	return c.settings[key]
 }
