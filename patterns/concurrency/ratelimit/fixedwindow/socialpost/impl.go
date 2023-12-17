@@ -46,4 +46,5 @@ func RateLimitMiddleware(next http.Handler) http.Handler {
 
 func PostHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Post/comment created successfully")
+	// Do the exact logic in this handler
 }
