@@ -23,8 +23,10 @@ func RateLimitMiddleware(next http.Handler) http.Handler {
 
 		mutex.Lock()
 		activity, exists := userActivities[userID]
-		if !exists || time.Now().After(activity.ResetTime) {
-			userActivities[userID] = &UserActivity{Count: 1, ResetTime: time.Now().Add(1 * time.Minute)}
+		currentTime := time.Now()
+
+		if !exists || currentTime.After(activity.ResetTime) {
+			userActivities[userID] = &UserActivity{Count: 1, ResetTime: currentTime.Add(1 * time.Minute)}
 			mutex.Unlock()
 			next.ServeHTTP(w, r)
 			return
@@ -43,6 +45,5 @@ func RateLimitMiddleware(next http.Handler) http.Handler {
 }
 
 func PostHandler(w http.ResponseWriter, r *http.Request) {
-	// Handle the post/comment creation
 	fmt.Fprintf(w, "Post/comment created successfully")
 }
