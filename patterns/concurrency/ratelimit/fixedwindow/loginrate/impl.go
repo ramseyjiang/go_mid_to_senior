@@ -7,7 +7,10 @@ import (
 	"time"
 )
 
-const maxLoginAttempts = 5
+const (
+	maxLoginAttempts      = 5
+	loginFailTimeInterval = 15 * time.Minute
+)
 
 type LoginAttempt struct {
 	Count     int
@@ -31,7 +34,7 @@ func (rl *RateLimiter) GetLoginAttempt(username string) *LoginAttempt {
 
 	attempt, exists := rl.loginAttempts[username]
 	if !exists || time.Now().After(attempt.ResetTime) {
-		rl.loginAttempts[username] = &LoginAttempt{Count: 1, ResetTime: time.Now().Add(15 * time.Minute)}
+		rl.loginAttempts[username] = &LoginAttempt{Count: 1, ResetTime: time.Now().Add(loginFailTimeInterval)}
 		return rl.loginAttempts[username]
 	}
 	return attempt
