@@ -16,19 +16,19 @@ func TestRateLimitMiddleware(t *testing.T) {
 		expectedStatus    int
 		resetAfter        time.Duration
 	}{
-		{"UnderLimit", "user1", 20, false, http.StatusOK, 0},
-		{"AtLimit", "user2", 30, false, http.StatusOK, 0},
-		{"OverLimit", "user3", 30, true, http.StatusTooManyRequests, 0},
-		{"ResetAfterOneMinute", "user4", 30, true, http.StatusOK, 1 * time.Minute},
+		{"UnderLimit", "user1", 5, false, http.StatusOK, 0},
+		{"AtLimit", "user2", limitNumber, false, http.StatusOK, 0},
+		{"OverLimit", "user3", limitNumber, true, http.StatusTooManyRequests, 0},
+		{"ResetAfterOneMinute", "user4", limitNumber, true, http.StatusOK, 1 * time.Minute},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Mock request
-			req := httptest.NewRequest("POST", "/post", nil)
+			req := httptest.NewRequest("POST", "/comment", nil)
 			req.Header.Set("X-User-ID", tt.userID)
 
-			handler := RateLimitMiddleware(http.HandlerFunc(PostHandler))
+			handler := RateLimitMiddleware(http.HandlerFunc(CommentHandler))
 
 			// Send requests up to the limit
 			for i := 0; i < tt.requestCount; i++ {

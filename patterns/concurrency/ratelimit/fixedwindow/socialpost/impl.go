@@ -17,6 +17,8 @@ var (
 	mutex          = &sync.Mutex{}
 )
 
+const limitNumber = 10
+
 func RateLimitMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID := r.Header.Get("X-User-ID")
@@ -32,7 +34,7 @@ func RateLimitMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		if activity.Count >= 30 {
+		if activity.Count >= limitNumber {
 			http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
 			mutex.Unlock()
 			return
@@ -44,7 +46,7 @@ func RateLimitMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func PostHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Post/comment created successfully")
+func CommentHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Comment created successfully")
 	// Do the exact logic in this handler
 }
