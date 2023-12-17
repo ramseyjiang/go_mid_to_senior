@@ -14,19 +14,18 @@ func TestRateLimitMiddleware(t *testing.T) {
 		requestCount      int
 		additionalRequest bool
 		expectedStatus    int
+		resetAfter        time.Duration
 	}{
-		{"UnderLimit", "user1", 20, false, http.StatusOK},
-		{"AtLimit", "user2", 30, false, http.StatusOK},
-		{"OverLimit", "user3", 30, true, http.StatusTooManyRequests},
-		{"ResetAfterOneMinute", "user4", 30, true, http.StatusOK},
+		{"UnderLimit", "user1", 20, false, http.StatusOK, 0},
+		{"AtLimit", "user2", 30, false, http.StatusOK, 0},
+		{"OverLimit", "user3", 30, true, http.StatusTooManyRequests, 0},
+		{"ResetAfterOneMinute", "user4", 30, true, http.StatusOK, 1 * time.Minute},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			req, err := http.NewRequest("POST", "/post", nil)
-			if err != nil {
-				t.Fatal(err)
-			}
+			// Mock request
+			req := httptest.NewRequest("POST", "/post", nil)
 			req.Header.Set("X-User-ID", tt.userID)
 
 			handler := RateLimitMiddleware(http.HandlerFunc(PostHandler))
@@ -38,8 +37,8 @@ func TestRateLimitMiddleware(t *testing.T) {
 			}
 
 			// Wait for reset interval if needed
-			if tt.name == "ResetAfterOneMinute" {
-				time.Sleep(1 * time.Minute)
+			if tt.resetAfter > 0 {
+				time.Sleep(tt.resetAfter)
 			}
 
 			// Send an additional request if required
