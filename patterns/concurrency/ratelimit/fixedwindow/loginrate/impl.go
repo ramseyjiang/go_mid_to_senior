@@ -43,17 +43,17 @@ func RateLimitMiddleware(rl *RateLimiter, next http.Handler) http.Handler {
 
 		attempt := rl.GetLoginAttempt(username)
 
-		// Increment first, then check if the count exceeds the limit
-		attempt.Count++
 		if attempt.Count > maxLoginAttempts {
 			http.Error(w, "Too many login attempts", http.StatusTooManyRequests)
 			return
 		}
 
+		attempt.Count++
 		next.ServeHTTP(w, r)
 	})
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Login attempt successful")
+	// Add your exact logic after login
 }
