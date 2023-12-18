@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+const limitTradeNum = 5
+
 type TradeWindow struct {
 	Trades []time.Time
 	Mutex  sync.Mutex
@@ -41,7 +43,7 @@ func (tw *TradeWindow) AllowTrade() bool {
 	tw.Trades = validTrades
 
 	// Allow trade if there are less than 5 trades in the last minute
-	return len(tw.Trades) < 5
+	return len(tw.Trades) < limitTradeNum
 }
 
 func TradeLimitMiddleware(tw *TradeWindow, next http.Handler) http.Handler {
