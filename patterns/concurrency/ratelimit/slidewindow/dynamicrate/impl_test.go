@@ -7,23 +7,20 @@ import (
 )
 
 func TestRateLimitMiddleware(t *testing.T) {
-	mockGetCurrentLoad := func() int {
-		return 30 // Mocked current load value
-	}
-
 	tests := []struct {
 		name             string
+		mockCurrentLoad  func() int
 		numberOfRequests int
 		expectedStatus   int
 	}{
-		{"LowLoad", 80, http.StatusOK},
-		{"HighLoad", 60, http.StatusTooManyRequests},
+		{"LowLoad", func() int { return 30 }, 80, http.StatusOK},
+		{"HighLoad", func() int { return 60 }, 60, http.StatusTooManyRequests},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			rw := NewRequestWindow()
-			handler := RateLimitMiddleware(rw, mockGetCurrentLoad, http.HandlerFunc(RequestHandler))
+			handler := RateLimitMiddleware(rw, tt.mockCurrentLoad, http.HandlerFunc(RequestHandler))
 
 			for i := 0; i < tt.numberOfRequests; i++ {
 				req := httptest.NewRequest("GET", "/service", nil)
@@ -33,8 +30,8 @@ func TestRateLimitMiddleware(t *testing.T) {
 
 				if i == tt.numberOfRequests-1 {
 					if status := rr.Code; status != tt.expectedStatus {
-						t.Errorf("handler returned wrong status code: got %v want %v",
-							status, tt.expectedStatus)
+						t.Errorf("%s: handler returned wrong status code: got %v want %v",
+							tt.name, status, tt.expectedStatus)
 					}
 				}
 			}

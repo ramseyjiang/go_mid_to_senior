@@ -7,6 +7,13 @@ import (
 	"time"
 )
 
+// Define the const depends on your real environment
+const (
+	limitLoad            = 50
+	lowerLoadHigherLimit = 100
+	higherLoadLowerLimit = 50
+)
+
 type RequestWindow struct {
 	Requests []time.Time
 	Mutex    sync.Mutex
@@ -42,10 +49,10 @@ func (rw *RequestWindow) AllowRequest(currentLoad int) bool {
 
 	// Dynamic rate limit based on current load
 	var limit int
-	if currentLoad < 50 {
-		limit = 100 // Less load, higher limit
+	if currentLoad < limitLoad {
+		limit = lowerLoadHigherLimit // Less load, higher limit
 	} else {
-		limit = 50 // More load, lower limit
+		limit = higherLoadLowerLimit // More load, lower limit
 	}
 
 	return len(rw.Requests) < limit
@@ -65,4 +72,5 @@ func RateLimitMiddleware(rw *RequestWindow, getCurrentLoad func() int, next http
 
 func RequestHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Request processed successfully")
+	// Do some real logic
 }
