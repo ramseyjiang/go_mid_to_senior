@@ -58,4 +58,5 @@ func TradeLimitMiddleware(tw *TradeWindow, next http.Handler) http.Handler {
 
 func TradeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Trade executed successfully")
+	// Do exact logic after trade executed.
 }

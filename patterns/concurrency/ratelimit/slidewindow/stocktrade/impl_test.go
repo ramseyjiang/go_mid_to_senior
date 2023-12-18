@@ -23,6 +23,7 @@ func TestTradeLimitMiddleware(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Create a new TradeWindow for each test to ensure isolation
+			// If not, these trades are not isolated, then some test cases work for single, not work for together.
 			tw := NewTradeWindow()
 			handler := TradeLimitMiddleware(tw, http.HandlerFunc(TradeHandler))
 
