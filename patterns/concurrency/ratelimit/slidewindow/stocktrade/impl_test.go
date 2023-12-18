@@ -8,8 +8,6 @@ import (
 )
 
 func TestTradeLimitMiddleware(t *testing.T) {
-	tw := NewTradeWindow()
-
 	tests := []struct {
 		name           string
 		numberOfTrades int
@@ -24,6 +22,8 @@ func TestTradeLimitMiddleware(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			// Create a new TradeWindow for each test to ensure isolation
+			tw := NewTradeWindow()
 			handler := TradeLimitMiddleware(tw, http.HandlerFunc(TradeHandler))
 
 			for i := 0; i < tt.numberOfTrades; i++ {

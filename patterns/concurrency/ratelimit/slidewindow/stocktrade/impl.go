@@ -31,7 +31,7 @@ func (tw *TradeWindow) AllowTrade() bool {
 	now := time.Now()
 	oneMinuteAgo := now.Add(-1 * time.Minute)
 
-	// Remove trades older than 1 minute
+	// Filter trades to keep only those within the last minute
 	validTrades := []time.Time{}
 	for _, tradeTime := range tw.Trades {
 		if tradeTime.After(oneMinuteAgo) {
@@ -40,7 +40,7 @@ func (tw *TradeWindow) AllowTrade() bool {
 	}
 	tw.Trades = validTrades
 
-	// Allow trade if less than 5 trades in the last minute
+	// Allow trade if there are less than 5 trades in the last minute
 	return len(tw.Trades) < 5
 }
 
