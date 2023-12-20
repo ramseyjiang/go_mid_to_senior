@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+const (
+	capacity   = 5
+	refillRate = 1
+)
+
 type TokenBucket struct {
 	Capacity   int
 	Tokens     int
@@ -15,7 +20,7 @@ type TokenBucket struct {
 	Mutex      sync.Mutex
 }
 
-func NewTokenBucket(capacity, refillRate int) *TokenBucket {
+func NewTokenBucket(capacity int, refillRate int) *TokenBucket {
 	return &TokenBucket{
 		Capacity:   capacity,
 		Tokens:     capacity, // Start with a full bucket
@@ -29,7 +34,7 @@ func (tb *TokenBucket) Refill() {
 	defer tb.Mutex.Unlock()
 
 	now := time.Now()
-	duration := now.Sub(tb.LastRefill)
+	duration := now.Sub(tb.LastRefill) // Sub returns the duration currentTime-parameterTime.
 	refillTokens := int(duration.Minutes()) * tb.RefillRate
 
 	tb.Tokens += refillTokens
@@ -62,4 +67,5 @@ func BandwidthLimitMiddleware(tb *TokenBucket, next http.Handler) http.Handler {
 
 func ContentHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Content delivered successfully")
+	// Do some real logic
 }

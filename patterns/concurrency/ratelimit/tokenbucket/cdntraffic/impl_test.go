@@ -20,7 +20,7 @@ func TestBandwidthLimitMiddleware(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			bucket := NewTokenBucket(5, 1) // Reset bucket for each test
+			bucket := NewTokenBucket(capacity, refillRate) // Reset bucket for each test
 
 			handler := BandwidthLimitMiddleware(bucket, http.HandlerFunc(ContentHandler))
 
