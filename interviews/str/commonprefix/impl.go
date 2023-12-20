@@ -3,26 +3,23 @@ package commonprefix
 import "strings"
 
 func longestCommonPrefix(strs []string) string {
-	for i, _ := range strs {
-		min := i
-		for j := i + 1; j < len(strs); j++ {
-			if strs[j] < strs[min] {
-				min = j
-			}
-		}
-		strs[i], strs[min] = strs[min], strs[i]
+	if len(strs) == 0 {
+		return "" // Return an empty string if the slice is empty
 	}
-	index := 0
-	first := strs[0]
-	last := strs[len(strs)-1]
-	for i := 0; i < len(first); i++ {
-		if first[i] == last[i] {
-			index++
-		} else {
-			break
+
+	shortest := strs[0] // Start with the first string as the shortest
+	for _, str := range strs {
+		if len(str) < len(shortest) {
+			shortest = str // Update shortest if a shorter string is found
 		}
 	}
-	return first[:index]
+
+	for i := 0; i < len(strs); i++ {
+		for !strings.HasPrefix(strs[i], shortest) {
+			shortest = shortest[:len(shortest)-1] // if not exist the common prefix, the shortest length subtract 1
+		}
+	}
+	return shortest
 }
 
 func longestCommonPrefix2(strs []string) string {
