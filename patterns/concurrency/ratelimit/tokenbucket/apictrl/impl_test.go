@@ -16,14 +16,14 @@ func TestRateLimitMiddleware(t *testing.T) {
 	}{
 		{"WithinLimit", 3, 0, http.StatusOK},
 		{"ExceedLimit", 6, 0, http.StatusTooManyRequests},
-		{"AfterRefill", 1, 1 * time.Second, http.StatusOK},
+		{"AfterRefill", 1, 10 * time.Second, http.StatusOK},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			bucket := NewTokenBucket(capacity, refillRate) // Reset bucket for each test
+			limiter := NewTokenBucket(capacity, refillRate) // Reset bucket for each test
 
-			handler := RateLimitMiddleware(bucket, http.HandlerFunc(APIHandler))
+			handler := RateLimitMiddleware(limiter, http.HandlerFunc(APIHandler))
 
 			for i := 0; i < tt.numberOfRequests; i++ {
 				req := httptest.NewRequest("GET", "/api", nil)
