@@ -12,6 +12,7 @@ type LeakyBucket struct {
 	Queue    chan bool
 	Rate     time.Duration
 	wg       sync.WaitGroup
+	stop     chan struct{}
 }
 
 func NewLeakyBucket(capacity int, rate time.Duration) *LeakyBucket {
@@ -19,6 +20,7 @@ func NewLeakyBucket(capacity int, rate time.Duration) *LeakyBucket {
 		Capacity: capacity,
 		Queue:    make(chan bool, capacity),
 		Rate:     rate,
+		stop:     make(chan struct{}),
 	}
 }
 
@@ -35,20 +37,25 @@ func (lb *LeakyBucket) StartLeaking() {
 	lb.wg.Add(1)
 	go func() {
 		defer lb.wg.Done()
-		for call := range lb.Queue {
-			if !call {
-				break // Stop leaking when a false value is received
+		ticker := time.NewTicker(lb.Rate)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-ticker.C:
+				if len(lb.Queue) > 0 {
+					<-lb.Queue // Process a call
+				}
+			case <-lb.stop:
+				return
 			}
-			time.Sleep(lb.Rate)
-			// Process the call
 		}
 	}()
 }
 
 func (lb *LeakyBucket) StopLeaking() {
-	lb.Queue <- false // Send a signal to stop processing
+	close(lb.stop)
 	lb.wg.Wait()
-	close(lb.Queue)
 }
 
 func CallRateLimitMiddleware(lb *LeakyBucket, next http.Handler) http.Handler {
@@ -64,4 +71,5 @@ func CallRateLimitMiddleware(lb *LeakyBucket, next http.Handler) http.Handler {
 
 func CallHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Call handled successfully")
+	// do real handle logic
 }

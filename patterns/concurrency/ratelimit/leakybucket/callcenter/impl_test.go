@@ -1,7 +1,6 @@
 package callcenter
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -9,23 +8,25 @@ import (
 )
 
 func TestCallRateLimitMiddleware(t *testing.T) {
-	lb := NewLeakyBucket(2, 50*time.Millisecond)
-	lb.StartLeaking()
-	defer lb.StopLeaking()
-
 	tests := []struct {
 		name              string
+		capacity          int
+		rate              time.Duration
 		numberOfCalls     int
 		delayBetweenCalls time.Duration
 		expectedStatus    []int
 	}{
-		{"HandleAllCalls", 2, 0, []int{http.StatusOK, http.StatusOK}},
-		{"ExceedCapacity", 5, 60 * time.Millisecond, []int{http.StatusOK, http.StatusOK, http.StatusOK, http.StatusOK, http.StatusOK}},
-		{"AfterProcessing", 1, 60 * time.Millisecond, []int{http.StatusOK}},
+		{"WithinCapacity", 2, 50 * time.Millisecond, 2, 0, []int{http.StatusOK, http.StatusOK}},
+		{"ExceedCapacity", 2, 50 * time.Millisecond, 3, 10 * time.Millisecond, []int{http.StatusOK, http.StatusOK, http.StatusTooManyRequests}},
+		{"AfterLeak", 2, 50 * time.Millisecond, 3, 60 * time.Millisecond, []int{http.StatusOK, http.StatusOK, http.StatusOK}},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			lb := NewLeakyBucket(tt.capacity, tt.rate)
+			lb.StartLeaking()
+			defer lb.StopLeaking()
+
 			handler := CallRateLimitMiddleware(lb, http.HandlerFunc(CallHandler))
 
 			for i := 0; i < tt.numberOfCalls; i++ {
@@ -33,14 +34,12 @@ func TestCallRateLimitMiddleware(t *testing.T) {
 				rr := httptest.NewRecorder()
 
 				handler.ServeHTTP(rr, req)
-				fmt.Println(tt.expectedStatus[i])
-				// Check the response status
+
 				if status := rr.Code; status != tt.expectedStatus[i] {
 					t.Errorf("%s: call %d returned wrong status code: got %v want %v",
 						tt.name, i+1, status, tt.expectedStatus[i])
 				}
 
-				// Introduce a delay between calls
 				time.Sleep(tt.delayBetweenCalls)
 			}
 		})
