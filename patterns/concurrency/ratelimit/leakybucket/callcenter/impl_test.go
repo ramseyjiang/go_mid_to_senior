@@ -1,6 +1,7 @@
 package callcenter
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -8,33 +9,39 @@ import (
 )
 
 func TestCallRateLimitMiddleware(t *testing.T) {
-	lb := NewLeakyBucket(capacity, callRate)
-	lb.StartProcessing()
+	lb := NewLeakyBucket(2, 50*time.Millisecond)
+	lb.StartLeaking()
+	defer lb.StopLeaking()
 
 	tests := []struct {
-		name           string
-		delay          time.Duration
-		expectedStatus int
+		name              string
+		numberOfCalls     int
+		delayBetweenCalls time.Duration
+		expectedStatus    []int
 	}{
-		{"FirstCall", 0, http.StatusOK},
-		{"SecondCall", 0, http.StatusOK},
-		{"ExceedLimit", 0, http.StatusTooManyRequests},
-		{"AfterProcessing", 60 * time.Millisecond, http.StatusOK},
+		{"HandleAllCalls", 2, 0, []int{http.StatusOK, http.StatusOK}},
+		{"ExceedCapacity", 5, 60 * time.Millisecond, []int{http.StatusOK, http.StatusOK, http.StatusOK, http.StatusOK, http.StatusOK}},
+		{"AfterProcessing", 1, 60 * time.Millisecond, []int{http.StatusOK}},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			handler := CallRateLimitMiddleware(lb, http.HandlerFunc(HandleCalls))
+			handler := CallRateLimitMiddleware(lb, http.HandlerFunc(CallHandler))
 
-			time.Sleep(tt.delay)
-			req := httptest.NewRequest("GET", "/call", nil)
-			rr := httptest.NewRecorder()
+			for i := 0; i < tt.numberOfCalls; i++ {
+				req := httptest.NewRequest("GET", "/call", nil)
+				rr := httptest.NewRecorder()
 
-			handler.ServeHTTP(rr, req)
+				handler.ServeHTTP(rr, req)
+				fmt.Println(tt.expectedStatus[i])
+				// Check the response status
+				if status := rr.Code; status != tt.expectedStatus[i] {
+					t.Errorf("%s: call %d returned wrong status code: got %v want %v",
+						tt.name, i+1, status, tt.expectedStatus[i])
+				}
 
-			if status := rr.Code; status != tt.expectedStatus {
-				t.Errorf("%s: handler returned wrong status code: got %v want %v",
-					tt.name, status, tt.expectedStatus)
+				// Introduce a delay between calls
+				time.Sleep(tt.delayBetweenCalls)
 			}
 		})
 	}
