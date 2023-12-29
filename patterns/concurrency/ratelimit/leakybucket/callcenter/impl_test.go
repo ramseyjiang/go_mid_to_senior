@@ -16,9 +16,9 @@ func TestCallRateLimitMiddleware(t *testing.T) {
 		delayBetweenCalls time.Duration
 		expectedStatus    []int
 	}{
-		{"WithinCapacity", 2, 50 * time.Millisecond, 2, 0, []int{http.StatusOK, http.StatusOK}},
-		{"ExceedCapacity", 2, 50 * time.Millisecond, 3, 10 * time.Millisecond, []int{http.StatusOK, http.StatusOK, http.StatusTooManyRequests}},
-		{"AfterLeak", 2, 50 * time.Millisecond, 3, 60 * time.Millisecond, []int{http.StatusOK, http.StatusOK, http.StatusOK}},
+		{"WithinCapacity", capacity, leakyRate, 2, 0, []int{http.StatusOK, http.StatusOK}},
+		{"ExceedCapacity", capacity, leakyRate, 3, 10 * time.Millisecond, []int{http.StatusOK, http.StatusOK, http.StatusTooManyRequests}},
+		{"AfterLeak", capacity, leakyRate, 3, 60 * time.Millisecond, []int{http.StatusOK, http.StatusOK, http.StatusOK}},
 	}
 
 	for _, tt := range tests {

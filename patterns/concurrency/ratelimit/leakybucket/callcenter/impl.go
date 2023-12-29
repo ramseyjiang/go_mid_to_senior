@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+const (
+	capacity  = 2
+	leakyRate = 50 * time.Millisecond
+)
+
 type LeakyBucket struct {
 	Capacity int
 	Queue    chan bool
