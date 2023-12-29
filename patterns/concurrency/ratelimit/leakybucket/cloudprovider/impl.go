@@ -1,13 +1,15 @@
 package cloudprovider
 
 import (
+	"fmt"
+	"net/http"
 	"sync"
 	"time"
 )
 
 const (
 	capacity  = 2
-	leakyRate = 100 * time.Millisecond
+	leakyRate = 50 * time.Millisecond
 )
 
 type LeakyBucket struct {
@@ -59,4 +61,19 @@ func (lb *LeakyBucket) StartLeaking() {
 func (lb *LeakyBucket) StopLeaking() {
 	close(lb.stop)
 	lb.wg.Wait()
+}
+
+func RequestRateMiddleware(lb *LeakyBucket, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !lb.RequestResource() {
+			http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func RequestHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Resource request processed successfully")
+	// do real requests logic
 }
