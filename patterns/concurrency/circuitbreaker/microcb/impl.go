@@ -12,8 +12,8 @@ type ExternalServiceFunc func() (string, error)
 // CircuitBreakerConfig holds configuration for the circuit breaker.
 type CircuitBreakerConfig struct {
 	Timeout          time.Duration
-	MaxRequests      uint32
 	Interval         time.Duration
+	MaxRequests      uint32
 	FailureThreshold uint32
 }
 
