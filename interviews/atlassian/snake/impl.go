@@ -9,7 +9,8 @@ type SnakeGame struct {
 }
 
 type Coord struct {
-	x, y int
+	x int
+	y int
 }
 
 func Constructor(width int, height int, food [][]int) SnakeGame {
@@ -40,6 +41,7 @@ func (sg *SnakeGame) Move(direction string) int {
 		return -1
 	}
 
+	// Please notice: the food coord, y is the first, x is the second
 	ateFood := sg.foodIndex < len(sg.food) && head.y == sg.food[sg.foodIndex][0] && head.x == sg.food[sg.foodIndex][1]
 	if ateFood {
 		sg.score++
