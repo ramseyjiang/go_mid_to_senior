@@ -8,8 +8,8 @@ type TopVotedCandidate struct {
 }
 
 func Constructor(persons []int, times []int) TopVotedCandidate {
-	counts := make([]int16, len(persons))
-	var maxCount int16
+	counts := make([]int, len(persons))
+	var maxCount int
 	var maxPerson int
 	for i, person := range persons {
 		counts[person]++
