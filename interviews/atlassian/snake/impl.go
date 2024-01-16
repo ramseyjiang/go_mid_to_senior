@@ -60,7 +60,8 @@ func (sg *SnakeGame) Move(direction string) int {
 		}
 	}
 
-	// update the snake length and position each move is end.
+	// update the snake length and position after each move is end.
+	// It adds previous snake as a part of body and current snake head
 	sg.snake = append([]Coord{head}, sg.snake...)
 
 	return sg.score
