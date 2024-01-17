@@ -1,11 +1,12 @@
 package snake
 
 type SnakeGame struct {
-	width, height int
-	food          [][]int
-	score         int
-	snake         []Coord
-	foodIndex     int
+	width     int
+	height    int
+	score     int
+	foodIndex int
+	food      [][]int
+	snake     []Coord
 }
 
 type Coord struct {
@@ -17,9 +18,10 @@ func Constructor(width int, height int, food [][]int) SnakeGame {
 	return SnakeGame{
 		width:     width,
 		height:    height,
-		food:      food,
-		snake:     []Coord{{0, 0}},
+		score:     0,
 		foodIndex: 0,
+		snake:     []Coord{{0, 0}},
+		food:      food,
 	}
 }
 
@@ -41,6 +43,13 @@ func (sg *SnakeGame) Move(direction string) int {
 		return -1
 	}
 
+	// Self-Collision Check
+	for i := 0; i < len(sg.snake)-1; i++ {
+		if head.y == sg.snake[i].y && head.x == sg.snake[i].x {
+			return -1
+		}
+	}
+
 	// Please notice: the food coord, y is the first, x is the second.
 	// Use the snake head position to check whether the snake ate or not.
 	ateFood := sg.foodIndex < len(sg.food) && head.y == sg.food[sg.foodIndex][0] && head.x == sg.food[sg.foodIndex][1]
@@ -51,13 +60,6 @@ func (sg *SnakeGame) Move(direction string) int {
 		// update snake coord, at the beginning, the snake is no body.
 		// If no food is eaten, the last segment of the snake (sg.snake[:len(sg.snake)-1]) is removed to simulate the snake's movement.
 		sg.snake = sg.snake[:len(sg.snake)-1]
-	}
-
-	// Self-Collision Check
-	for i := 0; i < len(sg.snake)-1; i++ {
-		if head.y == sg.snake[i].y && head.x == sg.snake[i].x {
-			return -1
-		}
 	}
 
 	// update the snake length and position after each move is end.
