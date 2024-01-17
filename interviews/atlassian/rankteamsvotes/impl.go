@@ -38,3 +38,40 @@ func RankVotes(votes []string) string {
 
 	return string(teams)
 }
+
+func RankVotes2(votes []string) string {
+	if len(votes) == 0 {
+		return ""
+	}
+
+	// Create a map to hold the count of each rank for each team.
+	rankCount := make(map[rune][]int)
+	for i := range votes[0] {
+		rankCount[rune(votes[0][i])] = make([]int, len(votes[0]))
+	}
+
+	// Count the ranks for each team.
+	for _, vote := range votes {
+		for rank, team := range vote {
+			rankCount[team][rank]++
+		}
+	}
+
+	// Sort the teams according to the problem's rules.
+	teams := []rune(votes[0])
+	sort.Slice(teams, func(i, j int) bool {
+		for k := range rankCount[teams[i]] {
+			if rankCount[teams[i]][k] != rankCount[teams[j]][k] {
+				return rankCount[teams[i]][k] > rankCount[teams[j]][k]
+			}
+		}
+		return teams[i] < teams[j]
+	})
+
+	// Construct the final sorted string of teams.
+	result := make([]byte, len(teams))
+	for i, team := range teams {
+		result[i] = byte(team)
+	}
+	return string(result)
+}
