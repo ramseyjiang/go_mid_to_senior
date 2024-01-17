@@ -8,7 +8,7 @@ import (
 func TestTopVotedCandidate(t *testing.T) {
 	persons := []int{0, 1, 1, 0, 0, 1, 0}
 	times := []int{0, 5, 10, 15, 20, 25, 30}
-	tvc := Constructor(persons, times)
+	tvc := NewOnlineElection(persons, times)
 
 	tests := []struct {
 		t        int
