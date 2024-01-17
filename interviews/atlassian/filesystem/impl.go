@@ -15,7 +15,7 @@ func (fs *FileSystem) CreatePath(path string, value int) bool {
 		return false
 	}
 
-	// Check if parent path exists
+	// Check if parent path exists, if it has several levels parents, the parent will be a slice.
 	parent := path[:len(path)-1]
 	for i := len(parent) - 1; i >= 0; i-- {
 		if parent[i] == '/' {
