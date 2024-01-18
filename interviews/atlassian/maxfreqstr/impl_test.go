@@ -27,6 +27,14 @@ func TestMaxFreqStr(t *testing.T) {
 			maxSize:    3,
 			expected:   2,
 		},
+		{
+			name:       "Example 3",
+			inputStr:   "bbacbadadc",
+			maxLetters: 2,
+			minSize:    1,
+			maxSize:    1,
+			expected:   3,
+		},
 	}
 
 	for _, tt := range tests {

@@ -1,12 +1,10 @@
 package maxfreqstr
 
 func maxFreqStr(s string, maxLetters int, minSize int, maxSize int) int {
-
 	subs := map[string]int{}
 	maxFreq := 0
 
 	for i := 0; i <= len(s)-minSize; i++ {
-
 		substr := s[i : i+minSize]
 		ch := map[rune]int{}
 		for _, x := range substr {
@@ -19,7 +17,6 @@ func maxFreqStr(s string, maxLetters int, minSize int, maxSize int) int {
 	}
 
 	return maxFreq
-
 }
 
 func maxFreqStr2(s string, maxLetters int, minSize int, maxSize int) int {
