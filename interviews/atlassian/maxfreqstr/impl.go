@@ -8,10 +8,10 @@ func maxFreqStr(s string, maxLetters int, minSize int, maxSize int) int {
 		substr := s[i : i+minSize]
 		ch := map[rune]int{}
 		for _, x := range substr {
-			ch[x] += 1
+			ch[x]++
 		}
 		if len(ch) <= maxLetters && len(ch) <= maxSize {
-			subs[substr] += 1
+			subs[substr]++
 			maxFreq = max(maxFreq, subs[substr])
 		}
 	}
