@@ -54,7 +54,11 @@ func TestRobotParts(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			output := GetRobotParts(AllParts, tt.requiredParts)
 			if !reflect.DeepEqual(output, tt.expected) {
-				t.Errorf("YourFunction(%v) = %v; want %v", tt.requiredParts, output, tt.expected)
+				if len(output) == 0 && len(tt.expected) == 0 {
+					// Both slices are empty (or nil), considered equal, no error
+				} else {
+					t.Errorf("YourFunction(%v) = %v; want %v", tt.requiredParts, output, tt.expected)
+				}
 			}
 		})
 	}
