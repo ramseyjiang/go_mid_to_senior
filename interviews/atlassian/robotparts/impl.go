@@ -4,7 +4,7 @@ import "strings"
 
 func GetRobotParts(allParts []string, requiredParts string) []string {
 	// Splitting the required parts into a slice
-	parts_needed := strings.Split(requiredParts, ",")
+	partsNeeded := strings.Split(requiredParts, ",")
 
 	// Map to hold the parts each robot has
 	robotParts := make(map[string]map[string]bool)
@@ -26,7 +26,7 @@ func GetRobotParts(allParts []string, requiredParts string) []string {
 	// Check each robot for required parts
 	for robot, parts := range robotParts {
 		complete := true
-		for _, needed := range parts_needed {
+		for _, needed := range partsNeeded {
 			if !parts[needed] {
 				complete = false
 				break
