@@ -35,6 +35,10 @@ func GetRobotParts(allParts []string, requiredParts string) (result []string) {
 		}
 	}
 
+	if len(result) == 0 {
+		return
+	}
+
 	sort.SliceStable(result, func(i, j int) bool {
 		return len(result[i]) < len(result[j])
 	})
