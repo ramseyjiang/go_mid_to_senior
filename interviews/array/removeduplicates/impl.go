@@ -27,22 +27,18 @@ func removeDuplicates(nums []int) int {
 	return writeIndex
 }
 
-// removeDuplicates2 outputs also work, but not pass the leetcode testcases, don't know why.
-// Remember the empty struct{}{} uses 0 bytes.
+// removeDuplicates2 outputs also work
 func removeDuplicates2(nums []int) int {
 	if len(nums) == 0 {
 		return 0
 	}
 
-	tmp := make(map[int]struct{})
 	var results []int
 	for _, v := range nums {
-		tmp[v] = struct{}{} // The empty struct{}{} uses 0 bytes of storage, making it efficient.
 		if !slices.Contains(results, v) {
 			results = append(results, v)
 		}
 	}
-	nums = results
 
-	return len(tmp)
+	return len(results)
 }
