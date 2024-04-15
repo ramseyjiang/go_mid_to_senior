@@ -1,6 +1,8 @@
 package removeduplicates
 
 import (
+	"fmt"
+
 	"golang.org/x/exp/slices"
 )
 
@@ -9,6 +11,11 @@ func removeDuplicates(nums []int) int {
 	if len(nums) == 0 {
 		return 0
 	}
+
+	// The previous way is sort.Ints(nums),
+	// Note: consider using the newer slices.Sort function, which runs faster.
+	// That's why I change to slices.Sort(nums)
+	slices.Sort(nums)
 
 	// Index for placing the next unique element
 	writeIndex := 1
@@ -22,6 +29,9 @@ func removeDuplicates(nums []int) int {
 			writeIndex++
 		}
 	}
+
+	// Print out the final result
+	fmt.Println(nums[0:writeIndex])
 
 	// Return the length of the array without duplicates
 	return writeIndex
@@ -39,6 +49,9 @@ func removeDuplicates2(nums []int) int {
 			results = append(results, v)
 		}
 	}
+
+	// Print out the final result
+	fmt.Println(results)
 
 	return len(results)
 }

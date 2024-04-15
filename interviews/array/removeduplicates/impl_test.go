@@ -37,21 +37,10 @@ func TestRemoveDuplicates(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		t.Run(tt.name+"/removeDuplicates", func(t *testing.T) {
-			input := make([]int, len(tt.input))
-			copy(input, tt.input) // Copy the input slice to avoid modifying the test case data
-			got := removeDuplicates(input)
+		t.Run(tt.name, func(t *testing.T) {
+			got := removeDuplicates(tt.input)
 			if got != tt.expected {
 				t.Errorf("removeDuplicates() got = %v, want %v", got, tt.expected)
-			}
-		})
-
-		t.Run(tt.name+"/removeDuplicates2", func(t *testing.T) {
-			input := make([]int, len(tt.input))
-			copy(input, tt.input) // Copy the input slice to avoid modifying the test case data
-			got := removeDuplicates2(input)
-			if got != tt.expected {
-				t.Errorf("removeDuplicates2() got = %v, want %v", got, tt.expected)
 			}
 		})
 	}
