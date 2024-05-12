@@ -16,6 +16,7 @@ func TestShouldPrintMessage(t *testing.T) {
 		{8, "bar", false},
 		{10, "foo", false},
 		{11, "foo", true},
+		{12, "bar", true},
 		// Additional test cases can be added here.
 	}
 
