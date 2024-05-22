@@ -40,7 +40,9 @@ func TestFileSystem(t *testing.T) {
 					} else {
 						got = 0
 					}
-				} else if action == "Get" {
+				}
+
+				if action == "Get" {
 					got = fs.Get(tt.paths[i])
 				}
 

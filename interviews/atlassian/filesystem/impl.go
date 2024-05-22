@@ -11,6 +11,7 @@ func NewFileSystem() *FileSystem {
 }
 
 func (fs *FileSystem) CreatePath(path string, value int) bool {
+	// Already exists, empty path, or just '/'
 	if _, exists := fs.paths[path]; exists || len(path) == 0 || path == "/" {
 		return false
 	}
@@ -19,13 +20,13 @@ func (fs *FileSystem) CreatePath(path string, value int) bool {
 	parent := path[:len(path)-1]
 	for i := len(parent) - 1; i >= 0; i-- {
 		if parent[i] == '/' {
-			parent = parent[:i]
+			parent = parent[:i] // Extract parent path
 			break
 		}
 	}
 
 	if parent != "" && fs.paths[parent] == 0 {
-		return false
+		return false // Parent path doesn't exist
 	}
 
 	fs.paths[path] = value
@@ -36,5 +37,5 @@ func (fs *FileSystem) Get(path string) int {
 	if value, exists := fs.paths[path]; exists {
 		return value
 	}
-	return -1
+	return -1 // Path doesn't exist
 }
