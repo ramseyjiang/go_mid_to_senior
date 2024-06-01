@@ -14,7 +14,8 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 		first = first.Next
 	}
 
-	// Move first to the end, maintaining the gap
+	// Move first to the end, maintaining the gap.
+	// Assume the ListNode length is l, after the loop below, the second pointer position is l-n.
 	for first != nil {
 		first = first.Next
 		second = second.Next
@@ -22,5 +23,6 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 
 	// Skip the desired node
 	second.Next = second.Next.Next
+
 	return dummy.Next
 }
