@@ -16,6 +16,7 @@ func reverseListIterative(head *ListNode) *ListNode {
 		prev = curr
 		curr = nextTemp
 	}
+
 	return prev
 }
 
@@ -28,5 +29,6 @@ func reverseListRecursive(head *ListNode) *ListNode {
 	newHead := reverseListRecursive(head.Next)
 	head.Next.Next = head
 	head.Next = nil
+
 	return newHead
 }
