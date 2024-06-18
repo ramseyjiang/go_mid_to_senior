@@ -27,10 +27,10 @@ func mergeListsIterative(list1 *ListNode, list2 *ListNode) *ListNode {
 
 	for list1 != nil && list2 != nil {
 		if list1.Val <= list2.Val {
-			current.Next = list1
+			current.Next = list1 // point to the next node
 			list1 = list1.Next
 		} else {
-			current.Next = list2
+			current.Next = list2 // point to the next node
 			list2 = list2.Next
 		}
 		current = current.Next
