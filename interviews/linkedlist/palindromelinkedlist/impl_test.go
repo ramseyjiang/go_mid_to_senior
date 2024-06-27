@@ -27,6 +27,11 @@ var tests = []struct {
 		input:    []int{1, 0, 1},
 		expected: true,
 	},
+	{
+		name:     "Test 5",
+		input:    []int{1, 0, 2, 1},
+		expected: false,
+	},
 }
 
 func TestIsPalindromeIterative(t *testing.T) {
