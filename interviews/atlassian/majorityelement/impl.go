@@ -3,6 +3,19 @@ package majorityelement
 import "fmt"
 
 func FindMajority(num int, arr []int) int {
+	uniqueNums := make(map[int]int)
+
+	for _, v := range arr {
+		uniqueNums[v]++
+		if uniqueNums[v] > num/2 {
+			return v
+		}
+	}
+
+	return -1
+}
+
+func FindMajority1(num int, arr []int) int {
 	tmp := make(map[int]int)
 	// tmp[v]++ simplifies the incrementation logic by removing the need to check if the key exists,
 	// since Go automatically initializes missing int map values to 0.
