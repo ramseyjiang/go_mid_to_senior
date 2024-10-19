@@ -10,6 +10,27 @@ func isAnagram(s string, t string) bool {
 		return false
 	}
 
+	count := make(map[byte]int)
+
+	for i, _ := range s {
+		count[s[i]]++
+		count[t[i]]--
+	}
+
+	for _, v := range count {
+		if v != 0 {
+			return false
+		}
+	}
+
+	return true
+}
+
+func isAnagram4(s string, t string) bool {
+	if len(s) != len(t) {
+		return false
+	}
+
 	var freq [26]int
 
 	for idx := 0; idx < len(s); idx++ {
