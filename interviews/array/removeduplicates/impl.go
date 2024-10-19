@@ -6,8 +6,24 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-// removeDuplicates is the best way.
 func removeDuplicates(nums []int) int {
+	uniqueNums := make(map[int]int)
+	output := make([]int, 0)
+
+	for _, v := range nums {
+		if _, ok := uniqueNums[v]; ok {
+			uniqueNums[v]++
+		} else {
+			uniqueNums[v]++
+			output = append(output, v)
+		}
+	}
+
+	return len(output)
+}
+
+// removeDuplicates is the best way.
+func removeDuplicates1(nums []int) int {
 	if len(nums) == 0 {
 		return 0
 	}
