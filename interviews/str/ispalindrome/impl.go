@@ -11,6 +11,27 @@ func isPalindrome(s string) bool {
 		return true
 	}
 
+	res := make([]rune, 0) // another way is res := []rune{}
+	for _, v := range s {
+		if unicode.IsLetter(v) || unicode.IsDigit(v) {
+			res = append(res, unicode.ToLower(v))
+		}
+	}
+
+	for i := 0; i < len(res)/2; i++ {
+		if res[i] != res[len(res)-i-1] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func isPalindrome1(s string) bool {
+	if len(s) == 0 {
+		return true
+	}
+
 	var builder strings.Builder
 	builder.Grow(len(s))
 
