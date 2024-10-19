@@ -11,8 +11,7 @@ type TopVotedCandidate struct {
 
 func NewOnlineElection(persons []int, times []int) TopVotedCandidate {
 	counts := make([]int, len(persons))
-	var maxCount int
-	var maxPerson int
+	maxCount, maxPerson := 0, 0
 	for i, person := range persons {
 		counts[person]++
 		if counts[person] >= maxCount {
