@@ -16,7 +16,7 @@ func myAtoi(s string) int {
 	// Step 2: Check for sign
 	i := 0
 	sign := 1
-	if i < len(s) && (s[i] == '+' || s[i] == '-') {
+	if s[i] == '+' || s[i] == '-' {
 		if s[i] == '-' {
 			sign = -1
 		}
