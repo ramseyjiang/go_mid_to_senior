@@ -3,6 +3,46 @@ package rankteamsvotes
 import "sort"
 
 func RankVotes(votes []string) string {
+	output := ""
+	if len(votes) == 0 {
+		return output
+	}
+
+	if len(votes) == 1 {
+		return votes[0]
+	}
+
+	// Get all char counts.
+	counts := make(map[rune]int)
+	keys := make([]rune, 0)
+	for _, vote := range votes {
+		for k, v := range vote {
+			if _, ok := counts[v]; ok {
+				counts[v] += k
+			} else {
+				keys = append(keys, v) // Get all chars slice
+				counts[v] += k
+			}
+		}
+	}
+
+	sort.Slice(keys, func(i, j int) bool {
+		// If counts are equal, sort alphabetically
+		if counts[keys[i]] == counts[keys[j]] {
+			return keys[i] < keys[j]
+		}
+		// Otherwise, sort by counts (ascending order)
+		return counts[keys[i]] < counts[keys[j]]
+	})
+
+	for _, k := range keys {
+		output += string(k)
+	}
+
+	return output
+}
+
+func RankVotes1(votes []string) string {
 	if len(votes) == 0 {
 		return ""
 	}
