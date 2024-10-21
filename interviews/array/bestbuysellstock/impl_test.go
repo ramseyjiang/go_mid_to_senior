@@ -34,7 +34,7 @@ func TestBestBuySellStock(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			got := maxProfit(tt.inputs)
 			if got != tt.want {
-				t.Errorf("got %v, want %v", got, tt.want)
+				t.Errorf("maxProfit(%v) got %v, want %v", tt.inputs, got, tt.want)
 			}
 		})
 	}
