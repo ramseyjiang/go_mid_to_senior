@@ -27,7 +27,7 @@ func threeSum(nums []int) [][]int {
 				// Found a triplet
 				result = append(result, []int{nums[i], nums[left], nums[right]})
 
-				// Move both pointers to the next unique elements
+				// Move both pointers to the next unique element
 				for left < right && nums[left] == nums[left+1] {
 					left++
 				}
