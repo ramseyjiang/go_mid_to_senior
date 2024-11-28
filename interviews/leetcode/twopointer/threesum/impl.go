@@ -6,7 +6,7 @@ import (
 
 func threeSum(nums []int) [][]int {
 	var result [][]int
-	n := len(nums)
+	n, sum := len(nums), 0
 
 	// Sort the array
 	sort.Ints(nums)
@@ -21,7 +21,7 @@ func threeSum(nums []int) [][]int {
 		// Two-pointer approach
 		left, right := i+1, n-1
 		for left < right {
-			sum := nums[i] + nums[left] + nums[right]
+			sum = nums[i] + nums[left] + nums[right]
 
 			if sum == 0 {
 				// Found a triplet
