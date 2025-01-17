@@ -8,6 +8,7 @@ type ListNode struct {
 
 // HasCycleIterative detects if a cycle exists in the linked list using an iterative approach
 func HasCycleIterative(head *ListNode) bool {
+	// Check head is not a single point.
 	if head == nil || head.Next == nil {
 		return false
 	}
