@@ -11,6 +11,7 @@ func spell(layout [][]string, s string) string {
 	// Build the position map from the layout
 	for i, row := range layout {
 		for j, char := range row {
+			// Using char[0], because char is only ASCII, it means it is a single-byte character.
 			pos[rune(char[0])] = [2]int{i, j}
 		}
 	}
