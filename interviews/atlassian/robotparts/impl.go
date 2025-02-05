@@ -7,6 +7,49 @@ import (
 )
 
 func GetRobotParts(allParts []string, requiredParts string) (result []string) {
+	// convert requiredParts string to a set
+	requiredSet := make(map[string]bool)
+	for _, part := range strings.Split(requiredParts, ",") {
+		requiredSet[part] = true
+	}
+
+	// tidy and category all robots parts
+	robotParts := make(map[string]map[string]bool)
+	for _, part := range allParts {
+		parts := strings.Split(part, "_")
+		if len(parts) != 2 {
+			continue
+		}
+		robotName, robotPart := parts[0], parts[1]
+		if _, exists := robotParts[robotName]; !exists {
+			robotParts[robotName] = make(map[string]bool)
+		}
+		robotParts[robotName][robotPart] = true
+	}
+
+	// Check which robots have all required parts
+	for robot, parts := range robotParts {
+		containsAll := true
+		// check requiredPart in requiredSet, exist in parts or not
+		for requiredPart := range requiredSet {
+			if !parts[requiredPart] {
+				containsAll = false
+				break
+			}
+		}
+
+		if containsAll {
+			result = append(result, robot)
+		}
+	}
+
+	sort.SliceStable(result, func(i, j int) bool {
+		return len(result[i]) < len(result[j])
+	})
+	return result
+}
+
+func GetRobotParts0(allParts []string, requiredParts string) (result []string) {
 	partNames := strings.Split(requiredParts, ",")
 	robotParts := make(map[string]map[string]bool)
 
