@@ -19,6 +19,7 @@ func numIslands(grid [][]byte) int {
 	return count
 }
 
+// dfs means deep first search
 func dfs(grid [][]byte, i int, j int) {
 	if i < 0 || i >= len(grid) || j < 0 || j >= len(grid[0]) || grid[i][j] == '0' {
 		return
