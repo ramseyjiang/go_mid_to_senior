@@ -1,0 +1,26 @@
+# It does not have the root command, if in the cobra structure with cmd folder.
+1. go run main.go
+This is a sample CLI application built with Cobra
+
+Usage:
+  myapp [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  greet       Greet a user
+  help        Help about any command
+  version     Show version
+
+Flags:
+  -h, --help   help for myapp
+
+Use "myapp [command] --help" for more information about a command.
+
+2. go run main.go greet --name his
+Hello, his!
+
+go run main.go greet -n na
+Hello, na!
+
+go run main.go version
+MyApp v1.0.0
