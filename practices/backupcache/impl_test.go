@@ -12,18 +12,20 @@ func TestCacheData(t *testing.T) {
 	data := &CacheData{Data: "test_data"}
 	filePath := "/tmp/backup_cache/" + key + ".json"
 
-	// 清除测试文件
-	os.Remove(filePath)
+	// Clear test files
+	if err := os.Remove(filePath); err != nil && !os.IsNotExist(err) {
+		t.Error(err)
+	}
 
-	// 测试保存数据
+	// Test store data to files
 	err := SaveCacheData(key, data)
 	assert.NoError(t, err)
 
-	// 验证文件存在
+	// Valid file exists or not
 	_, err = os.Stat(filePath)
 	assert.NoError(t, err)
 
-	// 测试读取数据
+	// Test Get Cache data
 	cachedData, err := GetCacheData(key)
 	assert.NoError(t, err)
 	assert.Equal(t, data, cachedData)
@@ -53,7 +55,7 @@ func TestCacheDataWithTable(t *testing.T) {
 			key:  "missing_key",
 			data: nil,
 			setup: func(key string, data *CacheData) error {
-				// 不执行任何操作，文件不存在
+				// Don't do any operations
 				return nil
 			},
 			wantErrGet: true,
@@ -75,8 +77,10 @@ func TestCacheDataWithTable(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			filePath := "/tmp/backup_cache/" + tt.key + ".json"
-			// 清除测试文件
-			os.Remove(filePath)
+			// Clear test files
+			if err := os.Remove(filePath); err != nil && !os.IsNotExist(err) {
+				t.Error(err)
+			}
 
 			if tt.setup != nil {
 				err := tt.setup(tt.key, tt.data)
