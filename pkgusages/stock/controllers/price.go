@@ -1,54 +1,60 @@
 package controllers
 
 import (
-	"bytes"
-	"io"
+	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/antchfx/htmlquery"
 	"github.com/labstack/echo"
 )
 
-// company is a structure that contains the company's stock ticker from the client's HTTP request
-type company struct {
+// Company is a structure that contains the company's stock ticker from the client's HTTP request
+type Company struct {
 	Ticker string `json:"ticker" form:"ticker" query:"ticker"`
 }
 
+// PriceResponse is a structure that contains the stock price and other information
+type PriceResponse struct {
+	Ticker    string    `json:"ticker"`
+	Price     string    `json:"price"`
+	Timestamp time.Time `json:"timestamp"`
+}
+
 // GrabPrice - handler method for binding JSON body and scraping for stock price
-func GrabPrice(c echo.Context) (err error) {
-	// Read the Body content
-	var bodyBytes []byte
-	if c.Request().Body != nil {
-		bodyBytes, _ = io.ReadAll(c.Request().Body)
+func GrabPrice(c echo.Context) error {
+	com := new(Company)
+	if err := c.Bind(com); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request body"})
 	}
 
-	// Restore the io.ReadCloser to its original state
-	c.Request().Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
-	com := new(company)
-	er := c.Bind(com) // bind the structure with the context body
-	// on no panic!
-	if er != nil {
-		panic(er)
-	}
-	// company ticker
-	ticker := com.Ticker
-
-	// yahoo finance base URL
+	ticker := strings.ToUpper(com.Ticker)
 	baseURL := "https://finance.yahoo.com/quote/"
+	pricePath := "//fin-streamer[@data-symbol='" + ticker + "' and @data-field='regularMarketPrice']"
+	// pricePath := "//fin-streamer[@data-field='regularMarketPrice']" // 更加精确的XPath
 
-	// price XPath
-	pricePath := "//*[@id=\"quote-header-info\"]"
-
-	// load HTML documents by binding base url and passed in ticker
-	doc, err := htmlquery.LoadURL(baseURL + strings.ToUpper(ticker))
-	// uh oh :( freak out!!
+	doc, err := htmlquery.LoadURL(baseURL + ticker)
 	if err != nil {
-		panic(err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to load URL"})
 	}
-	// HTML Node
+
+	// yahoo update html, make script cannot find html tag to get price
+	htmlContent := htmlquery.OutputHTML(doc, true)
+	fmt.Println(htmlContent)
+
 	context := htmlquery.FindOne(doc, pricePath)
-	// from the Node get inner text
-	price := htmlquery.InnerText(context)
-	return c.JSON(http.StatusOK, price)
+	if context == nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Price not found"})
+	}
+
+	price := strings.TrimSpace(htmlquery.InnerText(context))
+
+	response := PriceResponse{
+		Ticker:    ticker,
+		Price:     price,
+		Timestamp: time.Now(),
+	}
+
+	return c.JSON(http.StatusOK, response)
 }

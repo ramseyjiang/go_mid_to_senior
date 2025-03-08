@@ -1,7 +1,7 @@
 This is using echo framework to build. The stock info is from yahoo.com.
 
 1. After the server run, access the "hello world"
-   curl --location --request GET 'http://localhost:8000'
+   curl --location --request GET 'http://localhost:8001'
 
 The logger is below:
 {"time":"2023-01-09T20:50:27.875106+13:00","id":"","remote_ip":"127.0.0.1","host":"localhost:8000","method":"GET","
@@ -10,7 +10,7 @@ bytes_out":14}
 
 2. Access the stock price is using post.
 
-curl --location --request POST 'http://localhost:8000/price' \
+curl X 'http://localhost:8001/price' \
 --header 'Content-Type: application/json' \
 --data-raw '{
 "ticker":"aapl"
