@@ -4,7 +4,7 @@ import (
 	"container/list"
 )
 
-// CacheLRU represents an LRU cache
+// CacheLRU represents a Least Recent Used cache
 type CacheLRU struct {
 	capacity int
 	cache    map[int]*list.Element
