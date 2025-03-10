@@ -8,7 +8,7 @@ import (
 type CacheLRU struct {
 	capacity int
 	cache    map[int]*list.Element
-	list     *list.List
+	list     *list.List // list is a build-in package, it implements a doubly linked list.
 }
 
 // Pair stores key-value pairs
