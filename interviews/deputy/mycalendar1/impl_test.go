@@ -1,4 +1,4 @@
-package mycalendar
+package mycalendar1
 
 import "testing"
 

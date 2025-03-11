@@ -1,4 +1,4 @@
-package mycalendar
+package mycalendar1
 
 type MyCalendar struct {
 	events [][2]int
