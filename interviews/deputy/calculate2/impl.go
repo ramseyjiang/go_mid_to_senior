@@ -1,10 +1,15 @@
 package calculate2
 
 func calculate(s string) int {
+	// the stack is used to store intermediate results
 	stack := []int{}
+	// currentNum accumulates the current number being processed
 	currentNum := 0
+	// lastOp tracks the last encountered operator
 	lastOp := '+'
 
+	// Each character is processed to either build the current number
+	// skip spaces, or handle operators.
 	for i := 0; i < len(s); i++ {
 		c := s[i]
 		if c >= '0' && c <= '9' {
