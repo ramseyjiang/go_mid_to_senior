@@ -14,6 +14,7 @@ require (
 	github.com/brianvoe/gofakeit/v6 v6.19.0
 	github.com/confluentinc/confluent-kafka-go v1.9.2
 	github.com/cucumber/godog v0.12.6
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gdamore/tcell/v2 v2.5.3
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.9.1
@@ -36,7 +37,7 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/labstack/echo v3.3.10+incompatible
-	github.com/lib/pq v1.10.8
+	github.com/lib/pq v1.10.9
 	github.com/nicksnyder/go-i18n/v2 v2.2.0
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.18.1
@@ -44,8 +45,10 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/segmentio/kafka-go v0.4.34
 	github.com/segmentio/ksuid v1.0.4
+	github.com/sirupsen/logrus v1.9.0
 	github.com/smartystreets/goconvey v1.8.0
 	github.com/sony/gobreaker v0.5.0
+	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.3
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
@@ -83,7 +86,6 @@ require (
 	github.com/cucumber/gherkin-go/v19 v19.0.3 // indirect
 	github.com/cucumber/messages-go/v16 v16.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/eapache/go-resiliency v1.3.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21 // indirect
@@ -163,12 +165,10 @@ require (
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
-	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/smartystreets/assertions v1.13.1 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
-	github.com/spf13/cobra v1.9.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/srwiley/oksvg v0.0.0-20220731023508-a61f04f16b76 // indirect
