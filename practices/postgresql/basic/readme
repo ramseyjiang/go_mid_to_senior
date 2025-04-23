@@ -1,0 +1,60 @@
+Open terminal, in the project root path:
+1. Create and run all dockers
+$ docker-compose up -d
+
+2. Stop and remove all container, images and networks
+$ docker-compose down --rmi all -v
+
+3. Connect to docker source code, it will go to the app directory in the docker.
+a. $ docker exec -it postgres-go bash
+b. $ go mod tidy
+c. Go to cmd directory, run "go run main.go", if all the above is successful,
+{"level":"info","time":"2025-04-23T04:56:17Z","message":"Successfully connected to PostgreSQL!"}
+{"level":"info","time":"2025-04-23T04:56:17Z","message":"Migrations applied successfully!"}
+{"level":"info","time":"2025-04-23T04:56:17Z","message":"gRPC server is running on port 50051"}
+
+4. Connect to docker PostgreSQL, using "docker exec -it <container_name> psql -U <rolename> -d <dbname>"
+$ docker exec -it postgres_container psql -U user -d mydb
+
+a. Show all databases
+mydb=# \l
+
+b. Show all tables
+mydb=# \dt
+
+c. Show users table describe
+mydb=# \d users
+
+5. taskfile.yml
+It is used to define tasks which need to run.
+a. `go install github.com/go-task/task/v3/cmd/task@latest` to install
+b. $ task test
+c. $ task checkbug
+
+
+Explain config files
+
+1. .air.toml
+Using `go install github.com/air-verse/air@latest` to install
+Using air in docker terminal directory `app/cmd`, not in local terminal.
+It is used for hot reload after server run.
+
+2. pg_hba.conf
+It is used for docker bridge config.
+
+3. staticcheck
+Using `go install honnef.co/go/tools/cmd/staticcheck@latest` to install
+Run `staticcheck ./...` in the root directory
+`golangci-lint` is not supported by go team anymore.
+
+4. govulncheck
+Using `go install golang.org/x/vuln/cmd/govulncheck@latest` to install
+govulncheck ./...    or  govulncheck -json ./...
+
+
+
+
+
+
+
+

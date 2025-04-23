@@ -1,0 +1,25 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# ignore some files with bad extensions...
+*.exe
+*.tmp
+
+.DS_Store
+!.gitignore
+!Dockerfile*
+
+# Ignore temporary files
+*~
+
+# Unignore all dirs
+!*/
+
+*.sqlite
+*.json
+!*/OpenAPI/*.json
+web2grpc.json
+.idea/

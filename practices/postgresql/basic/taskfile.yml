@@ -1,0 +1,21 @@
+version: '3'
+
+tasks:
+  fmt: #task fmt
+    cmds:
+      - go fmt ./...
+  checkbug: #task checkbug
+    cmds:
+      - go vet ./...
+  build: #task build
+    cmds:
+      - go build -o cmd/ main.go
+  test: #task test
+    cmds:
+      - go test -v ./... -count=1
+  staticcheck: #task staticcheck
+    cmds: #-ST1000 is to disable ST1000 check, it is the package comment check.
+      - staticcheck -checks=all,-ST1000 ./...
+  secure: #task secure
+    cmds:
+      - govulncheck -json ./...

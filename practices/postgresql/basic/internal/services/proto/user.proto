@@ -1,0 +1,34 @@
+//protoc --go_out=. --go-grpc_out=. user.proto
+syntax = "proto3";
+
+package user;
+
+option go_package = "./"; // path for grpc generated files
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUserByID(GetUserByIDRequest) returns (GetUserByIDResponse);
+}
+
+message CreateUserRequest {
+  string name = 1;
+  int32 age = 2;
+}
+
+message CreateUserResponse {
+  int32 user_id = 1;
+}
+
+message GetUserByIDRequest {
+  int32 user_id = 1;
+}
+
+message GetUserByIDResponse {
+  User user = 1;
+}
+
+message User {
+  int32 id = 1;
+  string name = 2;
+  int32 age = 3;
+}
