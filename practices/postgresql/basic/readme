@@ -27,27 +27,28 @@ mydb=# \d users
 
 5. taskfile.yml
 It is used to define tasks which need to run.
-a. `go install github.com/go-task/task/v3/cmd/task@latest` to install
-b. $ task test
-c. $ task checkbug
+a. update .env.cp to .env
+b. `go install github.com/go-task/task/v3/cmd/task@latest` to install
+c. $ task test
+d. $ task checkbug
 
-
-Explain config files
-
-1. .air.toml
+6. .air.toml
 Using `go install github.com/air-verse/air@latest` to install
 Using air in docker terminal directory `app/cmd`, not in local terminal.
 It is used for hot reload after server run.
 
-2. pg_hba.conf
+
+Explain config files
+
+1. pg_hba.conf
 It is used for docker bridge config.
 
-3. staticcheck
+2. staticcheck
 Using `go install honnef.co/go/tools/cmd/staticcheck@latest` to install
 Run `staticcheck ./...` in the root directory
 `golangci-lint` is not supported by go team anymore.
 
-4. govulncheck
+3. govulncheck
 Using `go install golang.org/x/vuln/cmd/govulncheck@latest` to install
 govulncheck ./...    or  govulncheck -json ./...
 
