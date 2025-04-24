@@ -35,7 +35,7 @@ func NewRouter() *Router {
 	r.GET(path("parent"), SpanFromParent)
 	r.GET(path("func"), SpanHasFuncName)
 	r.GET("header", SpanFromHeader)
-	_ = r.Run(":9000")
+	_ = r.Run(":8089")
 
 	return apiRouter
 }

@@ -15,5 +15,5 @@ func main() {
 	}(closer)
 	opentracing.GlobalTracer()
 
-	_ = api.NewRouter().Serve(":9000")
+	_ = api.NewRouter().Serve(":8089")
 }
