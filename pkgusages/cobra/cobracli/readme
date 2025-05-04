@@ -1,0 +1,15 @@
+Step 0. mkdir <target directory> && cd <target directory>. For example, the <target directory> is tools.
+
+Step 1. go get -u github.com/spf13/cobra@latest
+
+Step 2. go install github.com/spf13/cobra-cli@latest
+
+Step 3. In your <target directory>, execute: cobra-cli init, it will create cmd folder, main.go and LICENSE automatically.
+In the cmd folder, it will include root.go.
+
+Step 4. Run cobra-cli add <command>, in terminal, it will create <command>.go automatically.
+Eg. cobra-cli add health, cobra-cli add generate. It will create health.go and generate.go
+
+Step 5. After the above, execute:
+go run main.go generate --name new-service, it will create <services> folder, and also create <new-service> folder under it.
+go run main.go health, it is used to check difference working or not.
