@@ -1,0 +1,48 @@
+This is a gateway example using gorilla framework.
+
+Step 1: In terminal, in the project root path, execute:
+$ docker-compose up -d
+After all service start, you will see the following:
+ ✔ auth-service                           Built                                                                                                                0.0s
+ ✔ gateway                                Built                                                                                                                0.0s
+ ✔ product-service                        Built                                                                                                                0.0s
+ ✔ Network go-micros_mynet                Created                                                                                                              0.0s
+ ✔ Container go-micros-auth-service-1     Started                                                                                                              0.3s
+ ✔ Container go-micros-product-service-1  Started                                                                                                              0.3s
+ ✔ Container go-micros-gateway-1          Started
+
+
+Step 2: Run following commands in terminal,
+You can access urls directly, otherwise you can access them through gateway.
+Direct way,
+curl -X POST http://localhost:8081/api/login
+curl -X GET http://localhost:8081/api/register
+curl -X GET http://localhost:8082/api/products/list
+
+1.$ curl -X POST http://localhost:8083/api/auth/login
+Return: {"error": "Invalid credentials"}%
+
+2.$ curl -X POST http://localhost:8083/api/auth/login \
+      -H "Content-Type: application/json" \
+      -d '{"username":"admin","password":"password"}'
+Return: {"message": "Login successful!"}%
+
+3.$ curl -X GET http://localhost:8083/api/products/list
+Return: [{"id":1,"name":"iPhone 14","price":"999 USD"},{"id":2,"name":"MacBook Pro","price":"1999 USD"}]
+
+4. $ curl -X GET http://localhost:8083/api/auth/register
+Return: {"message": "User registered successfully!"}%
+
+
+Step 3: Close all docker services:
+In terminal, execute:
+$ docker-compose down --rmi all -v
+
+ ✔ Container go-micros-gateway-1          Removed                                                                                                              0.2s
+ ✔ Container go-micros-product-service-1  Removed                                                                                                              0.3s
+ ✔ Container go-micros-auth-service-1     Removed                                                                                                              0.2s
+ ✔ Image product-service:1.0              Removed                                                                                                              0.1s
+ ✔ Image auth-service:1.0                 Removed                                                                                                              0.1s
+ ✔ Image gateway:1.0                      Removed                                                                                                              0.1s
+ ✔ Network go-micros_mynet                Removed
+

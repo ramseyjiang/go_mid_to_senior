@@ -1,0 +1,31 @@
+services:
+  auth-service:
+    build: ./authsrv # point to auth-service's Dockerfile
+    image: auth-service:1.0
+    ports:
+      - "8081:8081"
+    networks:
+      - mynet
+
+  product-service:
+    build: ./productsrv
+    image: product-service:1.0
+    ports:
+      - "8082:8082"
+    networks:
+      - mynet
+
+  gateway:
+    build: ./gateway
+    image: gateway:1.0
+    ports:
+      - "8083:8083"
+    depends_on:
+      - auth-service
+      - product-service
+    networks:
+      - mynet
+
+networks:
+  mynet:
+    driver: bridge
