@@ -1,0 +1,23 @@
+services:
+  product-service:
+    build:
+      context: .
+      dockerfile: product/Dockerfile
+    ports:
+      - "50051:50051"
+    networks:
+      - grpc-network
+
+  grpc-gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    ports:
+      - "50050:50050"
+    depends_on:
+      - product-service
+    networks:
+      - grpc-network
+
+networks:
+  grpc-network:
