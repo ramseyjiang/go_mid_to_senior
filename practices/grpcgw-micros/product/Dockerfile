@@ -6,7 +6,7 @@ COPY product/main.go .
 COPY third_party third_party
 #COPY go.mod .  #If go.mod is there.
 
-# 初始化模块并构建
+# Inital create model
 RUN go mod init product-service &&  \
     go mod tidy &&  \
     CGO_ENABLED=0 GOOS=linux go build -o product-service .

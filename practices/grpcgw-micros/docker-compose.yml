@@ -8,6 +8,17 @@ services:
     networks:
       - grpc-network
 
+  order-service:
+    build:
+      context: .
+      dockerfile: order/Dockerfile
+    ports:
+      - "50052:50052"
+    depends_on:
+      - product-service
+    networks:
+      - grpc-network
+
   grpc-gateway:
     build:
       context: .

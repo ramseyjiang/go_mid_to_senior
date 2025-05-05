@@ -6,13 +6,23 @@ generate:
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 
-	# 生成代码
-	protoc -I=product/proto \
-		   -I=third_party \
-		   --go_out=. \
-		   --go-grpc_out=. \
-		   --grpc-gateway_out=logtostderr=true:. \
-		   product/proto/product.proto
+	# Generate product service rpc code
+	protoc	-I=product/proto \
+		  	-I=third_party \
+		  	--go_out=. \
+		  	--go-grpc_out=. \
+		  	--grpc-gateway_out=logtostderr=true:. \
+		  	product/proto/product.proto
 
-	# 格式化生成的代码
-	gofmt -w product/gen/*.go
+  	# Generate order service rpc code, it invokes from product proto
+	protoc 	-I=. \
+			-I=order/proto \
+			-I=product/proto	\
+			-I=third_party	\
+			--go_out=.	\
+			--go-grpc_out=.	\
+			--grpc-gateway_out=logtostderr=true:.	\
+			order/proto/order.proto
+
+	# format generation code
+	gofmt -w product/gen/*.go order/gen/*.go
