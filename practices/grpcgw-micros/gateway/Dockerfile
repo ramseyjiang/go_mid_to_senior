@@ -10,6 +10,7 @@ COPY third_party third_party
 # 初始化模块并构建
 RUN go mod init gateway && \
     go get github.com/grpc-ecosystem/grpc-gateway/v2  &&  \
+    go mod tidy && \
     CGO_ENABLED=0 GOOS=linux go build -o gateway .
 
 FROM alpine:latest

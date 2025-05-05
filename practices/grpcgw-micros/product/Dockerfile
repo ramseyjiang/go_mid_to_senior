@@ -8,7 +8,7 @@ COPY third_party third_party
 
 # 初始化模块并构建
 RUN go mod init product-service &&  \
-    go get google.golang.org/grpc &&  \
+    go mod tidy &&  \
     CGO_ENABLED=0 GOOS=linux go build -o product-service .
 
 FROM alpine:latest
