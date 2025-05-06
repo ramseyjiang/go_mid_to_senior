@@ -43,7 +43,7 @@ func (s *server) GetProduct(ctx context.Context, req *productRPC.ProductRequest)
 
 	select {
 	case <-timeoutCtx.Done():
-		// Trigger by timeout or cancel
+		// Handle timeout error
 		if errors.Is(timeoutCtx.Err(), context.DeadlineExceeded) {
 			return nil, status.Error(codes.DeadlineExceeded, "Request process timeout.")
 		}

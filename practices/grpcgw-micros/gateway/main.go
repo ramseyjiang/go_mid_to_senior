@@ -32,7 +32,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// 启动 HTTP 服务
+	// Start http service
 	log.Println("gRPC Gateway running on :50050")
 	http.ListenAndServe(":50050", mux)
 }
