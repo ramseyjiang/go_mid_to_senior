@@ -7,53 +7,43 @@ import (
 	"time"
 
 	orderRPC "github.com/ramseyjiang/go_mid_to_senior/practices/grpcgw-micros/order/gen"
-	productRPC "github.com/ramseyjiang/go_mid_to_senior/practices/grpcgw-micros/product/gen"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
-type orderServer struct {
+type server struct {
 	orderRPC.UnimplementedOrderServiceServer
-	productClient productRPC.ProductServiceClient // gRPC 客户端
+	// Add connect db
 }
 
-// NewOrderServer should Connect the Product Service at first.
-func NewOrderServer() *orderServer {
-	conn, err := grpc.Dial(
-		"product-service:50051", // 通过 Docker 服务名访问
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-	)
-	if err != nil {
-		log.Fatalf("Connect Product Service Failed: %v", err)
-	}
-	return &orderServer{
-		productClient: productRPC.NewProductServiceClient(conn),
-	}
-}
-
-func (s *orderServer) CreateOrder(ctx context.Context, req *orderRPC.CreateOrderRequest) (*orderRPC.CreateOrderResponse, error) {
-	// 调用 Product Service 获取商品信息（带超时控制）
-	productCtx, cancel := context.WithTimeout(ctx, 2*time.Second)
-	defer cancel()
-
-	productResp, err := s.productClient.GetProduct(productCtx, &productRPC.ProductRequest{
-		ProductId: req.ProductId,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	// 生成订单逻辑（此处简化为示例）
+func (s *server) CreateOrder(ctx context.Context, req *orderRPC.CreateOrderRequest) (*orderRPC.CreateOrderResponse, error) {
 	return &orderRPC.CreateOrderResponse{
-		OrderId: "order-123",
-		Product: productResp,
+		OrderId: "order-" + time.Now().Format("20060102150405"),
 	}, nil
 }
 
+func (s *server) GetOrders(ctx context.Context, req *orderRPC.GetOrdersRequest) (*orderRPC.GetOrdersResponse, error) {
+	orders := []*orderRPC.OrderDetail{
+		{
+			OrderId:   "order-123",
+			UserId:    req.UserId,
+			Status:    "created",
+			CreatedAt: time.Now().Unix(),
+		},
+		{
+			OrderId:   "order-456",
+			UserId:    req.UserId,
+			Status:    "paid",
+			CreatedAt: time.Now().Add(-24 * time.Hour).Unix(),
+		},
+	}
+
+	return &orderRPC.GetOrdersResponse{Orders: orders}, nil
+}
+
 func main() {
-	lis, _ := net.Listen("tcp", ":50052") // Order 服务端口
+	lis, _ := net.Listen("tcp", ":50052")
 	s := grpc.NewServer()
-	orderRPC.RegisterOrderServiceServer(s, NewOrderServer())
-	log.Println("Order gRPC Server On Port :50052")
+	orderRPC.RegisterOrderServiceServer(s, &server{})
+	log.Println("Order Service run on :50052")
 	s.Serve(lis)
 }

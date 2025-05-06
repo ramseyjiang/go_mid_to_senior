@@ -3,7 +3,6 @@ WORKDIR /app
 
 # Copy Code and dependencies
 COPY order/proto order/proto
-COPY product/proto product/proto
 COPY third_party third_party
 COPY order/main.go .
 #COPY go.mod .  #If go.mod is there.

@@ -4,6 +4,7 @@ WORKDIR /app
 # 复制代码和依赖
 COPY gateway/main.go .
 COPY product/gen product/gen
+COPY order/gen order/gen
 COPY third_party third_party
 #COPY go.mod .  #If go.mod is there.
 

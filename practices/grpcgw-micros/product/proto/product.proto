@@ -1,6 +1,6 @@
 syntax = "proto3";
 package product;
-option go_package = "product/gen";
+option go_package = "github.com/ramseyjiang/go_mid_to_senior/practices/grpcgw-micros/product/gen";
 
 import "google/api/annotations.proto";  // 关键：gRPC Gateway依赖
 

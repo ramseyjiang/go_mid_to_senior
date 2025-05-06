@@ -140,7 +140,7 @@ const file_product_proto_rawDesc = "" +
 	"\x05price\x18\x03 \x01(\x01R\x05price2t\n" +
 	"\x0eProductService\x12b\n" +
 	"\n" +
-	"GetProduct\x12\x17.product.ProductRequest\x1a\x18.product.ProductResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/v1/products/{product_id}B\rZ\vproduct/genb\x06proto3"
+	"GetProduct\x12\x17.product.ProductRequest\x1a\x18.product.ProductResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/v1/products/{product_id}BMZKgithub.com/ramseyjiang/go_mid_to_senior/practices/grpcgw-micros/product/genb\x06proto3"
 
 var (
 	file_product_proto_rawDescOnce sync.Once
