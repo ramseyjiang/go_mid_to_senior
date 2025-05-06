@@ -26,7 +26,7 @@ func (s *server) GetProduct(ctx context.Context, req *productRPC.ProductRequest)
 	case <-timeoutCtx.Done():
 		// No timeout logic
 		return &productRPC.ProductResponse{
-			ProductID: "p-1234",
+			ProductID: int32(1234),
 			Name:      "Demo Product",
 			Price:     99.99,
 		}, nil
