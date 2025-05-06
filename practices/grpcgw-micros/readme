@@ -1,0 +1,11 @@
+curl -X POST http://localhost:50050/v1/orders \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": "user-123"}'
+
+curl -X GET http://localhost:50050/v1/orders/1234
+
+curl -X GET http://localhost:50050/v1/products/1234
+
+docker-compose down --rmi all -v
+
+docker-compose up -d
