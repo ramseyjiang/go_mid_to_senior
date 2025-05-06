@@ -59,7 +59,7 @@ func local_request_OrderService_CreateOrder_0(ctx context.Context, marshaler run
 	return msg, metadata, err
 }
 
-var filter_OrderService_GetOrders_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+var filter_OrderService_GetOrders_0 = &utilities.DoubleArray{Encoding: map[string]int{"UserID": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_OrderService_GetOrders_0(ctx context.Context, marshaler runtime.Marshaler, client OrderServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
@@ -68,13 +68,13 @@ func request_OrderService_GetOrders_0(ctx context.Context, marshaler runtime.Mar
 		err      error
 	)
 	io.Copy(io.Discard, req.Body)
-	val, ok := pathParams["user_id"]
+	val, ok := pathParams["UserID"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "UserID")
 	}
-	protoReq.UserId, err = runtime.String(val)
+	protoReq.UserID, err = runtime.Int64(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "UserID", err)
 	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
@@ -92,13 +92,13 @@ func local_request_OrderService_GetOrders_0(ctx context.Context, marshaler runti
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["user_id"]
+	val, ok := pathParams["UserID"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "UserID")
 	}
-	protoReq.UserId, err = runtime.String(val)
+	protoReq.UserID, err = runtime.Int64(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "UserID", err)
 	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
@@ -142,7 +142,7 @@ func RegisterOrderServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/order.OrderService/GetOrders", runtime.WithHTTPPathPattern("/v1/orders/{user_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/order.OrderService/GetOrders", runtime.WithHTTPPathPattern("/v1/orders/{UserID}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -217,7 +217,7 @@ func RegisterOrderServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/order.OrderService/GetOrders", runtime.WithHTTPPathPattern("/v1/orders/{user_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/order.OrderService/GetOrders", runtime.WithHTTPPathPattern("/v1/orders/{UserID}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -235,7 +235,7 @@ func RegisterOrderServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 var (
 	pattern_OrderService_CreateOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "orders"}, ""))
-	pattern_OrderService_GetOrders_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "orders", "user_id"}, ""))
+	pattern_OrderService_GetOrders_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "orders", "UserID"}, ""))
 )
 
 var (

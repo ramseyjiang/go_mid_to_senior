@@ -17,22 +17,22 @@ type server struct {
 
 func (s *server) CreateOrder(ctx context.Context, req *orderRPC.CreateOrderRequest) (*orderRPC.CreateOrderResponse, error) {
 	return &orderRPC.CreateOrderResponse{
-		OrderId: "order-" + time.Now().Format("20060102150405"),
+		OrderID: "order-" + time.Now().Format("20060102150405"),
 	}, nil
 }
 
 func (s *server) GetOrders(ctx context.Context, req *orderRPC.GetOrdersRequest) (*orderRPC.GetOrdersResponse, error) {
 	orders := []*orderRPC.OrderDetail{
 		{
-			OrderId:   "order-123",
-			UserId:    req.UserId,
-			Status:    "created",
+			OrderID:   "order-123",
+			UserID:    req.UserID,
+			Status:    orderRPC.OrderStatus_ORDER_STATUS_CREATED,
 			CreatedAt: time.Now().Unix(),
 		},
 		{
-			OrderId:   "order-456",
-			UserId:    req.UserId,
-			Status:    "paid",
+			OrderID:   "order-456",
+			UserID:    req.UserID,
+			Status:    orderRPC.OrderStatus_ORDER_STATUS_PAID,
 			CreatedAt: time.Now().Add(-24 * time.Hour).Unix(),
 		},
 	}
