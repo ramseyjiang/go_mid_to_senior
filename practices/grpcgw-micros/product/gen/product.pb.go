@@ -24,7 +24,7 @@ const (
 
 type ProductRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProductId     int32                  `protobuf:"varint,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	ProductID     int32                  `protobuf:"varint,1,opt,name=ProductID,proto3" json:"ProductID,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,18 +59,18 @@ func (*ProductRequest) Descriptor() ([]byte, []int) {
 	return file_product_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ProductRequest) GetProductId() int32 {
+func (x *ProductRequest) GetProductID() int32 {
 	if x != nil {
-		return x.ProductId
+		return x.ProductID
 	}
 	return 0
 }
 
 type ProductResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Price         float64                `protobuf:"fixed64,3,opt,name=price,proto3" json:"price,omitempty"`
+	ID            string                 `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
+	Price         float64                `protobuf:"fixed64,3,opt,name=Price,proto3" json:"Price,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -105,9 +105,9 @@ func (*ProductResponse) Descriptor() ([]byte, []int) {
 	return file_product_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ProductResponse) GetId() string {
+func (x *ProductResponse) GetID() string {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return ""
 }
@@ -130,17 +130,16 @@ var File_product_proto protoreflect.FileDescriptor
 
 const file_product_proto_rawDesc = "" +
 	"\n" +
-	"\rproduct.proto\x12\aproduct\x1a\x1cgoogle/api/annotations.proto\"/\n" +
-	"\x0eProductRequest\x12\x1d\n" +
-	"\n" +
-	"product_id\x18\x01 \x01(\x05R\tproductId\"K\n" +
+	"\rproduct.proto\x12\aproduct\x1a\x1cgoogle/api/annotations.proto\".\n" +
+	"\x0eProductRequest\x12\x1c\n" +
+	"\tProductID\x18\x01 \x01(\x05R\tProductID\"K\n" +
 	"\x0fProductResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
-	"\x05price\x18\x03 \x01(\x01R\x05price2t\n" +
-	"\x0eProductService\x12b\n" +
+	"\x02ID\x18\x01 \x01(\tR\x02ID\x12\x12\n" +
+	"\x04Name\x18\x02 \x01(\tR\x04Name\x12\x14\n" +
+	"\x05Price\x18\x03 \x01(\x01R\x05Price2s\n" +
+	"\x0eProductService\x12a\n" +
 	"\n" +
-	"GetProduct\x12\x17.product.ProductRequest\x1a\x18.product.ProductResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/v1/products/{product_id}BMZKgithub.com/ramseyjiang/go_mid_to_senior/practices/grpcgw-micros/product/genb\x06proto3"
+	"GetProduct\x12\x17.product.ProductRequest\x1a\x18.product.ProductResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/products/{ProductID}BMZKgithub.com/ramseyjiang/go_mid_to_senior/practices/grpcgw-micros/product/genb\x06proto3"
 
 var (
 	file_product_proto_rawDescOnce sync.Once

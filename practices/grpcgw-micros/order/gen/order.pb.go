@@ -22,9 +22,119 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type OrderStatus int32
+
+const (
+	OrderStatus_ORDER_STATUS_UNSPECIFIED OrderStatus = 0 // default 0
+	OrderStatus_ORDER_STATUS_CREATED     OrderStatus = 1
+	OrderStatus_ORDER_STATUS_PAID        OrderStatus = 2
+	OrderStatus_ORDER_STATUS_SHIPPED     OrderStatus = 3
+	OrderStatus_ORDER_STATUS_COMPLETED   OrderStatus = 4
+	OrderStatus_ORDER_STATUS_CANCELED    OrderStatus = 5
+)
+
+// Enum value maps for OrderStatus.
+var (
+	OrderStatus_name = map[int32]string{
+		0: "ORDER_STATUS_UNSPECIFIED",
+		1: "ORDER_STATUS_CREATED",
+		2: "ORDER_STATUS_PAID",
+		3: "ORDER_STATUS_SHIPPED",
+		4: "ORDER_STATUS_COMPLETED",
+		5: "ORDER_STATUS_CANCELED",
+	}
+	OrderStatus_value = map[string]int32{
+		"ORDER_STATUS_UNSPECIFIED": 0,
+		"ORDER_STATUS_CREATED":     1,
+		"ORDER_STATUS_PAID":        2,
+		"ORDER_STATUS_SHIPPED":     3,
+		"ORDER_STATUS_COMPLETED":   4,
+		"ORDER_STATUS_CANCELED":    5,
+	}
+)
+
+func (x OrderStatus) Enum() *OrderStatus {
+	p := new(OrderStatus)
+	*p = x
+	return p
+}
+
+func (x OrderStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OrderStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_order_proto_enumTypes[0].Descriptor()
+}
+
+func (OrderStatus) Type() protoreflect.EnumType {
+	return &file_order_proto_enumTypes[0]
+}
+
+func (x OrderStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use OrderStatus.Descriptor instead.
+func (OrderStatus) EnumDescriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{0}
+}
+
+type SortOrder int32
+
+const (
+	SortOrder_SORT_ORDER_UNSPECIFIED SortOrder = 0
+	SortOrder_SORT_ORDER_CREATED_AT  SortOrder = 1
+	SortOrder_SORT_ORDER_ORDER_ID    SortOrder = 2
+	SortOrder_SORT_ORDER_USER_ID     SortOrder = 3
+)
+
+// Enum value maps for SortOrder.
+var (
+	SortOrder_name = map[int32]string{
+		0: "SORT_ORDER_UNSPECIFIED",
+		1: "SORT_ORDER_CREATED_AT",
+		2: "SORT_ORDER_ORDER_ID",
+		3: "SORT_ORDER_USER_ID",
+	}
+	SortOrder_value = map[string]int32{
+		"SORT_ORDER_UNSPECIFIED": 0,
+		"SORT_ORDER_CREATED_AT":  1,
+		"SORT_ORDER_ORDER_ID":    2,
+		"SORT_ORDER_USER_ID":     3,
+	}
+)
+
+func (x SortOrder) Enum() *SortOrder {
+	p := new(SortOrder)
+	*p = x
+	return p
+}
+
+func (x SortOrder) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SortOrder) Descriptor() protoreflect.EnumDescriptor {
+	return file_order_proto_enumTypes[1].Descriptor()
+}
+
+func (SortOrder) Type() protoreflect.EnumType {
+	return &file_order_proto_enumTypes[1]
+}
+
+func (x SortOrder) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SortOrder.Descriptor instead.
+func (SortOrder) EnumDescriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{1}
+}
+
 type CreateOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserID        int64                  `protobuf:"varint,1,opt,name=UserID,proto3" json:"UserID,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,16 +169,16 @@ func (*CreateOrderRequest) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CreateOrderRequest) GetUserId() string {
+func (x *CreateOrderRequest) GetUserID() int64 {
 	if x != nil {
-		return x.UserId
+		return x.UserID
 	}
-	return ""
+	return 0
 }
 
 type CreateOrderResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	OrderId       string                 `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	OrderID       string                 `protobuf:"bytes,1,opt,name=OrderID,proto3" json:"OrderID,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -103,20 +213,20 @@ func (*CreateOrderResponse) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateOrderResponse) GetOrderId() string {
+func (x *CreateOrderResponse) GetOrderID() string {
 	if x != nil {
-		return x.OrderId
+		return x.OrderID
 	}
 	return ""
 }
 
 type GetOrdersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`               // filter condition（such as "status=paid"）
-	SortBy        string                 `protobuf:"bytes,3,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"` // such as "created_at"
-	Page          int32                  `protobuf:"varint,4,opt,name=page,proto3" json:"page,omitempty"`
-	PageSize      int32                  `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	UserID        int64                  `protobuf:"varint,1,opt,name=UserID,proto3" json:"UserID,omitempty"`
+	Status        OrderStatus            `protobuf:"varint,2,opt,name=Status,proto3,enum=order.OrderStatus" json:"Status,omitempty"` // filter condition（such as "status=paid"）
+	SortBy        SortOrder              `protobuf:"varint,3,opt,name=SortBy,proto3,enum=order.SortOrder" json:"SortBy,omitempty"`   // such as "created_at"
+	Page          int32                  `protobuf:"varint,4,opt,name=Page,proto3" json:"Page,omitempty"`
+	PageSize      int32                  `protobuf:"varint,5,opt,name=PageSize,proto3" json:"PageSize,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -151,25 +261,25 @@ func (*GetOrdersRequest) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetOrdersRequest) GetUserId() string {
+func (x *GetOrdersRequest) GetUserID() int64 {
 	if x != nil {
-		return x.UserId
+		return x.UserID
 	}
-	return ""
+	return 0
 }
 
-func (x *GetOrdersRequest) GetStatus() string {
+func (x *GetOrdersRequest) GetStatus() OrderStatus {
 	if x != nil {
 		return x.Status
 	}
-	return ""
+	return OrderStatus_ORDER_STATUS_UNSPECIFIED
 }
 
-func (x *GetOrdersRequest) GetSortBy() string {
+func (x *GetOrdersRequest) GetSortBy() SortOrder {
 	if x != nil {
 		return x.SortBy
 	}
-	return ""
+	return SortOrder_SORT_ORDER_UNSPECIFIED
 }
 
 func (x *GetOrdersRequest) GetPage() int32 {
@@ -232,10 +342,10 @@ func (x *GetOrdersResponse) GetOrders() []*OrderDetail {
 
 type OrderDetail struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	OrderId       string                 `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
-	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`                         // Fields，eg. "created", "paid", "shipped"
-	CreatedAt     int64                  `protobuf:"varint,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // timestamp
+	OrderID       string                 `protobuf:"bytes,1,opt,name=OrderID,proto3" json:"OrderID,omitempty"`
+	Status        OrderStatus            `protobuf:"varint,2,opt,name=Status,proto3,enum=order.OrderStatus" json:"Status,omitempty"`
+	UserID        int64                  `protobuf:"varint,3,opt,name=UserID,proto3" json:"UserID,omitempty"`
+	CreatedAt     int64                  `protobuf:"varint,4,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"` // Using int64 to store timestamp
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -270,25 +380,25 @@ func (*OrderDetail) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *OrderDetail) GetOrderId() string {
+func (x *OrderDetail) GetOrderID() string {
 	if x != nil {
-		return x.OrderId
+		return x.OrderID
 	}
 	return ""
 }
 
-func (x *OrderDetail) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *OrderDetail) GetStatus() string {
+func (x *OrderDetail) GetStatus() OrderStatus {
 	if x != nil {
 		return x.Status
 	}
-	return ""
+	return OrderStatus_ORDER_STATUS_UNSPECIFIED
+}
+
+func (x *OrderDetail) GetUserID() int64 {
+	if x != nil {
+		return x.UserID
+	}
+	return 0
 }
 
 func (x *OrderDetail) GetCreatedAt() int64 {
@@ -302,29 +412,40 @@ var File_order_proto protoreflect.FileDescriptor
 
 const file_order_proto_rawDesc = "" +
 	"\n" +
-	"\vorder.proto\x12\x05order\x1a\x1cgoogle/api/annotations.proto\"-\n" +
-	"\x12CreateOrderRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"0\n" +
-	"\x13CreateOrderResponse\x12\x19\n" +
-	"\border_id\x18\x01 \x01(\tR\aorderId\"\x8d\x01\n" +
-	"\x10GetOrdersRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x16\n" +
-	"\x06status\x18\x02 \x01(\tR\x06status\x12\x17\n" +
-	"\asort_by\x18\x03 \x01(\tR\x06sortBy\x12\x12\n" +
-	"\x04page\x18\x04 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x05 \x01(\x05R\bpageSize\"?\n" +
+	"\vorder.proto\x12\x05order\x1a\x1cgoogle/api/annotations.proto\",\n" +
+	"\x12CreateOrderRequest\x12\x16\n" +
+	"\x06UserID\x18\x01 \x01(\x03R\x06UserID\"/\n" +
+	"\x13CreateOrderResponse\x12\x18\n" +
+	"\aOrderID\x18\x01 \x01(\tR\aOrderID\"\xb0\x01\n" +
+	"\x10GetOrdersRequest\x12\x16\n" +
+	"\x06UserID\x18\x01 \x01(\x03R\x06UserID\x12*\n" +
+	"\x06Status\x18\x02 \x01(\x0e2\x12.order.OrderStatusR\x06Status\x12(\n" +
+	"\x06SortBy\x18\x03 \x01(\x0e2\x10.order.SortOrderR\x06SortBy\x12\x12\n" +
+	"\x04Page\x18\x04 \x01(\x05R\x04Page\x12\x1a\n" +
+	"\bPageSize\x18\x05 \x01(\x05R\bPageSize\"?\n" +
 	"\x11GetOrdersResponse\x12*\n" +
-	"\x06orders\x18\x01 \x03(\v2\x12.order.OrderDetailR\x06orders\"x\n" +
-	"\vOrderDetail\x12\x19\n" +
-	"\border_id\x18\x01 \x01(\tR\aorderId\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x16\n" +
-	"\x06status\x18\x03 \x01(\tR\x06status\x12\x1d\n" +
-	"\n" +
-	"created_at\x18\x04 \x01(\x03R\tcreatedAt2\xc9\x01\n" +
+	"\x06orders\x18\x01 \x03(\v2\x12.order.OrderDetailR\x06orders\"\x89\x01\n" +
+	"\vOrderDetail\x12\x18\n" +
+	"\aOrderID\x18\x01 \x01(\tR\aOrderID\x12*\n" +
+	"\x06Status\x18\x02 \x01(\x0e2\x12.order.OrderStatusR\x06Status\x12\x16\n" +
+	"\x06UserID\x18\x03 \x01(\x03R\x06UserID\x12\x1c\n" +
+	"\tCreatedAt\x18\x04 \x01(\x03R\tCreatedAt*\xad\x01\n" +
+	"\vOrderStatus\x12\x1c\n" +
+	"\x18ORDER_STATUS_UNSPECIFIED\x10\x00\x12\x18\n" +
+	"\x14ORDER_STATUS_CREATED\x10\x01\x12\x15\n" +
+	"\x11ORDER_STATUS_PAID\x10\x02\x12\x18\n" +
+	"\x14ORDER_STATUS_SHIPPED\x10\x03\x12\x1a\n" +
+	"\x16ORDER_STATUS_COMPLETED\x10\x04\x12\x19\n" +
+	"\x15ORDER_STATUS_CANCELED\x10\x05*s\n" +
+	"\tSortOrder\x12\x1a\n" +
+	"\x16SORT_ORDER_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15SORT_ORDER_CREATED_AT\x10\x01\x12\x17\n" +
+	"\x13SORT_ORDER_ORDER_ID\x10\x02\x12\x16\n" +
+	"\x12SORT_ORDER_USER_ID\x10\x032\xc8\x01\n" +
 	"\fOrderService\x12[\n" +
 	"\vCreateOrder\x12\x19.order.CreateOrderRequest\x1a\x1a.order.CreateOrderResponse\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
-	"/v1/orders\x12\\\n" +
-	"\tGetOrders\x12\x17.order.GetOrdersRequest\x1a\x18.order.GetOrdersResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/orders/{user_id}BKZIgithub.com/ramseyjiang/go_mid_to_senior/practices/grpcgw-micros/order/genb\x06proto3"
+	"/v1/orders\x12[\n" +
+	"\tGetOrders\x12\x17.order.GetOrdersRequest\x1a\x18.order.GetOrdersResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/v1/orders/{UserID}BKZIgithub.com/ramseyjiang/go_mid_to_senior/practices/grpcgw-micros/order/genb\x06proto3"
 
 var (
 	file_order_proto_rawDescOnce sync.Once
@@ -338,25 +459,31 @@ func file_order_proto_rawDescGZIP() []byte {
 	return file_order_proto_rawDescData
 }
 
+var file_order_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_order_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_order_proto_goTypes = []any{
-	(*CreateOrderRequest)(nil),  // 0: order.CreateOrderRequest
-	(*CreateOrderResponse)(nil), // 1: order.CreateOrderResponse
-	(*GetOrdersRequest)(nil),    // 2: order.GetOrdersRequest
-	(*GetOrdersResponse)(nil),   // 3: order.GetOrdersResponse
-	(*OrderDetail)(nil),         // 4: order.OrderDetail
+	(OrderStatus)(0),            // 0: order.OrderStatus
+	(SortOrder)(0),              // 1: order.SortOrder
+	(*CreateOrderRequest)(nil),  // 2: order.CreateOrderRequest
+	(*CreateOrderResponse)(nil), // 3: order.CreateOrderResponse
+	(*GetOrdersRequest)(nil),    // 4: order.GetOrdersRequest
+	(*GetOrdersResponse)(nil),   // 5: order.GetOrdersResponse
+	(*OrderDetail)(nil),         // 6: order.OrderDetail
 }
 var file_order_proto_depIdxs = []int32{
-	4, // 0: order.GetOrdersResponse.orders:type_name -> order.OrderDetail
-	0, // 1: order.OrderService.CreateOrder:input_type -> order.CreateOrderRequest
-	2, // 2: order.OrderService.GetOrders:input_type -> order.GetOrdersRequest
-	1, // 3: order.OrderService.CreateOrder:output_type -> order.CreateOrderResponse
-	3, // 4: order.OrderService.GetOrders:output_type -> order.GetOrdersResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // 0: order.GetOrdersRequest.Status:type_name -> order.OrderStatus
+	1, // 1: order.GetOrdersRequest.SortBy:type_name -> order.SortOrder
+	6, // 2: order.GetOrdersResponse.orders:type_name -> order.OrderDetail
+	0, // 3: order.OrderDetail.Status:type_name -> order.OrderStatus
+	2, // 4: order.OrderService.CreateOrder:input_type -> order.CreateOrderRequest
+	4, // 5: order.OrderService.GetOrders:input_type -> order.GetOrdersRequest
+	3, // 6: order.OrderService.CreateOrder:output_type -> order.CreateOrderResponse
+	5, // 7: order.OrderService.GetOrders:output_type -> order.GetOrdersResponse
+	6, // [6:8] is the sub-list for method output_type
+	4, // [4:6] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_order_proto_init() }
@@ -369,13 +496,14 @@ func file_order_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_order_proto_rawDesc), len(file_order_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      2,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_order_proto_goTypes,
 		DependencyIndexes: file_order_proto_depIdxs,
+		EnumInfos:         file_order_proto_enumTypes,
 		MessageInfos:      file_order_proto_msgTypes,
 	}.Build()
 	File_order_proto = out.File

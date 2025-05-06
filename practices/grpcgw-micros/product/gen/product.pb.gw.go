@@ -42,13 +42,13 @@ func request_ProductService_GetProduct_0(ctx context.Context, marshaler runtime.
 		err      error
 	)
 	io.Copy(io.Discard, req.Body)
-	val, ok := pathParams["product_id"]
+	val, ok := pathParams["ProductID"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "ProductID")
 	}
-	protoReq.ProductId, err = runtime.Int32(val)
+	protoReq.ProductID, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "ProductID", err)
 	}
 	msg, err := client.GetProduct(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -60,13 +60,13 @@ func local_request_ProductService_GetProduct_0(ctx context.Context, marshaler ru
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["product_id"]
+	val, ok := pathParams["ProductID"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "ProductID")
 	}
-	protoReq.ProductId, err = runtime.Int32(val)
+	protoReq.ProductID, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "ProductID", err)
 	}
 	msg, err := server.GetProduct(ctx, &protoReq)
 	return msg, metadata, err
@@ -84,7 +84,7 @@ func RegisterProductServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/product.ProductService/GetProduct", runtime.WithHTTPPathPattern("/v1/products/{product_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/product.ProductService/GetProduct", runtime.WithHTTPPathPattern("/v1/products/{ProductID}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -142,7 +142,7 @@ func RegisterProductServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/product.ProductService/GetProduct", runtime.WithHTTPPathPattern("/v1/products/{product_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/product.ProductService/GetProduct", runtime.WithHTTPPathPattern("/v1/products/{ProductID}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -159,7 +159,7 @@ func RegisterProductServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ProductService_GetProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "products", "product_id"}, ""))
+	pattern_ProductService_GetProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "products", "ProductID"}, ""))
 )
 
 var (
