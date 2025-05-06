@@ -26,9 +26,9 @@ func (s *server) GetProduct(ctx context.Context, req *productRPC.ProductRequest)
 	case <-timeoutCtx.Done():
 		// No timeout logic
 		return &productRPC.ProductResponse{
-			ID:    "p-1234",
-			Name:  "Demo Product",
-			Price: 99.99,
+			ProductID: "p-1234",
+			Name:      "Demo Product",
+			Price:     99.99,
 		}, nil
 	case <-time.After(3 * time.Second): // Over 3 seconds trigger the timeout
 		// Trigger by timeout or cancel
