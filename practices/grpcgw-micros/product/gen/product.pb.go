@@ -68,7 +68,7 @@ func (x *ProductRequest) GetProductID() int32 {
 
 type ProductResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProductID     string                 `protobuf:"bytes,1,opt,name=ProductID,proto3" json:"ProductID,omitempty"`
+	ProductID     int32                  `protobuf:"varint,1,opt,name=ProductID,proto3" json:"ProductID,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
 	Price         float64                `protobuf:"fixed64,3,opt,name=Price,proto3" json:"Price,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -105,11 +105,11 @@ func (*ProductResponse) Descriptor() ([]byte, []int) {
 	return file_product_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ProductResponse) GetProductID() string {
+func (x *ProductResponse) GetProductID() int32 {
 	if x != nil {
 		return x.ProductID
 	}
-	return ""
+	return 0
 }
 
 func (x *ProductResponse) GetName() string {
@@ -134,7 +134,7 @@ const file_product_proto_rawDesc = "" +
 	"\x0eProductRequest\x12\x1c\n" +
 	"\tProductID\x18\x01 \x01(\x05R\tProductID\"Y\n" +
 	"\x0fProductResponse\x12\x1c\n" +
-	"\tProductID\x18\x01 \x01(\tR\tProductID\x12\x12\n" +
+	"\tProductID\x18\x01 \x01(\x05R\tProductID\x12\x12\n" +
 	"\x04Name\x18\x02 \x01(\tR\x04Name\x12\x14\n" +
 	"\x05Price\x18\x03 \x01(\x01R\x05Price2s\n" +
 	"\x0eProductService\x12a\n" +

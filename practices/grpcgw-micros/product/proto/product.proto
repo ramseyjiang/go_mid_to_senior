@@ -17,7 +17,7 @@ message ProductRequest {
 }
 
 message ProductResponse {
-  string ProductID = 1;
+  int32 ProductID = 1;
   string Name = 2;
   double Price = 3;
 }
